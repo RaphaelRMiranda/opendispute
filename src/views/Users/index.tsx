@@ -1,20 +1,19 @@
 import Box from "@/components/Box";
 import Card from "@/components/Card";
 import Item from "@/components/Card/Item";
-import Download from "@/components/Card/icons/Download";
 import Edit from "@/components/Card/icons/Edit";
 import Page from "@/components/Page";
 import Text from "@/components/Text";
 import { theme } from "@/styles/theme";
 
-const Listing = () => {
+const Users = () => {
   return (
     <Page
       title="Card listing"
       description="List of all cards, you can filter by date or name"
     >
       <Card>
-        <Box wid="65%" justifyContent="space-between">
+        <Box wid="55%" justifyContent="space-between">
           <Item>
             <Text
               fontSize={theme.fonts.sizes.sm}
@@ -35,29 +34,14 @@ const Listing = () => {
               fontSize={theme.fonts.sizes.sm}
               color={theme.colors.base.secondary}
             >
-              Disputed
+              Disputes created
             </Text>
             <Text
               fontSize={theme.fonts.sizes.md}
               color={theme.colors.base.green}
               weight={500}
             >
-              4
-            </Text>
-          </Item>
-          <Item>
-            <Text
-              fontSize={theme.fonts.sizes.sm}
-              color={theme.colors.base.secondary}
-            >
-              Deleted
-            </Text>
-            <Text
-              fontSize={theme.fonts.sizes.md}
-              color={theme.colors.base.orange}
-              weight={500}
-            >
-              10
+              37
             </Text>
           </Item>
           <Item>
@@ -87,7 +71,7 @@ const Listing = () => {
               color={theme.colors.base.secondary}
               weight={500}
             >
-              Pedro Vargas
+              Raphael M.
             </Text>
           </Item>
           <Item>
@@ -106,21 +90,18 @@ const Listing = () => {
             </Text>
           </Item>
         </Box>
-        <Box wid="30%" justifyContent="flex-end">
+        <Box wid="25%" justifyContent="flex-end">
           <Box wid="60%" justifyContent="center">
             <Text
               fontSize={theme.fonts.sizes.md}
               color={theme.colors.base.secondary}
               weight={500}
             >
-              Factual Dispute 1
+              Service
             </Text>
           </Box>
 
           <Box wid="40%" justifyContent="flex-end">
-            <Box marginRight={25}>
-              <Download size={theme.icons.sizes.xs} />
-            </Box>
             <Box marginRight={25}>
               <Edit size={theme.icons.sizes.xs} />
             </Box>
@@ -141,4 +122,4 @@ const Listing = () => {
   );
 };
 
-export default Listing;
+export default Users;

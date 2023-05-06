@@ -44,7 +44,7 @@ const User = () => {
         </Text>
         <Text
           fontSize={theme.fonts.sizes.sm}
-          color={theme.colors.base.gray[300]}
+          color={theme.colors.base.secondary}
         >
           CEO | Administrator
         </Text>

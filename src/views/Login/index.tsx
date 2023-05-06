@@ -27,6 +27,7 @@ const Login = () => {
         // boxShadow="0 2px 8px 0 rgba(0 0 0 / 10%)"
         borderRadius={6}
         padding={20}
+        marginBottom={20}
       >
         <Logo size={theme.icons.sizes.xxl} />
         <InputText
@@ -61,9 +62,13 @@ const Login = () => {
           </Text>
         </Button>
       </Box>
-      <Box position="absolute" bottom="0" left="0" wid="25%">
-        <Rocket size="100%" />
-      </Box>
+      <Text fontSize={theme.fonts.sizes.xs}>
+        © 2023 OpenDispute.ai. All rights reserved. Private and Confidential.
+        For authorized access only.
+      </Text>
+      {/* <Box position="absolute" bottom="0" left="0" wid="25%">      
+         <Rocket size="100%" /> 
+      </Box> */}
     </Box>
   );
 };

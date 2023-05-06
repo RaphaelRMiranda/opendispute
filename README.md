@@ -1,38 +1,50 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# OpenDispute.ai
 
-## Getting Started
+**OpenDispute.ai** é um painel interno poderoso projetado especificamente para a criação de cartas de crédito para bancos americanos. Seu objetivo é simplificar o processo de ajuste de crédito dos clientes, fornecendo uma interface amigável e ferramentas eficientes. Este README fornece uma visão geral do projeto, seus principais recursos e instruções sobre como configurá-lo e começar.
 
-First, run the development server:
+## Principais Recursos
+
+1. **Login**: A página de login permite que usuários autorizados acessem com segurança o painel OpenDispute.ai usando suas credenciais exclusivas. Ela possui um sistema de autenticação robusto para garantir a confidencialidade dos dados.
+
+2. **Registro**: A página de registro permite que novos usuários criem uma conta no sistema OpenDispute.ai. Ela captura detalhes necessários e realiza validações para garantir a precisão e integridade das informações do usuário.
+
+3. **Listagem**: A página de listagem apresenta uma visão abrangente das cartas de crédito existentes. Os usuários podem pesquisar, filtrar e classificar a lista com base em vários parâmetros, como nome do cliente, valor do crédito, status, etc. Esse recurso facilita a gestão e o monitoramento das disputas de crédito.
+
+4. **Perfil do usuário**: Cada usuário possui uma página de perfil dedicada onde podem visualizar e atualizar suas informações pessoais, incluindo detalhes de contato e preferências. Essa funcionalidade garante que os dados do usuário estejam atualizados e relevantes.
+
+## Configuração
+
+Para configurar o OpenDispute.ai localmente, siga estas etapas:
+
+1. Clone o repositório:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+git clone https://github.com/seu-nome-de-usuário/OpenDispute.ai.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Instale as dependências necessárias:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+cd OpenDispute.ai
+npm install
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+3. Configure as variáveis de ambiente:
+   - Crie um arquivo `.env` na pasta raiz.
+   - Especifique as variáveis de ambiente necessárias, como credenciais de banco de dados, chaves de API, etc.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+4. Inicie a aplicação:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+npm start
+```
 
-## Learn More
+5. Abra o navegador da web e acesse `http://localhost:3000` para acessar o painel OpenDispute.ai.
 
-To learn more about Next.js, take a look at the following resources:
+## Licença
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+[Licença MIT](LICENSE)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Contato
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Se você tiver alguma dúvida, sugestão ou feedback, não hesite em entrar em contato com nossa equipe em [contato@opendispute.ai](mailto:contato@opendispute.ai). Agradecemos seu interesse no OpenDispute.ai e aguardamos o seu contato.

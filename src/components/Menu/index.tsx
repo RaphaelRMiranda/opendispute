@@ -7,8 +7,11 @@ import AddUser from "./icons/AddUser";
 import User from "./icons/User";
 import Exit from "./icons/Exit";
 import Rocket from "./icons/Rocket";
+import { useRouter } from "next/router";
 
 const Menu = () => {
+  const router = useRouter();
+
   const deafultWidth = 150;
 
   return (
@@ -35,6 +38,7 @@ const Menu = () => {
           fontSize={theme.fonts.sizes.md}
           marginTop={50}
           icon={<List size={theme.fonts.sizes.md} />}
+          onClick={() => router.push("/listing")}
         >
           Listing
         </Button>
@@ -43,6 +47,7 @@ const Menu = () => {
           fontSize={theme.fonts.sizes.md}
           marginTop={15}
           icon={<AddUser size={theme.fonts.sizes.md} />}
+          onClick={() => router.push("/register")}
         >
           Register
         </Button>
@@ -51,6 +56,7 @@ const Menu = () => {
           fontSize={theme.fonts.sizes.md}
           marginTop={15}
           icon={<User size={theme.fonts.sizes.md} />}
+          onClick={() => router.push("/users")}
         >
           Users
         </Button>
@@ -69,9 +75,9 @@ const Menu = () => {
           Logout
         </Button>
       </Box>
-      <Box position="absolute" bottom="0" left="0" wid="80%">
+      {/* <Box position="absolute" bottom="0" left="0" wid="80%">
         <Rocket size="100%" />
-      </Box>
+      </Box> */}
     </Box>
   );
 };

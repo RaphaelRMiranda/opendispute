@@ -7,6 +7,8 @@ import Layout from "@/components/Layout";
 
 import Login from "@/views/Login";
 import Listing from "@/views/Listing";
+import Register from "@/views/Register";
+import Users from "@/views/Users";
 
 const Routers = () => {
   const pathname = usePathname();
@@ -14,6 +16,8 @@ const Routers = () => {
   const routes: TRoutes = {
     "/": Login,
     "/listing": Listing,
+    "/register": Register,
+    "/users": Users,
     // "404": "404",
   };
 
@@ -21,13 +25,9 @@ const Routers = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      {false ? (
-        <Layout>
-          <Route />
-        </Layout>
-      ) : (
+      <Layout>
         <Route />
-      )}
+      </Layout>
     </ThemeProvider>
   );
 };
