@@ -1,0 +1,5 @@
+export type TPage = {
+  title: string;
+  description?: string;
+  children: React.ReactNode | React.ReactNode[];
+};
