@@ -22,7 +22,7 @@ const InputText = ({
     >
       {label && (
         <Text
-          fontSize={theme.fonts.sizes.xs}
+          fontSize={theme.fonts.sizes.sm}
           color={theme.colors.base.secondary}
           marginLeft={5}
         >
@@ -32,7 +32,7 @@ const InputText = ({
       <Input placeholder={placeholder} onChange={onChange} />
       {error && (
         <Text
-          fontSize={theme.fonts.sizes.xs}
+          fontSize={theme.fonts.sizes.sm}
           color={theme.colors.base.red[200]}
           marginLeft={5}
         >

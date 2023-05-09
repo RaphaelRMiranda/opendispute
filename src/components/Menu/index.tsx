@@ -8,11 +8,37 @@ import User from "./icons/User";
 import Exit from "./icons/Exit";
 import Rocket from "./icons/Rocket";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const Menu = () => {
   const router = useRouter();
 
+  const [menuHeight, setMenuHeight] = useState(0);
+
   const deafultWidth = 150;
+
+  useEffect(() => {
+    const handleResize = () => {
+      const { scrollHeight } = document.documentElement;
+      setMenuHeight(scrollHeight);
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    const handleRouteChange = () => {
+      setMenuHeight(0);
+      setTimeout(handleResize, 100);
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
 
   return (
     <Box
@@ -22,7 +48,7 @@ const Menu = () => {
       alignItems="center"
       wid="40%"
       maxWid={320}
-      minHei="100vh"
+      minHei={menuHeight ? menuHeight : "100vh"}
       backgroundColor={theme.colors.base.primary}
       padding={20}
     >

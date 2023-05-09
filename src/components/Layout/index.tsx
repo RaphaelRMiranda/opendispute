@@ -19,7 +19,7 @@ const Layout = ({ children }: TLayout) => {
         wid="100%"
         flexDirection="column"
         justifyContent="flex-start"
-        alignItems="flex-start"
+        alignItems="flex-start" 
       >
         <Header />
         <Box

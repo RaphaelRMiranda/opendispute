@@ -53,7 +53,7 @@ const Login = () => {
           marginBottom={20}
         >
           <Text
-            fontSize={theme.fonts.sizes.sm}
+            fontSize={theme.fonts.sizes.md}
             color={theme.colors.base.white}
             weight={500}
             pointerEvents="none"

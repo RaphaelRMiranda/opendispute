@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Input = styled.input`
+export const Select = styled.select`
   width: 100%;
   background-color: ${({ theme }) => theme.colors.base.gray[300]};
   border: none;
@@ -9,8 +9,4 @@ export const Input = styled.input`
   padding: 12px;
   box-sizing: border-box;
   color: ${({ theme }) => theme.colors.base.secondary};
-
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.base.gray[400]};
-  }
 `;

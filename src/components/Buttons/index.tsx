@@ -23,6 +23,10 @@ export const Button = ({
     & > svg > path {
       fill: ${theme.colors.base.white};
     }
+
+    & > svg > g > path {
+      fill: ${theme.colors.base.white};
+    }
   `;
 
   return (

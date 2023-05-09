@@ -14,54 +14,101 @@ const Register = () => {
       <Box
         wid="100%"
         flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
+        justifyContent="flex-start"
+        alignItems="flex-start"
       >
         <Box
           wid="100%"
           maxWid={1000}
-          display="inline-flex"
-          flexWrap="wrap"
-          gap={15}
+          flexDirection="column"
           justifyContent="center"
           alignItems="center"
         >
-          <InputText wid="30%" label="First Name" placeholder="John" />
-          <InputText wid="30%" label="Middle Name" placeholder="Doe" />
-          <InputText wid="30%" label="Last Name" placeholder="Smith" />
-          <InputText wid="30%" label="E-mail" placeholder="example@email.com" />
-          <InputText
-            wid="30%"
-            label="Permission Role"
-            placeholder="Administrator"
-          />
-          <InputText wid="30%" label="Password" placeholder="Administrator" />
-          <InputText
-            wid="30%"
-            label="Confirm Password"
-            placeholder="Administrator"
-          />
+          <Box
+            wid="100%"
+            flexDirection="row"
+            justifyContent="flex-start"
+            alignItems="center"
+            marginTop={10}
+          >
+            <InputText
+              wid="100%"
+              label="First Name"
+              placeholder="5/5/2023"
+              marginRight={10}
+            />
+            <InputText
+              wid="100%"
+              label="First Name"
+              placeholder="5/5/2023"
+              marginRight={10}
+            />
+            <InputText wid="100%" label="First Name" placeholder="5/5/2023" />
+          </Box>
+          <Box
+            wid="100%"
+            flexDirection="row"
+            justifyContent="flex-start"
+            alignItems="center"
+            marginTop={10}
+          >
+            <InputText
+              wid="100%"
+              label="E-mail"
+              placeholder="example@email.com"
+            />
+          </Box>
+          <Box
+            wid="100%"
+            flexDirection="row"
+            justifyContent="flex-start"
+            alignItems="center"
+            marginTop={10}
+          >
+            <InputText
+              wid="100%"
+              label="Permission Role"
+              placeholder="Administrator"
+            />
+          </Box>
+
+          <Box
+            wid="100%"
+            flexDirection="row"
+            justifyContent="flex-start"
+            alignItems="center"
+            marginTop={10}
+          >
+            <InputText
+              wid="100%"
+              label="Password"
+              placeholder="Administrator"
+              marginRight={10}
+            />
+            <InputText
+              wid="100%"
+              label="Confirm Password"
+              placeholder="Administrator"
+            />
+          </Box>
         </Box>
         <Box
           wid="100%"
           maxWid={1000}
-          display="inline-flex"
-          flexWrap="wrap"
-          gap={15}
-          justifyContent="center"
+          justifyContent="flex-end"
           alignItems="center"
         >
           <Button
-            wid="30%"
+            wid="50%"
             justifyContent="center"
             backgroundColor={theme.colors.base.secondary}
             fontSize={theme.fonts.sizes.md}
             fontColor={theme.colors.base.white}
-            marginTop={50}
+            marginTop={25}
             marginBottom={20}
           >
             <Text
-              fontSize={theme.fonts.sizes.sm}
+              fontSize={theme.fonts.sizes.md}
               color={theme.colors.base.white}
               weight={500}
               pointerEvents="none"
