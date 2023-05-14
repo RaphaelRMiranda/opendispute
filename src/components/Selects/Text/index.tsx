@@ -11,6 +11,7 @@ const SelectText = ({
   error,
   options,
   onChange,
+  reg,
   ...rest
 }: TBox & TSelect) => {
   return (
@@ -25,10 +26,14 @@ const SelectText = ({
         </Text>
       )}
       <Box position="relative" wid="100%">
-        <Select onChange={onChange}>
+        <Select onChange={() => onChange && onChange} {...reg}>
           {options &&
-            options.map((item) => {
-              return <option key={item.value}>{item.label}</option>;
+            options.map((item, index) => {
+              return (
+                <option key={index} value={item.value}>
+                  {item.label}
+                </option>
+              );
             })}
         </Select>
         <Box
@@ -36,6 +41,7 @@ const SelectText = ({
           right="1px"
           backgroundColor={theme.colors.base.gray[300]}
           padding={`0 12px 0 0`}
+          pointerEvents="none"
         >
           <ArrowDown size={theme.icons.sizes.xs} />
         </Box>

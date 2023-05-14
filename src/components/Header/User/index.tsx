@@ -4,8 +4,12 @@ import Text from "@/components/Text";
 import { theme } from "@/styles/theme";
 import Add from "../icons/Add";
 import { useRouter } from "next/router";
+import { useUser } from "@/context/User";
+import Role from "./utils/Role";
 
 const User = () => {
+  const { user } = useUser();
+
   const router = useRouter();
 
   return (
@@ -45,13 +49,13 @@ const User = () => {
           weight={500}
           color={theme.colors.base.secondary}
         >
-          Raphael M.
+          {user.firstName} {user.middleName.charAt(0)}.
         </Text>
         <Text
           fontSize={theme.fonts.sizes.sm}
           color={theme.colors.base.secondary}
         >
-          CEO | Administrator
+          {Role(user.role)}
         </Text>
       </Box>
     </Box>

@@ -13,29 +13,31 @@ const Page = ({ title, description, children, filter }: TPage) => {
       borderRadius={6}
       padding={15}
     >
-      <Box justifyContent="space-between">
-        <Box
-          flexDirection="column"
-          justifyContent="flex-start"
-          alignItems="flex-start"
-        >
-          <Text
-            fontSize={theme.fonts.sizes.md}
-            color={theme.colors.base.secondary}
-            weight={500}
+      {title && description && children && filter && (
+        <Box justifyContent="space-between">
+          <Box
+            flexDirection="column"
+            justifyContent="flex-start"
+            alignItems="flex-start"
           >
-            {title}
-          </Text>
-          <Text
-            fontSize={theme.fonts.sizes.sm}
-            color={theme.colors.base.gray[300]}
-            marginBottom={15}
-          >
-            {description}
-          </Text>
+            <Text
+              fontSize={theme.fonts.sizes.md}
+              color={theme.colors.base.secondary}
+              weight={500}
+            >
+              {title}
+            </Text>
+            <Text
+              fontSize={theme.fonts.sizes.sm}
+              color={theme.colors.base.gray[300]}
+              marginBottom={15}
+            >
+              {description}
+            </Text>
+          </Box>
+          {filter && <Box>{filter}</Box>}
         </Box>
-        {filter && <Box>{filter}</Box>}
-      </Box>
+      )}
       {children}
     </Box>
   );

@@ -10,6 +10,9 @@ const InputText = ({
   label,
   error,
   onChange,
+  reg,
+  value,
+  readonly,
   ...rest
 }: TBox & TInput) => {
   return (
@@ -29,14 +32,14 @@ const InputText = ({
           {label}
         </Text>
       )}
-      <Input placeholder={placeholder} onChange={onChange} />
+      <Input placeholder={placeholder} onChange={onChange} {...reg} value={value} readOnly={readonly} />
       {error && (
         <Text
           fontSize={theme.fonts.sizes.sm}
           color={theme.colors.base.red[200]}
           marginLeft={5}
         >
-          {error}
+          {String(error.message)}
         </Text>
       )}
     </Box>

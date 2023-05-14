@@ -6,7 +6,14 @@ import Text from "@/components/Text";
 import { theme } from "@/styles/theme";
 import Check from "./icons/Check";
 
-const Radio = ({ label, error, checked, onChange, ...rest }: TBox & TRadio) => {
+const Radio = ({
+  label,
+  error,
+  checked,
+  reg,
+  onChange,
+  ...rest
+}: TBox & TRadio) => {
   const [selected, isSelected] = useState<boolean>(false);
 
   return (
@@ -19,6 +26,9 @@ const Radio = ({ label, error, checked, onChange, ...rest }: TBox & TRadio) => {
         isSelected(!selected);
       }}
     >
+      <Box display="none">
+        <input type="radio" checked={checked} {...reg} />
+      </Box>
       <Box
         wid={35}
         backgroundColor={theme.colors.base.gray[300]}

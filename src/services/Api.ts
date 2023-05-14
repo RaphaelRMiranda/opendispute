@@ -1,0 +1,14 @@
+import axios, { AxiosInstance } from "axios";
+
+class ApiInstance {
+  public Api: AxiosInstance;
+
+  constructor() {
+    this.Api = axios.create({
+      baseURL: process.env.NEXT_PUBLIC_API_HOST,
+    });
+  }
+}
+
+const Instance = new ApiInstance();
+export default Instance.Api;
