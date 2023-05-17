@@ -6,7 +6,7 @@ import Text from "@/components/Text";
 import { theme } from "@/styles/theme";
 import Check from "./icons/Check";
 
-const Radio = ({
+const Checkbox = ({
   label,
   error,
   checked,
@@ -27,9 +27,9 @@ const Radio = ({
           isSelected(!selected);
         }}
       >
-        <Box display="none">
+        <Box>
           <input
-            type="radio"
+            type="checkbox"
             checked={checked ? checked : false}
             readOnly
             {...reg}
@@ -73,4 +73,4 @@ const Radio = ({
   );
 };
 
-export default Radio;
+export default Checkbox;

@@ -5,3 +5,9 @@ export type TDisputeTemplate = {
   disputeId: string;
   register: UseFormRegister<FieldValues>
 };
+
+export type TDisputeBureau = {
+  equifax: boolean;
+  experian: boolean;
+  transunion: boolean;
+}

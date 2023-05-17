@@ -9,7 +9,7 @@ import Disputes from "./Disputes";
 import SelectText from "@/components/Selects/Text";
 import Radio from "@/components/Inputs/Radio";
 import { useEffect, useState } from "react";
-import { DisputeInterface, TDispute } from "./types";
+import { DisputeInterface, TCreditBureau, TDispute } from "./types";
 import CreditBureau from "./utils/CreditBureau";
 import GreetingSequence from "./utils/GreetingSequence";
 import DisputeRound from "./utils/DisputeRound";
@@ -22,13 +22,24 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import DisputeSchema from "@/schemas/Dispute";
 import { useDocument } from "@/context/Document";
 import GenerateId from "./utils/GenerateId";
+import { TOption } from "@/components/Selects/types";
 
 const Create = () => {
-  const { disputes, setDisputes } = useDocument();
+  const {
+    disputes,
+    setDisputes,
+    setLetterRegister,
+    setLetterErrors,
+    setLetterValues,
+  } = useDocument();
 
   const {
     register,
     handleSubmit,
+    setValue,
+    clearErrors,
+    resetField,
+    setError,
     formState: { errors },
   } = useForm({
     mode: "onBlur",
@@ -42,9 +53,15 @@ const Create = () => {
 
   useEffect(() => {
     console.log(errors);
-  }, [errors]);
+
+    setLetterRegister({ register });
+    setLetterValues({ setValue });
+    setLetterErrors({ setError, errors, clean: clearErrors, resetField });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errors, register, setValue, setError, clearErrors, resetField]);
 
   const [social, setSocial] = useState<string>("");
+  const [socialValue, setSocialValue] = useState<string>("");
 
   const [object, setObject] = useState<DisputeInterface>(
     {} as DisputeInterface
@@ -77,8 +94,43 @@ const Create = () => {
     ]);
   };
 
-  // criar registro para o multiple select
-  // precisa ser atribuido ao form e ter as validações corretas
+  const handleChangeBureau = (arr: TOption[]) => {
+    const updatedValues: TCreditBureau = {
+      equifax: false,
+      experian: false,
+      transunion: false,
+    };
+
+    arr.forEach((item) => {
+      updatedValues[item.value as keyof TCreditBureau] = true;
+    });
+
+    setValue("creditBureau", updatedValues);
+
+    const allValuesFalse = Object.values(updatedValues).every(
+      (value) => !value
+    );
+
+    if (allValuesFalse) {
+      setError("creditBureau", {
+        type: "manual",
+        message: "Required at least one credit bureau",
+      });
+    } else {
+      clearErrors("creditBureau");
+    }
+  };
+
+  const handleChangeSocial = (value: string) => {
+    setSocial(value);
+    if (value === "ssn") {
+      setValue("customer.ssn", socialValue);
+      resetField("customer.itin");
+    } else {
+      setValue("customer.itin", socialValue);
+      resetField("customer.ssn");
+    }
+  };
 
   return (
     <Layout>
@@ -143,6 +195,7 @@ const Create = () => {
                   value={new Date().toLocaleDateString("en-US")}
                   reg={register("date")}
                   readonly
+                  error={String(errors?.date?.message)}
                 />
               </Box>
               <Box
@@ -158,6 +211,7 @@ const Create = () => {
                   placeholder="John"
                   marginRight={10}
                   reg={register("customer.firstName")}
+                  error={String((errors?.customer as any)?.firstName?.message)}
                 />
                 <InputText
                   wid="100%"
@@ -165,12 +219,14 @@ const Create = () => {
                   placeholder="Doe"
                   marginRight={10}
                   reg={register("customer.middleName")}
+                  error={String((errors?.customer as any)?.middleName?.message)}
                 />
                 <InputText
                   wid="100%"
                   label="Last Name"
                   placeholder="Steve"
                   reg={register("customer.lastName")}
+                  error={String((errors?.customer as any)?.lastName?.message)}
                 />
               </Box>
               <Box
@@ -186,19 +242,30 @@ const Create = () => {
                   placeholder="1234 Main St"
                   marginRight={10}
                   reg={register("address.street")}
+                  error={String((errors?.address as any)?.street?.message)}
                 />
                 <InputText
-                  wid="30%"
+                  wid="50%"
+                  label="City"
+                  placeholder="New York"
+                  marginRight={10}
+                  reg={register("address.city")}
+                  error={String((errors?.address as any)?.city?.message)}
+                />
+                <InputText
+                  wid="20%"
                   label="State"
                   placeholder="CA"
                   marginRight={10}
                   reg={register("address.state")}
+                  error={String((errors?.address as any)?.state?.message)}
                 />
                 <InputText
                   wid="20%"
                   label="Zip Code"
                   placeholder="10001"
                   reg={register("address.zipCode")}
+                  error={String((errors?.address as any)?.zipCode?.message)}
                 />
               </Box>
               <Box
@@ -214,30 +281,37 @@ const Create = () => {
                   placeholder="5/5/1980"
                   marginRight={10}
                   reg={register("customer.dateOfBirth")}
+                  error={String(
+                    (errors?.customer as any)?.dateOfBirth?.message
+                  )}
                 />
                 <Box wid="15%" marginTop={20} justifyContent="space-between">
                   <Radio
                     label="SSN"
-                    onChange={() => setSocial("ssn")}
+                    onChange={() => handleChangeSocial("ssn")}
                     checked={social === "ssn"}
                     marginRight={10}
+                    error={String((errors?.customer as any)?.ssn?.message)}
                   />
                   <Radio
                     label="ITIN"
-                    onChange={() => setSocial("itin")}
+                    onChange={() => handleChangeSocial("itin")}
                     checked={social === "itin"}
                     marginRight={10}
+                    error={String((errors?.customer as any)?.ssn?.message)}
                   />
                 </Box>
                 <InputText
                   wid="35%"
                   label="Social Number"
                   placeholder="###-##-###"
+                  onChange={(e) => setSocialValue(e.target.value)}
                   reg={
                     social === "ssn"
                       ? register("customer.ssn")
                       : register("customer.itin")
                   }
+                  error={String((errors?.customer as any)?.ssn?.message)}
                 />
               </Box>
               <Box
@@ -253,20 +327,25 @@ const Create = () => {
                   options={DisputeRound}
                   marginRight={10}
                   reg={register("disputeRound")}
+                  error={String(errors?.disputeRound?.message)}
                 />
                 <MultipleSelect
                   wid="40%"
                   label="Credit Bureau"
                   options={CreditBureau}
                   marginRight={10}
-                  onChange={(e) => console.log(e)}
-                  // register for multiple select
+                  onChange={(e) => handleChangeBureau(e as TOption[])}
+                  error={String(
+                    (errors?.creditBureau as any) &&
+                      (errors?.creditBureau as any)?.message
+                  )}
                 />
                 <SelectText
                   wid="40%"
                   label="Greeting Sequence"
                   options={GreetingSequence}
                   reg={register("greetingSequence")}
+                  error={String(errors?.greetingSequence?.message)}
                 />
               </Box>
               <Box
@@ -295,11 +374,12 @@ const Create = () => {
                   label="Closing Statement"
                   options={[
                     {
-                      label: "1",
-                      value: "1",
+                      label: "Please send me an updated",
+                      value: "Please send me an updated",
                     },
                   ]}
                   reg={register("closingStatement")}
+                  error={String(errors?.closingStatement?.message)}
                 />
               </Box>
               <Box

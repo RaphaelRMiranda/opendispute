@@ -1,47 +1,52 @@
 import * as Yup from "yup";
 
 const DisputeSchema = Yup.object().shape({
-  date: Yup.string().required("Obrigatório"),
+  date: Yup.string().required("Required"),
   customer: Yup.object().shape({
-    firstName: Yup.string().required("Obrigatório"),
-    middleName: Yup.string(),
-    lastName: Yup.string().required("Obrigatório"),
-    dateOfBirth: Yup.string().required("Obrigatório"),
-    ssn: Yup.string(),
+    firstName: Yup.string().required("Required"),
+    middleName: Yup.string().required("Required"),
+    lastName: Yup.string().required("Required"),
+    dateOfBirth: Yup.string().required("Required"),
+    ssn: Yup.string().test("ssnRequired", "Required", function (value) {
+      const itin = this.resolve(Yup.ref("itin"));
+      if (!value && !itin) {
+        return false;
+      }
+      return true;
+    }),
     itin: Yup.string(),
   }),
   address: Yup.object().shape({
-    number: Yup.number(),
-    street: Yup.string().required("Obrigatório"),
-    city: Yup.string().required("Obrigatório"),
-    state: Yup.string().required("Obrigatório"),
-    zipCode: Yup.string().required("Obrigatório"),
+    street: Yup.string().required("Required"),
+    city: Yup.string().required("Required"),
+    state: Yup.string().required("Required"),
+    zipCode: Yup.string().required("Required"),
   }),
-  disputeRound: Yup.number().required("Obrigatório"),
+  disputeRound: Yup.number().required("Required"),
   creditBureau: Yup.object().shape({
-    equifax: Yup.boolean().required("Obrigatório"),
-    experian: Yup.boolean().required("Obrigatório"),
-    transunion: Yup.boolean().required("Obrigatório"),
+    equifax: Yup.boolean().required("Required"),
+    experian: Yup.boolean().required("Required"),
+    transunion: Yup.boolean().required("Required"),
   }),
-  greetingSequence: Yup.string().required("Obrigatório"),
+  greetingSequence: Yup.string().required("Required"),
   greetingSequenceExtended: Yup.string(),
-  closingStatement: Yup.string().required("Obrigatório"),
+  closingStatement: Yup.string().required("Required"),
   closingStatementExtended: Yup.string(),
   dispute: Yup.array().of(
     Yup.object().shape({
-      type: Yup.string().required("Obrigatório"),
-      dataFunisher: Yup.string().required("Obrigatório"),
-      equifax: Yup.boolean().required("Obrigatório"),
-      experian: Yup.boolean().required("Obrigatório"),
-      transunion: Yup.boolean().required("Obrigatório"),
-      accountNumber: Yup.string().required("Obrigatório"),
-      balance: Yup.number().required("Obrigatório"),
-      action: Yup.string().required("Obrigatório"),
-      justifyer: Yup.string().required("Obrigatório"),
+      type: Yup.string().required("Required"),
+      dataFunisher: Yup.string().required("Required"),
+      equifax: Yup.string(),
+      experian: Yup.string(),
+      transunion: Yup.string(),
+      accountNumber: Yup.string().required("Required"),
+      balance: Yup.string().required("Required"),
+      action: Yup.string().required("Required"),
+      justifyer: Yup.string().required("Required"),
       shows: Yup.object().shape({
-        experian: Yup.string().required("Obrigatório"),
-        equifax: Yup.string().required("Obrigatório"),
-        transunion: Yup.string().required("Obrigatório"),
+        experian: Yup.string().required("Required"),
+        equifax: Yup.string().required("Required"),
+        transunion: Yup.string().required("Required"),
       }),
       comment: Yup.string(),
     })

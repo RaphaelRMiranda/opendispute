@@ -1,4 +1,5 @@
 import { TDisputeObject } from "@/context/Document/types";
+import { FieldErrors, FieldValues } from "react-hook-form";
 
 type TCustomer = {
   firstName: string;
@@ -17,7 +18,7 @@ type TAddress = {
   zipCode: string;
 };
 
-type TCreditBureau = {
+export type TCreditBureau = {
   equifax: boolean;
   experian: boolean;
   transunion: boolean;
@@ -61,4 +62,5 @@ export interface DisputeInterface extends Document {
   closingStatement: string;
   closingStatementExtended?: string;
   dispute: TDispute[];
+  reverse?: boolean;
 }

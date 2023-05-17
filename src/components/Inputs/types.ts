@@ -1,15 +1,11 @@
-import {
-  UseFormRegisterReturn,
-  FieldError,
-  Merge,
-  FieldErrorsImpl,
-} from "react-hook-form";
+import { UseFormRegisterReturn } from "react-hook-form";
+import { ChangeEventHandler } from "react";
 
 export type TInput = {
   placeholder?: string;
   label?: string;
-  error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
-  onChange?: () => void;
+  error?: string | undefined;
+  onChange?: ChangeEventHandler<any> | undefined;
   name?: string;
   reg?: UseFormRegisterReturn<string>;
   value?: string | number;
@@ -18,7 +14,7 @@ export type TInput = {
 
 export type TRadio = {
   label?: string;
-  error?: string;
+  error?: string | undefined;
   onChange?: (value: boolean) => void;
   checked?: boolean;
   reg?: UseFormRegisterReturn<string>;

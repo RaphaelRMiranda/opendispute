@@ -33,13 +33,13 @@ const InputText = ({
         </Text>
       )}
       <Input placeholder={placeholder} onChange={onChange} {...reg} value={value} readOnly={readonly} />
-      {error && (
+      {error && error !== "undefined" && (
         <Text
           fontSize={theme.fonts.sizes.sm}
           color={theme.colors.base.red[200]}
           marginLeft={5}
         >
-          {String(error.message)}
+          {error}
         </Text>
       )}
     </Box>

@@ -1,48 +1,56 @@
 import Box from "@/components/Box";
-import Radio from "@/components/Inputs/Radio";
 import InputText from "@/components/Inputs/Text";
 import Text from "@/components/Text";
 import { theme } from "@/styles/theme";
 import ArrowTurnUpRight from "../icons/ArrowTurnUpRight";
 import { Button } from "@/components/Buttons";
 import ArrowTurnDownRight from "../icons/ArrowTurnDownRight";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Copy from "../icons/Copy";
-import { TDisputeTemplate } from "./types";
+import { TDisputeBureau, TDisputeTemplate } from "./types";
 import { useDocument } from "@/context/Document";
+import Checkbox from "@/components/Inputs/Checkbox";
 
 const ChargeOffTemplate = ({
   index,
   disputeId,
   register,
 }: TDisputeTemplate) => {
-  const { editDispute, duplicateDispute, removeDispute } = useDocument();
+  const { duplicateDispute, removeDispute, letterErrors, letterValues } =
+    useDocument();
 
-  const [bureau, setBureau] = useState<string>("");
+  const [bureau, setBureau] = useState<string>("waiting");
 
-  const handleBureau = (bureau: string) => {
-    setBureau(bureau);
-    if (bureau === "equifax")
-      editDispute(disputeId, {
-        equifax: true,
-        experian: false,
-        transunion: false,
-      });
-    if (bureau === "experian")
-      editDispute(disputeId, {
-        experian: true,
-        equifax: false,
-        transunion: false,
-      });
-    if (bureau === "transunion")
-      editDispute(disputeId, {
-        transunion: true,
-        equifax: false,
-        experian: false,
-      });
-  };
+  const [eq, setEq] = useState<boolean>(false);
+  const [ex, setEx] = useState<boolean>(false);
+  const [tu, setTu] = useState<boolean>(false);
 
   const [reverse, setReverse] = useState<boolean>(false);
+
+  const validBureau = () => {
+    if (!eq && !ex && !tu) {
+      setBureau("invalid");
+    } else {
+      setBureau("valid");
+    }
+  };
+
+  useEffect(() => {
+    console.log("eq", eq);
+    console.log("ex", ex);
+    console.log("tu", tu);
+    console.log(!eq && !ex && !tu)
+
+    if (!eq && !ex && !tu) {
+      letterErrors.setError(`dispute[${index}].equifax`, {
+        type: "manual",
+        message: "At least one bureau must be selected",
+      });
+    } else {
+      letterErrors.resetField(`dispute[${index}].equifax`);
+      letterErrors.clean(`dispute[${index}].equifax`);
+    }
+  }, [eq, ex, tu]);
 
   return (
     <Box
@@ -86,24 +94,30 @@ const ChargeOffTemplate = ({
         </Box>
       </Box>
       <Box wid="30%" marginTop={10} justifyContent="space-between">
-        <Radio
+        <Checkbox
           label="Equifax"
-          onChange={() => handleBureau("equifax")}
-          checked={bureau === "equifax"}
+          onChange={() => {
+            setEq(!eq);
+          }}
+          checked={eq}
           marginRight={10}
           reg={register(`dispute[${index}].equifax`)}
         />
-        <Radio
+        <Checkbox
           label="Experian"
-          onChange={() => handleBureau("experian")}
-          checked={bureau === "experian"}
+          onChange={() => {
+            setEx(!ex);
+          }}
+          checked={ex}
           marginRight={10}
           reg={register(`dispute[${index}].experian`)}
         />
-        <Radio
+        <Checkbox
           label="TransUnion"
-          onChange={() => handleBureau("transunion")}
-          checked={bureau === "transunion"}
+          onChange={() => {
+            setTu(!tu);
+          }}
+          checked={tu}
           marginRight={10}
           reg={register(`dispute[${index}].transunion`)}
         />
@@ -121,19 +135,34 @@ const ChargeOffTemplate = ({
           placeholder="Bank of America"
           marginRight={10}
           reg={register(`dispute[${index}].dataFunisher`)}
+          error={String(
+            (letterErrors?.errors?.dispute as unknown as Array<any>) &&
+              (letterErrors?.errors?.dispute as unknown as Array<any>)[index]
+                ?.dataFunisher?.message
+          )}
         />
         <InputText
-          wid="35%"
+          wid="45%"
           label="Account#"
           placeholder="1234567890"
           marginRight={10}
           reg={register(`dispute[${index}].accountNumber`)}
+          error={String(
+            (letterErrors?.errors?.dispute as unknown as Array<any>) &&
+              (letterErrors?.errors?.dispute as unknown as Array<any>)[index]
+                ?.accountNumber?.message
+          )}
         />
         <InputText
-          wid="30%"
+          wid="20%"
           label="Balance"
           placeholder="$1,000.00"
           reg={register(`dispute[${index}].balance`)}
+          error={String(
+            (letterErrors?.errors?.dispute as unknown as Array<any>) &&
+              (letterErrors?.errors?.dispute as unknown as Array<any>)[index]
+                ?.balance?.message
+          )}
         />
       </Box>
       <Box
@@ -157,6 +186,12 @@ const ChargeOffTemplate = ({
               placeholder="Delete this account"
               marginLeft={10}
               reg={register(`dispute[${index}].action`)}
+              error={String(
+                (letterErrors?.errors?.dispute as unknown as Array<any>) &&
+                  (letterErrors?.errors?.dispute as unknown as Array<any>)[
+                    index
+                  ]?.action?.message
+              )}
             />
           ) : (
             <InputText
@@ -165,6 +200,12 @@ const ChargeOffTemplate = ({
               placeholder="Account is not mine"
               marginLeft={10}
               reg={register(`dispute[${index}].justifyer`)}
+              error={String(
+                (letterErrors?.errors?.dispute as unknown as Array<any>) &&
+                  (letterErrors?.errors?.dispute as unknown as Array<any>)[
+                    index
+                  ]?.justifyer?.message
+              )}
             />
           )}
         </Box>
@@ -191,6 +232,12 @@ const ChargeOffTemplate = ({
               placeholder="Account is not mine"
               marginLeft={10}
               reg={register(`dispute[${index}].justifyer`)}
+              error={String(
+                (letterErrors?.errors?.dispute as unknown as Array<any>) &&
+                  (letterErrors?.errors?.dispute as unknown as Array<any>)[
+                    index
+                  ]?.justifyer?.message
+              )}
             />
           ) : (
             <InputText
@@ -199,6 +246,12 @@ const ChargeOffTemplate = ({
               placeholder="Delete this account"
               marginLeft={10}
               reg={register(`dispute[${index}].action`)}
+              error={String(
+                (letterErrors?.errors?.dispute as unknown as Array<any>) &&
+                  (letterErrors?.errors?.dispute as unknown as Array<any>)[
+                    index
+                  ]?.action?.message
+              )}
             />
           )}
         </Box>
@@ -216,6 +269,11 @@ const ChargeOffTemplate = ({
           placeholder="5/5/2023"
           marginRight={10}
           reg={register(`dispute[${index}].shows.experian`)}
+          error={String(
+            (letterErrors?.errors?.dispute as unknown as Array<any>) &&
+              (letterErrors?.errors?.dispute as unknown as Array<any>)[index]
+                ?.shows?.experian?.message
+          )}
         />
         <InputText
           wid="33%"
@@ -223,12 +281,22 @@ const ChargeOffTemplate = ({
           placeholder="5/5/2023"
           marginRight={10}
           reg={register(`dispute[${index}].shows.equifax`)}
+          error={String(
+            (letterErrors?.errors?.dispute as unknown as Array<any>) &&
+              (letterErrors?.errors?.dispute as unknown as Array<any>)[index]
+                ?.shows?.equifax?.message
+          )}
         />
         <InputText
           wid="33%"
           label="TRANSUNION Shows"
           placeholder="5/5/2023"
           reg={register(`dispute[${index}].shows.transunion`)}
+          error={String(
+            (letterErrors?.errors?.dispute as unknown as Array<any>) &&
+              (letterErrors?.errors?.dispute as unknown as Array<any>)[index]
+                ?.shows?.transunion?.message
+          )}
         />
       </Box>
       <Box

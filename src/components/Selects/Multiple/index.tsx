@@ -5,7 +5,7 @@ import { TBox } from "@/components/Box/types";
 import Text from "@/components/Text";
 import { theme } from "@/styles/theme";
 import ArrowDown from "../icons/ArrowDown";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TOption } from "../types";
 import Remove from "../icons/Remove";
 
@@ -14,6 +14,7 @@ const MultipleSelect = ({
   error,
   options,
   onChange,
+  setValue,
   ...rest
 }: TBox & TMultipleSelect) => {
   const [selecteds, setSelecteds] = useState<TOption[]>([]);
@@ -34,9 +35,12 @@ const MultipleSelect = ({
         setSelecteds([...selecteds, finded]);
       }
     }
-
-    onChange && onChange(selecteds);
   };
+
+  useEffect(() => {
+    onChange && onChange(selecteds);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selecteds]);
 
   return (
     <Box flexDirection="column" alignItems="flex-start" {...rest}>
@@ -125,7 +129,7 @@ const MultipleSelect = ({
           <ArrowDown size={theme.icons.sizes.xs} />
         </Box>
       </Box>
-      {error && (
+      {error && error !== "undefined" && (
         <Text
           fontSize={theme.fonts.sizes.sm}
           color={theme.colors.base.red[200]}

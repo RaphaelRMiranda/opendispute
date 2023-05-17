@@ -1,6 +1,13 @@
 import { createContext, useContext, useState } from "react";
 import { TContext } from "../types";
-import { DocumentProps, TDisputeObject, TEditDispute } from "./types";
+import {
+  DocumentProps,
+  TDisputeObject,
+  TEditDispute,
+  TFormError,
+  TFormRegister,
+  TFormValues,
+} from "./types";
 import GenerateId from "@/views/Create/utils/GenerateId";
 import SwitchTemplate from "@/views/Create/utils/SwitchType";
 
@@ -10,6 +17,16 @@ export const DocumentProvider = ({ children }: TContext) => {
   const [disputes, setDisputes] = useState<TDisputeObject[]>([]);
   const [lastDispute, setLastDispute] = useState<TDisputeObject>(
     {} as TDisputeObject
+  );
+
+  const [letterRegister, setLetterRegister] = useState<TFormRegister>(
+    {} as TFormRegister
+  );
+  const [letterErrors, setLetterErrors] = useState<TFormError>(
+    {} as TFormError
+  );
+  const [letterValues, setLetterValues] = useState<TFormValues>(
+    {} as TFormValues
   );
 
   const editDispute = (id: string, edited: TEditDispute) => {
@@ -36,7 +53,12 @@ export const DocumentProvider = ({ children }: TContext) => {
     const editedDispute = {
       ...duplicateDispute,
       id: newId,
-      template: SwitchTemplate(type, newId),
+      template: SwitchTemplate(
+        disputes.length,
+        type,
+        newId,
+        letterRegister.register
+      ),
     } as TDisputeObject;
 
     if (duplicateDispute && editedDispute)
@@ -44,8 +66,12 @@ export const DocumentProvider = ({ children }: TContext) => {
   };
 
   const removeDispute = (id: string) => {
-    const removeDispute = disputes.filter((item) => item.id !== id);
-    setDisputes(removeDispute);
+    letterErrors.clean();
+    letterErrors.resetField(`dispute`);
+    setDisputes((prevDisputes) => {
+      const updatedDisputes = prevDisputes.filter((item) => item.id !== id);
+      return updatedDisputes;
+    });
   };
 
   return (
@@ -58,6 +84,12 @@ export const DocumentProvider = ({ children }: TContext) => {
         removeDispute,
         lastDispute,
         setLastDispute,
+        letterRegister,
+        setLetterRegister,
+        letterErrors,
+        setLetterErrors,
+        letterValues,
+        setLetterValues,
       }}
     >
       {children}

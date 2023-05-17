@@ -46,7 +46,7 @@ const SelectText = ({
           <ArrowDown size={theme.icons.sizes.xs} />
         </Box>
       </Box>
-      {error && (
+      {error && error !== "undefined" && (
         <Text
           fontSize={theme.fonts.sizes.sm}
           color={theme.colors.base.red[200]}
