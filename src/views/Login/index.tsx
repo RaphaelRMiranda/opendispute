@@ -66,10 +66,10 @@ const Login = () => {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      backgroundColor={theme.colors.base.white}
+      backgroundColor={[theme.colors.base.primary, theme.colors.base.white]}
     >
       <Box
-        wid="50%"
+        wid={["100%", "50%"]}
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
@@ -130,7 +130,7 @@ const Login = () => {
           </Button>
         </Form>
       </Box>
-      <Text fontSize={theme.fonts.sizes.xs}>
+      <Text fontSize={theme.fonts.sizes.xs} align="center">
         © 2023 OpenDispute.ai. All rights reserved. Private and Confidential.
         For authorized access only.
       </Text>

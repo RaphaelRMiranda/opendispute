@@ -14,21 +14,25 @@ import DisputeRound from "./utils/DisputeRound";
 import Layout from "@/components/Layout";
 import SwitchTemplate from "./utils/SwitchType";
 import { Form } from "../Login/styles";
-import { handleCreateDocument, useDocument } from "@/context/Document";
+import {
+  handleCreateDocument,
+  handleUpdateDocument,
+  useDocument,
+} from "@/context/Document";
 import GenerateId from "./utils/GenerateId";
 import Checkbox from "@/components/Inputs/Checkbox";
 import ObjectValidation from "./validation/Object";
 import { TObjectErrors } from "./validation/types";
 import RemoveEmptyFields from "./utils/RemoveEmptyFields";
 import { useUser } from "@/context/User";
-import { DisputeInterface } from "./types";
+import { DisputeInterface, DisputeUpdate } from "./types";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import CloseStatementByRound from "./utils/CloseStatementByRound";
 
 const Create = () => {
   const { token } = useUser();
-  const { object, setObject, disputes, errors, setErrors, setLastDispute } =
+  const { object, setObject, errors, setErrors, setLastDispute } =
     useDocument();
 
   const router = useRouter();
@@ -37,6 +41,18 @@ const Create = () => {
     position: "top",
     duration: 5000,
     title: "Error when trying to create letter",
+    description: "Please contact support if the problem persists",
+    status: "error",
+    isClosable: true,
+    containerStyle: {
+      fontSize: theme.fonts.sizes.sm,
+    },
+  });
+
+  const errEditToast = useToast({
+    position: "top",
+    duration: 5000,
+    title: "Error when trying to update letter",
     description: "Please contact support if the problem persists",
     status: "error",
     isClosable: true,
@@ -58,7 +74,9 @@ const Create = () => {
   const [tu, setTu] = useState<boolean>(
     object?.creditBureau?.transunion || false
   );
-  
+
+  const [isEditing] = useState<boolean>(object?._id ? true : false);
+
   useEffect(() => {
     if (!object.date)
       setObject((prev) => ({
@@ -76,22 +94,39 @@ const Create = () => {
 
     if (Object.keys(errors).length === 0) {
       setErrors({} as TObjectErrors);
-      const data = RemoveEmptyFields(object) as DisputeInterface;
-      handleCreateDocument({ ...data, token })
-        .then((response) => {
-          isLoading(false);
-          setLastDispute(response.data.dispute);
-          router.push("/success");
-          setObject({} as DisputeInterface);
-        })
-        .catch((error) => {
-          isLoading(false);
-          console.log(error);
-          errToast();
-        });
+
+      if (isEditing) {
+        const data = RemoveEmptyFields(object) as DisputeUpdate;
+        handleUpdateDocument({ ...data, token })
+          .then((response) => {
+            isLoading(false);
+            router.push("/listing");
+            setObject({} as DisputeInterface);
+          })
+          .catch((error) => {
+            isLoading(false);
+            console.log(error);
+            errEditToast();
+          });
+      } else {
+        const data = RemoveEmptyFields(object) as DisputeInterface;
+        handleCreateDocument({ ...data, token })
+          .then((response) => {
+            isLoading(false);
+            setLastDispute(response.data.dispute);
+            router.push("/success");
+            setObject({} as DisputeInterface);
+          })
+          .catch((error) => {
+            isLoading(false);
+            console.log(error);
+            errToast();
+          });
+      }
     } else {
       isLoading(false);
       setErrors(errors);
+      console.log(errors);
     }
   };
 
@@ -115,7 +150,7 @@ const Create = () => {
         transunion: "",
       },
       comment: "",
-      template: SwitchTemplate(disputes.length, type, id),
+      template: SwitchTemplate(object.dispute.length, type, id),
     };
 
     setObject((prev) => ({
@@ -196,9 +231,10 @@ const Create = () => {
                 justifyContent="flex-start"
                 alignItems="center"
                 marginTop={10}
+                flexWrap="wrap"
               >
                 <InputText
-                  wid="100%"
+                  wid="32.65%"
                   label="First Name"
                   placeholder="John"
                   marginRight={10}
@@ -212,7 +248,7 @@ const Create = () => {
                   defaultValue={object?.customer?.firstName || ""}
                 />
                 <InputText
-                  wid="100%"
+                  wid="32.65%"
                   label="Middle Name"
                   placeholder="Doe"
                   marginRight={10}
@@ -229,7 +265,7 @@ const Create = () => {
                   defaultValue={object?.customer?.middleName || ""}
                 />
                 <InputText
-                  wid="100%"
+                  wid="32.65%"
                   label="Last Name"
                   placeholder="Steve"
                   onChange={(e) => {
@@ -248,9 +284,10 @@ const Create = () => {
                 justifyContent="flex-start"
                 alignItems="center"
                 marginTop={10}
+                flexWrap="wrap"
               >
                 <InputText
-                  wid="50%"
+                  wid="30%"
                   label="Street Address"
                   placeholder="1234 Main St"
                   marginRight={10}
@@ -264,7 +301,7 @@ const Create = () => {
                   defaultValue={object?.address?.street || ""}
                 />
                 <InputText
-                  wid="50%"
+                  wid="30%"
                   label="City"
                   placeholder="New York"
                   marginRight={10}
@@ -278,7 +315,7 @@ const Create = () => {
                   defaultValue={object?.address?.city || ""}
                 />
                 <InputText
-                  wid="20%"
+                  wid="18.5%"
                   label="State"
                   placeholder="CA"
                   marginRight={10}
@@ -292,7 +329,7 @@ const Create = () => {
                   defaultValue={object?.address?.state || ""}
                 />
                 <InputText
-                  wid="20%"
+                  wid="18.5%"
                   label="Zip Code"
                   placeholder="10001"
                   onChange={(e) => {
@@ -311,9 +348,10 @@ const Create = () => {
                 justifyContent="flex-start"
                 alignItems="center"
                 marginTop={10}
+                flexWrap="wrap"
               >
                 <InputText
-                  wid="50%"
+                  wid="35%"
                   label="Date of Birth"
                   placeholder="5/5/1980"
                   marginRight={10}
@@ -330,13 +368,13 @@ const Create = () => {
                   defaultValue={object?.customer?.dateOfBirth || ""}
                 />
                 <Box
-                  wid="15%"
+                  wid="20%"
                   marginTop={20}
                   flexDirection="column"
-                  justifyContent="space-between"
+                  justifyContent="center"
                   alignItems="flex-start"
                 >
-                  <Box wid="100%" justifyContent="space-between">
+                  <Box wid="100%" justifyContent="flex-start">
                     <Radio
                       label="SSN"
                       onChange={() => {
@@ -371,7 +409,7 @@ const Create = () => {
                         }));
                       }}
                       checked={social === "itin"}
-                      marginRight={10}
+                      marginLeft={10}
                     />
                   </Box>
                   {errors?.customer?.selectedSsn?.message &&
@@ -385,7 +423,7 @@ const Create = () => {
                     )}
                 </Box>
                 <InputText
-                  wid="35%"
+                  wid="44%"
                   label="Social Number"
                   placeholder="###-##-###"
                   onChange={(e) => {
@@ -423,21 +461,24 @@ const Create = () => {
                 justifyContent="flex-start"
                 alignItems="center"
                 marginTop={10}
+                flexWrap="wrap"
               >
-                <SelectText
-                  wid="20%"
-                  label="Dispute Round"
-                  options={DisputeRound}
-                  marginRight={10}
-                  onChange={(e) =>
-                    setObject((prev) => ({
-                      ...prev,
-                      disputeRound: Number(e.target.value),
-                    }))
-                  }
-                  error={errors?.disputeRound?.message}
-                  defaultValue={object?.disputeRound || ""}
-                />
+                <Box wid="20%" minWid={200}>
+                  <SelectText
+                    wid="100%"
+                    label="Dispute Round"
+                    options={DisputeRound}
+                    marginRight={10}
+                    onChange={(e) =>
+                      setObject((prev) => ({
+                        ...prev,
+                        disputeRound: Number(e.target.value),
+                      }))
+                    }
+                    error={errors?.disputeRound?.message}
+                    defaultValue={object?.disputeRound || ""}
+                  />
+                </Box>
                 <Box
                   wid="30%"
                   marginTop={20}
@@ -445,7 +486,7 @@ const Create = () => {
                   flexDirection="column"
                   alignItems="flex-start"
                 >
-                  <Box wid="100%">
+                  <Box justifyContent="center">
                     <Checkbox
                       label="Equifax"
                       marginRight={10}
@@ -502,7 +543,7 @@ const Create = () => {
                     )}
                 </Box>
                 <SelectText
-                  wid="50%"
+                  wid="49%"
                   label="Greeting Sequence"
                   options={GreetingSequence}
                   onChange={(e) =>

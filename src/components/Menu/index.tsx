@@ -4,15 +4,14 @@ import Logo from "./icons/Logo";
 import { Button } from "@/components/Buttons";
 import List from "./icons/List";
 import AddUser from "./icons/AddUser";
-import User from "./icons/User";
+import UserIcon from "./icons/UserIcon";
 import Exit from "./icons/Exit";
-import Rocket from "./icons/Rocket";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { handleLogout, useUser } from "@/context/User";
+import { User } from "@/views/Register/types";
 
 const Menu = () => {
-  const { user, setUser, setToken } = useUser();
+  const { user, setUser, setToken, setObject } = useUser();
 
   const router = useRouter();
 
@@ -65,7 +64,10 @@ const Menu = () => {
             fontSize={theme.fonts.sizes.md}
             marginTop={15}
             icon={<AddUser size={theme.fonts.sizes.md} />}
-            onClick={() => router.push("/register")}
+            onClick={() => {
+              router.push("/register")
+              setObject({} as User);
+            }}
           >
             Register
           </Button>
@@ -75,7 +77,7 @@ const Menu = () => {
             wid={deafultWidth}
             fontSize={theme.fonts.sizes.md}
             marginTop={15}
-            icon={<User size={theme.fonts.sizes.md} />}
+            icon={<UserIcon size={theme.fonts.sizes.md} />}
             onClick={() => router.push("/users")}
           >
             Users

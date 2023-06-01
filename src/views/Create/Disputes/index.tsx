@@ -10,7 +10,7 @@ import Loading from "@/components/Buttons/icons/Loading";
 import SwitchTemplate from "../utils/SwitchType";
 
 const Disputes = ({ disputes, loading }: TDisputeProps) => {
-  const { errors } = useDocument();
+  const { object, errors } = useDocument();
 
   const generateNewTemplate = (_id: string, type: string) => {
     return SwitchTemplate(disputes.length - 1, type, _id);
@@ -71,6 +71,7 @@ const Disputes = ({ disputes, loading }: TDisputeProps) => {
               Something went wrong, check the form and try again
             </Text>
           )}
+
           <Button
             wid="25%"
             justifyContent="center"
@@ -98,6 +99,36 @@ const Disputes = ({ disputes, loading }: TDisputeProps) => {
               {!loading && "Create Letter"}
             </Text>
           </Button>
+          {object?._id && (
+            <Button
+              wid="25%"
+              justifyContent="center"
+              backgroundColor={theme.colors.base.secondary}
+              fontSize={theme.fonts.sizes.md}
+              fontColor={theme.colors.base.white}
+              type="submit"
+              icon={
+                loading && (
+                  <Loading
+                    size={theme.icons.sizes.xs}
+                    color={theme.colors.base.white}
+                  />
+                )
+              }
+              marginTop={10}
+              marginBottom={5}
+              marginLeft={15}
+            >
+              <Text
+                fontSize={theme.fonts.sizes.md}
+                color={theme.colors.base.white}
+                weight={500}
+                pointerEvents="none"
+              >
+                {!loading && "Update letter"}
+              </Text>
+            </Button>
+          )}
         </Box>
       )}
     </Box>

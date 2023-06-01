@@ -8,7 +8,7 @@ import {
 } from "./types";
 import GenerateId from "@/views/Create/utils/GenerateId";
 import SwitchTemplate from "@/views/Create/utils/SwitchType";
-import { DisputeInterface, TToken } from "@/views/Create/types";
+import { DisputeInterface, DisputeUpdate, TToken } from "@/views/Create/types";
 import { TObjectErrors } from "@/views/Create/validation/types";
 import { Api } from "@/services/Api";
 
@@ -22,6 +22,24 @@ export const handleCreateDocument = async ({
     `/dispute/create`,
     {
       ...data,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+};
+
+export const handleUpdateDocument = async ({
+  token,
+  ...data
+}: DisputeUpdate & TToken) => {
+  return await Api.patch(
+    `/dispute/update`,
+    {
+      ...data,
+      disputeId: data._id,
     },
     {
       headers: {

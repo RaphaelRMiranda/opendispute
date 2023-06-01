@@ -49,7 +49,7 @@ const Register = () => {
   const router = useRouter();
 
   const [loading, isLoading] = useState<boolean>(false);
-  const [isEditing, onEditing] = useState<boolean>(object?._id ? true : false);
+  const [isEditing] = useState<boolean>(object?._id ? true : false);
 
   const [errors, setErrors] = useState<TObjectErrors>({} as TObjectErrors);
 
