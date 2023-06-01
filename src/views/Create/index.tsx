@@ -32,10 +32,22 @@ import CloseStatementByRound from "./utils/CloseStatementByRound";
 
 const Create = () => {
   const { token } = useUser();
-  const { object, setObject, errors, setErrors, setLastDispute } =
+  const { object, setObject, errors, setErrors, lastDispute, setLastDispute } =
     useDocument();
 
   const router = useRouter();
+
+  const sucEditToast = useToast({
+    position: "top",
+    duration: 5000,
+    title: "Dispute updated successfully",
+    description: "The dispute was updated successfully, check the listing page",
+    status: "success",
+    isClosable: true,
+    containerStyle: {
+      fontSize: theme.fonts.sizes.sm,
+    },
+  });
 
   const errToast = useToast({
     position: "top",
@@ -75,7 +87,31 @@ const Create = () => {
     object?.creditBureau?.transunion || false
   );
 
-  const [isEditing] = useState<boolean>(object?._id ? true : false);
+  const [isEditing] = useState<boolean>(
+    object?._id && router.pathname.indexOf(`/update`) >= 0 ? true : false
+  );
+
+  useEffect(() => {
+    if (isEditing) {
+      social === "ssn"
+        ? setObject((prev) => ({
+            ...prev,
+            customer: {
+              ...prev.customer,
+              selectedItin: false,
+              selectedSsn: true,
+            },
+          }))
+        : setObject((prev) => ({
+            ...prev,
+            customer: {
+              ...prev.customer,
+              selectedItin: true,
+              selectedSsn: false,
+            },
+          }));
+    }
+  }, [isEditing, setObject, social]);
 
   useEffect(() => {
     if (!object.date)
@@ -85,7 +121,7 @@ const Create = () => {
       }));
 
     setLastDispute(object);
-  }, [object, setLastDispute, setObject]);
+  }, [object, setLastDispute, setObject, isEditing, social]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     isLoading(true);
@@ -100,6 +136,7 @@ const Create = () => {
         handleUpdateDocument({ ...data, token })
           .then((response) => {
             isLoading(false);
+            sucEditToast();
             router.push("/listing");
             setObject({} as DisputeInterface);
           })
@@ -114,7 +151,7 @@ const Create = () => {
           .then((response) => {
             isLoading(false);
             setLastDispute(response.data.dispute);
-            router.push("/success");
+            router.push(`/success/${response.data.dispute._id}`);
             setObject({} as DisputeInterface);
           })
           .catch((error) => {

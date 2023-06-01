@@ -16,6 +16,7 @@ const Routers = () => {
     "/register": Register,
     "/users": Users,
     "/create": Create,
+    "/update": Create,
     "/success": Success,
     // "404": "404",
   };

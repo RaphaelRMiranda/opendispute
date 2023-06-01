@@ -8,9 +8,12 @@ import { useDocument } from "@/context/Document";
 import ValueInObject from "../utils/ValueInObject";
 import Loading from "@/components/Buttons/icons/Loading";
 import SwitchTemplate from "../utils/SwitchType";
+import { useRouter } from "next/router";
 
 const Disputes = ({ disputes, loading }: TDisputeProps) => {
   const { object, errors } = useDocument();
+
+  const router = useRouter();
 
   const generateNewTemplate = (_id: string, type: string) => {
     return SwitchTemplate(disputes.length - 1, type, _id);
@@ -96,39 +99,13 @@ const Disputes = ({ disputes, loading }: TDisputeProps) => {
               weight={500}
               pointerEvents="none"
             >
-              {!loading && "Create Letter"}
+              {!loading &&
+              object?._id &&
+              router.pathname.indexOf(`/update`) >= 0
+                ? "Update letter"
+                : "Create Letter"}
             </Text>
           </Button>
-          {object?._id && (
-            <Button
-              wid="25%"
-              justifyContent="center"
-              backgroundColor={theme.colors.base.secondary}
-              fontSize={theme.fonts.sizes.md}
-              fontColor={theme.colors.base.white}
-              type="submit"
-              icon={
-                loading && (
-                  <Loading
-                    size={theme.icons.sizes.xs}
-                    color={theme.colors.base.white}
-                  />
-                )
-              }
-              marginTop={10}
-              marginBottom={5}
-              marginLeft={15}
-            >
-              <Text
-                fontSize={theme.fonts.sizes.md}
-                color={theme.colors.base.white}
-                weight={500}
-                pointerEvents="none"
-              >
-                {!loading && "Update letter"}
-              </Text>
-            </Button>
-          )}
         </Box>
       )}
     </Box>

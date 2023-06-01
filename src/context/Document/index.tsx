@@ -81,6 +81,12 @@ export const getDisputes = async ({
   });
 };
 
+export const getDispute = ({ _id, token }: TDisputeDownload & TToken) => {
+  return Api.get(`/dispute/${_id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
 export const deleteDispute = async ({
   _id,
   token,
