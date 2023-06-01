@@ -34,6 +34,16 @@
   }
 }
 
-body {
+html, body {
+  height: 100%;
+}
+
+body > .__next {
+  height: 100%;
+}
+
+body { 
+  display: flex;
+  flex-direction: column;
   font-family: "Poppins", sans-serif;
 }

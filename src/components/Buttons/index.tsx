@@ -3,14 +3,19 @@ import { TButton } from "./types";
 import Text from "../Text";
 import { theme } from "@/styles/theme";
 import { TBox } from "../Box/types";
+import { useRef } from "react";
 
 export const Button = ({
   icon,
   fontColor,
   fontSize,
   children,
+  type,
+  onClick,
   ...rest
 }: TButton & TBox) => {
+  const submitRef = useRef<HTMLInputElement>(null);
+
   const hoverStyled = `
     cursor: pointer;
     background-color:${theme.colors.base.secondary}; 
@@ -23,6 +28,10 @@ export const Button = ({
     & > svg > path {
       fill: ${theme.colors.base.white};
     }
+
+    & > svg > g > path {
+      fill: ${theme.colors.base.white};
+    }
   `;
 
   return (
@@ -32,8 +41,18 @@ export const Button = ({
       padding={10}
       backgroundColor="transparent"
       hover={hoverStyled}
+      onClick={() => {
+        if (type === "submit") {
+          submitRef.current?.click();
+        } else {
+          onClick && onClick();
+        }
+      }}
       {...rest}
     >
+      {type === "submit" && (
+        <input style={{ display: "none" }} ref={submitRef} type="submit" />
+      )}
       {icon && icon}
       <Text
         fontSize={fontSize || theme.fonts.sizes.sm}

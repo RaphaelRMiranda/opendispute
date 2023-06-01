@@ -10,6 +10,11 @@ const InputText = ({
   label,
   error,
   onChange,
+  reg,
+  value,
+  readonly,
+  defaultValue,
+  paddingInput,
   ...rest
 }: TBox & TInput) => {
   return (
@@ -22,17 +27,25 @@ const InputText = ({
     >
       {label && (
         <Text
-          fontSize={theme.fonts.sizes.xs}
+          fontSize={theme.fonts.sizes.sm}
           color={theme.colors.base.secondary}
           marginLeft={5}
         >
           {label}
         </Text>
       )}
-      <Input placeholder={placeholder} onChange={onChange} />
-      {error && (
+      <Input
+        placeholder={placeholder}
+        onChange={onChange}
+        {...reg}
+        value={value}
+        defaultValue={defaultValue}
+        readOnly={readonly}
+        padding={paddingInput}
+      />
+      {error && error !== "undefined" && (
         <Text
-          fontSize={theme.fonts.sizes.xs}
+          fontSize={theme.fonts.sizes.sm}
           color={theme.colors.base.red[200]}
           marginLeft={5}
         >

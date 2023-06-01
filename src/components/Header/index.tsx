@@ -1,8 +1,11 @@
 import Box from "@/components/Box";
-import { Button } from "../Buttons";
 import User from "./User";
+import { useUser } from "@/context/User";
+import UserSkeleton from "./User/skeleton";
 
 const Header = () => {
+  const { user } = useUser();
+
   return (
     <Box
       wid="100%"
@@ -11,7 +14,7 @@ const Header = () => {
       padding={10}
       marginBottom={15}
     >
-      <User />
+      {user && user._id ? <User /> : <UserSkeleton />}
     </Box>
   );
 };
