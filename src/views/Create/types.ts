@@ -51,6 +51,7 @@ export type TDispute = {
 export type TDisputeProps = {
   disputes: TDisputeObject[];
   loading?: boolean;
+  handleEdit?: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
 export type TDisputeArr = {

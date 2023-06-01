@@ -150,7 +150,7 @@ const Create = () => {
         transunion: "",
       },
       comment: "",
-      template: SwitchTemplate(object.dispute.length, type, id),
+      template: SwitchTemplate(object?.dispute?.length || 0, type, id),
     };
 
     setObject((prev) => ({
