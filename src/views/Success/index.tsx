@@ -1,9 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Box from "@/components/Box";
 import Download from "@/components/Card/icons/Download";
 import Layout from "@/components/Layout";
 import Page from "@/components/Page";
 import Text from "@/components/Text";
-import { handleDownloadDocument, useDocument } from "@/context/Document";
+import {
+  getDispute,
+  handleDownloadDocument,
+  useDocument,
+} from "@/context/Document";
 import { theme } from "@/styles/theme";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/User";
@@ -11,37 +16,70 @@ import CreditBureau from "./utils/CreditBureau";
 import MaskSocialNumber from "./utils/MaskSocialNumber";
 import { useRouter } from "next/router";
 import ValueInObject from "../Create/utils/ValueInObject";
-import { useToast } from "@chakra-ui/react";
+import { Skeleton, useToast } from "@chakra-ui/react";
 import Loading from "@/components/Buttons/icons/Loading";
+import { DisputeInterface } from "../Create/types";
+import SuccessSkeleton from "./skeleton";
 
 const Success = () => {
   const { user, token } = useUser();
   const { lastDispute } = useDocument();
 
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
+
+  const [isLoading, onLoading] = useState<boolean>(true);
+  const [isDownloading, onDownloading] = useState<boolean>(false);
+
+  const [dispute, setDispute] = useState<DisputeInterface>(
+    {} as DisputeInterface
+  );
 
   const handleDownload = () => {
-    setLoading(true);
+    onDownloading(true);
     handleDownloadDocument({ _id: lastDispute._id, token })
       .then((response) => {
-        setLoading(false);
+        onDownloading(false);
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute(
           "download",
-          `${lastDispute?.customer?.firstName} ${lastDispute?.customer?.lastName} - FD${lastDispute?.disputeRound}.zip`
+          `${dispute?.customer?.firstName} ${dispute?.customer?.lastName} - FD${dispute?.disputeRound}.zip`
         );
         document.body.appendChild(link);
         link.click();
       })
       .catch((error) => {
-        setLoading(false);
+        onDownloading(false);
         console.log(error);
       });
   };
 
-  const router = useRouter();
+  const handleGetDispute = (disputeId: string) => {
+    getDispute({ _id: disputeId, token })
+      .then((response) => {
+        onLoading(false);
+        setDispute(response.data.dispute);
+      })
+      .catch((error) => {
+        onLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (
+      window &&
+      window.location.pathname.split("/")[2]?.match(/^[0-9a-fA-F]{24}$/)
+    ) {
+      if (token) {
+        const disputeId = window.location.pathname.split("/")[2];
+        handleGetDispute(disputeId);
+      }
+    } else {
+      warToast();
+      router.push("/create");
+    }
+  }, [token]);
 
   const warToast = useToast({
     position: "top",
@@ -54,13 +92,6 @@ const Success = () => {
       fontSize: theme.fonts.sizes.sm,
     },
   });
-
-  useEffect(() => {
-    if (!ValueInObject(lastDispute)) {
-      warToast();
-      router.push("/create");
-    }
-  }, [lastDispute, router, warToast]);
 
   const hoverStyled = `
         cursor: pointer;
@@ -88,6 +119,7 @@ const Success = () => {
             Check the descriptive information below, if you have any incorrect
             information you can Edit the Dispute files.
           </Text>
+
           <Box
             wid="100%"
             maxWid={1000}
@@ -103,19 +135,23 @@ const Success = () => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
               >
-                <Text
-                  fontSize={theme.fonts.sizes.sm}
-                  color={theme.colors.base.secondary}
-                >
-                  Created by
-                </Text>
-                <Text
-                  fontSize={theme.fonts.sizes.md}
-                  color={theme.colors.base.secondary}
-                  weight={500}
-                >
-                  {user.firstName} {user.lastName}
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontSize={theme.fonts.sizes.sm}
+                    color={theme.colors.base.secondary}
+                  >
+                    Created by
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                  <Text
+                    fontSize={theme.fonts.sizes.md}
+                    color={theme.colors.base.secondary}
+                    weight={500}
+                  >
+                    {user.firstName} {user.lastName}
+                  </Text>
+                </Skeleton>
               </Box>
               <Box
                 wid="50%"
@@ -123,22 +159,26 @@ const Success = () => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
               >
-                <Text
-                  fontSize={theme.fonts.sizes.sm}
-                  color={theme.colors.base.secondary}
-                >
-                  Balances
-                </Text>
-                <Text
-                  fontSize={theme.fonts.sizes.md}
-                  color={theme.colors.base.secondary}
-                  weight={500}
-                >
-                  {lastDispute?.dispute?.map((dispute, i, self) => {
-                    if (i === self.length - 1) return `$${dispute.balance}`;
-                    else return `$${dispute.balance}, `;
-                  }) || "$0"}
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontSize={theme.fonts.sizes.sm}
+                    color={theme.colors.base.secondary}
+                  >
+                    Balances
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                  <Text
+                    fontSize={theme.fonts.sizes.md}
+                    color={theme.colors.base.secondary}
+                    weight={500}
+                  >
+                    {dispute?.dispute?.map((dispute, i, self) => {
+                      if (i === self.length - 1) return `$${dispute.balance}`;
+                      else return `$${dispute.balance}, `;
+                    }) || "$0.00"}
+                  </Text>
+                </Skeleton>
               </Box>
             </Box>
             <Box wid="100%" justifyContent="space-between" marginBottom={15}>
@@ -148,21 +188,25 @@ const Success = () => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
               >
-                <Text
-                  fontSize={theme.fonts.sizes.sm}
-                  color={theme.colors.base.secondary}
-                >
-                  Customer
-                </Text>
-                <Text
-                  fontSize={theme.fonts.sizes.md}
-                  color={theme.colors.base.secondary}
-                  weight={500}
-                >
-                  {lastDispute && lastDispute?.customer?.firstName
-                    ? `${lastDispute?.customer?.firstName} ${lastDispute?.customer?.lastName}`
-                    : "None"}
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontSize={theme.fonts.sizes.sm}
+                    color={theme.colors.base.secondary}
+                  >
+                    Customer
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                  <Text
+                    fontSize={theme.fonts.sizes.md}
+                    color={theme.colors.base.secondary}
+                    weight={500}
+                  >
+                    {lastDispute && dispute?.customer?.firstName
+                      ? `${dispute?.customer?.firstName} ${dispute?.customer?.lastName}`
+                      : "None"}
+                  </Text>
+                </Skeleton>
               </Box>
               <Box
                 wid="50%"
@@ -170,21 +214,25 @@ const Success = () => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
               >
-                <Text
-                  fontSize={theme.fonts.sizes.sm}
-                  color={theme.colors.base.secondary}
-                >
-                  Credit bureau
-                </Text>
-                <Text
-                  fontSize={theme.fonts.sizes.md}
-                  color={theme.colors.base.secondary}
-                  weight={500}
-                >
-                  {(lastDispute?.creditBureau &&
-                    CreditBureau(lastDispute?.creditBureau)) ||
-                    "None"}
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontSize={theme.fonts.sizes.sm}
+                    color={theme.colors.base.secondary}
+                  >
+                    Credit bureau
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                  <Text
+                    fontSize={theme.fonts.sizes.md}
+                    color={theme.colors.base.secondary}
+                    weight={500}
+                  >
+                    {(dispute?.creditBureau &&
+                      CreditBureau(dispute?.creditBureau)) ||
+                      "None"}
+                  </Text>
+                </Skeleton>
               </Box>
             </Box>
             <Box wid="100%" justifyContent="space-between" marginBottom={15}>
@@ -194,21 +242,25 @@ const Success = () => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
               >
-                <Text
-                  fontSize={theme.fonts.sizes.sm}
-                  color={theme.colors.base.secondary}
-                >
-                  SSN/ITIN
-                </Text>
-                <Text
-                  fontSize={theme.fonts.sizes.md}
-                  color={theme.colors.base.secondary}
-                  weight={500}
-                >
-                  {MaskSocialNumber(
-                    lastDispute?.customer?.ssn || lastDispute?.customer?.itin
-                  ) || "None"}
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontSize={theme.fonts.sizes.sm}
+                    color={theme.colors.base.secondary}
+                  >
+                    SSN/ITIN
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                  <Text
+                    fontSize={theme.fonts.sizes.md}
+                    color={theme.colors.base.secondary}
+                    weight={500}
+                  >
+                    {MaskSocialNumber(
+                      dispute?.customer?.ssn || dispute?.customer?.itin
+                    ) || "None"}
+                  </Text>
+                </Skeleton>
               </Box>
               <Box
                 wid="50%"
@@ -216,22 +268,26 @@ const Success = () => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
               >
-                <Text
-                  fontSize={theme.fonts.sizes.sm}
-                  color={theme.colors.base.secondary}
-                >
-                  Disputes funishers
-                </Text>
-                <Text
-                  fontSize={theme.fonts.sizes.md}
-                  color={theme.colors.base.secondary}
-                  weight={500}
-                >
-                  {lastDispute?.dispute?.map((dispute, i, self) => {
-                    if (i === self.length - 1) return dispute.dataFunisher;
-                    else return `${dispute.dataFunisher}, `;
-                  }) || "None"}
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontSize={theme.fonts.sizes.sm}
+                    color={theme.colors.base.secondary}
+                  >
+                    Disputes funishers
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                  <Text
+                    fontSize={theme.fonts.sizes.md}
+                    color={theme.colors.base.secondary}
+                    weight={500}
+                  >
+                    {dispute?.dispute?.map((dispute, i, self) => {
+                      if (i === self.length - 1) return dispute.dataFunisher;
+                      else return `${dispute.dataFunisher}, `;
+                    }) || "None"}
+                  </Text>
+                </Skeleton>
               </Box>
             </Box>
             <Box wid="100%" justifyContent="space-between" marginBottom={15}>
@@ -241,21 +297,25 @@ const Success = () => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
               >
-                <Text
-                  fontSize={theme.fonts.sizes.sm}
-                  color={theme.colors.base.secondary}
-                >
-                  Full address
-                </Text>
-                <Text
-                  fontSize={theme.fonts.sizes.md}
-                  color={theme.colors.base.secondary}
-                  weight={500}
-                >
-                  {lastDispute && lastDispute?.address?.street
-                    ? `${lastDispute?.address?.street} ${lastDispute?.address?.city}, ${lastDispute?.address?.state} ${lastDispute?.address?.zipCode}`
-                    : "None"}
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontSize={theme.fonts.sizes.sm}
+                    color={theme.colors.base.secondary}
+                  >
+                    Full address
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                  <Text
+                    fontSize={theme.fonts.sizes.md}
+                    color={theme.colors.base.secondary}
+                    weight={500}
+                  >
+                    {lastDispute && dispute?.address?.street
+                      ? `${dispute?.address?.street} ${dispute?.address?.city}, ${dispute?.address?.state} ${dispute?.address?.zipCode}`
+                      : "None"}
+                  </Text>
+                </Skeleton>
               </Box>
               <Box
                 wid="50%"
@@ -263,19 +323,23 @@ const Success = () => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
               >
-                <Text
-                  fontSize={theme.fonts.sizes.sm}
-                  color={theme.colors.base.secondary}
-                >
-                  Amount of disputes
-                </Text>
-                <Text
-                  fontSize={theme.fonts.sizes.md}
-                  color={theme.colors.base.secondary}
-                  weight={500}
-                >
-                  {lastDispute?.dispute?.length || 0} dispute(s)
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontSize={theme.fonts.sizes.sm}
+                    color={theme.colors.base.secondary}
+                  >
+                    Amount of disputes
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                  <Text
+                    fontSize={theme.fonts.sizes.md}
+                    color={theme.colors.base.secondary}
+                    weight={500}
+                  >
+                    {dispute?.dispute?.length || 0} dispute(s)
+                  </Text>
+                </Skeleton>
               </Box>
             </Box>
             <Box wid="100%" justifyContent="space-between" marginBottom={15}>
@@ -285,22 +349,26 @@ const Success = () => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
               >
-                <Text
-                  fontSize={theme.fonts.sizes.sm}
-                  color={theme.colors.base.secondary}
-                >
-                  Account number#
-                </Text>
-                <Text
-                  fontSize={theme.fonts.sizes.md}
-                  color={theme.colors.base.secondary}
-                  weight={500}
-                >
-                  {lastDispute?.dispute?.map((dispute, i, self) => {
-                    if (i === self.length - 1) return dispute.accountNumber;
-                    else return `${dispute.accountNumber}, `;
-                  }) || "None"}
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontSize={theme.fonts.sizes.sm}
+                    color={theme.colors.base.secondary}
+                  >
+                    Account number#
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                  <Text
+                    fontSize={theme.fonts.sizes.md}
+                    color={theme.colors.base.secondary}
+                    weight={500}
+                  >
+                    {dispute?.dispute?.map((dispute, i, self) => {
+                      if (i === self.length - 1) return dispute.accountNumber;
+                      else return `${dispute.accountNumber}, `;
+                    }) || "None"}
+                  </Text>
+                </Skeleton>
               </Box>
               <Box
                 wid="50%"
@@ -308,69 +376,74 @@ const Success = () => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
               >
-                <Text
-                  fontSize={theme.fonts.sizes.sm}
-                  color={theme.colors.base.secondary}
-                >
-                  Disputes types
-                </Text>
-                <Text
-                  fontSize={theme.fonts.sizes.md}
-                  color={theme.colors.base.secondary}
-                  weight={500}
-                >
-                  {lastDispute?.dispute?.map((dispute, i, self) => {
-                    if (i === self.length - 1) return dispute.type;
-                    else return `${dispute.type}, `;
-                  }) || "None"}
-                </Text>
+                <Skeleton isLoaded={!isLoading}>
+                  <Text
+                    fontSize={theme.fonts.sizes.sm}
+                    color={theme.colors.base.secondary}
+                  >
+                    Disputes types
+                  </Text>
+                </Skeleton>
+                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                  <Text
+                    fontSize={theme.fonts.sizes.md}
+                    color={theme.colors.base.secondary}
+                    weight={500}
+                  >
+                    {dispute?.dispute?.map((dispute, i, self) => {
+                      if (i === self.length - 1) return dispute.type;
+                      else return `${dispute.type}, `;
+                    }) || "None"}
+                  </Text>
+                </Skeleton>
               </Box>
             </Box>
           </Box>
+
           <Box wid="100%" justifyContent="center">
-            <Box
-              wid={180}
-              backgroundColor={theme.colors.base.secondary}
-              marginTop={50}
-              onClick={handleDownload}
-              borderRadius={6}
-              padding={10}
-              hover={hoverStyled}
-              marginRight={10}
-            >
-              <Box wid="100%" justifyContent="space-between">
-                <Box>
-                  {isLoading ? (
-                    <Loading
-                      size={theme.fonts.sizes.md}
+            <Skeleton isLoaded={!isLoading} marginTop={50}>
+              <Box
+                wid={180}
+                backgroundColor={theme.colors.base.secondary}
+                onClick={handleDownload}
+                borderRadius={6}
+                padding={10}
+                hover={hoverStyled}
+              >
+                <Box wid="100%" justifyContent="space-between">
+                  <Box>
+                    {isDownloading ? (
+                      <Loading
+                        size={theme.fonts.sizes.md}
+                        color={theme.colors.base.white}
+                      />
+                    ) : (
+                      <Download
+                        size={theme.fonts.sizes.md}
+                        color={theme.colors.base.white}
+                      />
+                    )}
+                    <Text
+                      fontSize={theme.fonts.sizes.md}
                       color={theme.colors.base.white}
-                    />
-                  ) : (
-                    <Download
-                      size={theme.fonts.sizes.md}
-                      color={theme.colors.base.white}
-                    />
-                  )}
+                      weight={500}
+                      pointerEvents="none"
+                      marginLeft={5}
+                    >
+                      Download
+                    </Text>
+                  </Box>
                   <Text
                     fontSize={theme.fonts.sizes.md}
                     color={theme.colors.base.white}
                     weight={500}
                     pointerEvents="none"
-                    marginLeft={5}
                   >
-                    Download
+                    {dispute?.dispute?.length || 0}
                   </Text>
                 </Box>
-                <Text
-                  fontSize={theme.fonts.sizes.md}
-                  color={theme.colors.base.white}
-                  weight={500}
-                  pointerEvents="none"
-                >
-                  {lastDispute?.dispute?.length || 0}
-                </Text>
               </Box>
-            </Box>
+            </Skeleton>
             {/* <Box
               wid={180}
               backgroundColor={theme.colors.base.secondary}

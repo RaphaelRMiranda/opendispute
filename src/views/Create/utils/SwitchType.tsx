@@ -11,7 +11,6 @@ import BankrupctyTemplate from "../Disputes/templates/Bankrupcty";
 import ChildSupportTemplate from "../Disputes/templates/ChildSupport";
 
 const SwitchTemplate = (index: number, type: string, id: string) => {
-  console.log(index)
   switch (type) {
     case "Charge-offs":
       return <ChargeOffTemplate index={index} disputeId={id} />;

@@ -535,7 +535,7 @@ const Listing = () => {
                             )
                           ]
                         );
-                        router.push(`/create`);
+                        router.push(`/update`);
                       }}
                     >
                       <Edit size={theme.icons.sizes.xs} />
