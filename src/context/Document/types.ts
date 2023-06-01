@@ -1,27 +1,17 @@
-import { TDispute } from "@/views/Create/types";
+import { DisputeInterface, TDispute } from "@/views/Create/types";
+import { TObjectErrors } from "@/views/Create/validation/types";
 import { Dispatch, SetStateAction } from "react";
-import {
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormClearErrors,
-  UseFormResetField,
-  UseFormSetError,
-  FieldValues,
-  FieldErrors,
-} from "react-hook-form";
 
 export type DocumentProps = {
   disputes: TDisputeObject[];
   setDisputes: Dispatch<SetStateAction<TDisputeObject[]>>;
-  lastDispute: TDisputeObject;
-  setLastDispute: Dispatch<SetStateAction<TDisputeObject>>;
-  letterRegister: TFormRegister;
-  setLetterRegister: Dispatch<SetStateAction<TFormRegister>>;
-  letterErrors: TFormError;
-  setLetterErrors: Dispatch<SetStateAction<TFormError>>;
-  letterValues: TFormValues;
-  setLetterValues: Dispatch<SetStateAction<TFormValues>>;
-  editDispute: (id: string, dispute: TEditDispute) => void;
+  lastDispute: DisputeInterface;
+  setLastDispute: Dispatch<SetStateAction<DisputeInterface>>;
+  errors: TObjectErrors;
+  setErrors: Dispatch<SetStateAction<TObjectErrors>>;
+  object: DisputeInterface;
+  setObject: Dispatch<SetStateAction<DisputeInterface>>;
+  // editDispute: (id: string, dispute: TEditDispute) => void;
   duplicateDispute: (type: string, id: string) => void;
   removeDispute: (id: string) => void;
 };
@@ -37,17 +27,15 @@ export type TDisputeObject = TDispute & {
   template?: React.ReactNode;
 };
 
-export type TFormRegister = {
-  register: UseFormRegister<FieldValues>;
+export type TDisputeDownload = {
+  _id: string;
 };
 
-export type TFormError = {
-  setError: UseFormSetError<FieldValues>;
-  errors: FieldErrors<FieldValues>;
-  clean: UseFormClearErrors<FieldValues>;
-  resetField: UseFormResetField<FieldValues>
-};
-
-export type TFormValues = {
-  setValue: UseFormSetValue<FieldValues>;
-};
+export type TDisputeList = {
+  page: number;
+  limit: number;
+  sort: string;
+  since: string;
+  until: string;
+  search: string;
+}

@@ -3,12 +3,64 @@ import Download from "@/components/Card/icons/Download";
 import Layout from "@/components/Layout";
 import Page from "@/components/Page";
 import Text from "@/components/Text";
-import { useDocument } from "@/context/Document";
+import { handleDownloadDocument, useDocument } from "@/context/Document";
 import { theme } from "@/styles/theme";
-import Documents from "./icons/Documents";
+import { useEffect, useState } from "react";
+import { useUser } from "@/context/User";
+import CreditBureau from "./utils/CreditBureau";
+import MaskSocialNumber from "./utils/MaskSocialNumber";
+import { useRouter } from "next/router";
+import ValueInObject from "../Create/utils/ValueInObject";
+import { useToast } from "@chakra-ui/react";
+import Loading from "@/components/Buttons/icons/Loading";
 
 const Success = () => {
+  const { user, token } = useUser();
   const { lastDispute } = useDocument();
+
+  const [isLoading, setLoading] = useState<boolean>(false);
+
+  const handleDownload = () => {
+    setLoading(true);
+    handleDownloadDocument({ _id: lastDispute._id, token })
+      .then((response) => {
+        setLoading(false);
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute(
+          "download",
+          `${lastDispute?.customer?.firstName} ${lastDispute?.customer?.lastName} - FD${lastDispute?.disputeRound}.zip`
+        );
+        document.body.appendChild(link);
+        link.click();
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
+  };
+
+  const router = useRouter();
+
+  const warToast = useToast({
+    position: "top",
+    duration: 5000,
+    title: "You can't access this page",
+    description: "You need to create a dispute first to access this page.",
+    status: "warning",
+    isClosable: true,
+    containerStyle: {
+      fontSize: theme.fonts.sizes.sm,
+    },
+  });
+
+  useEffect(() => {
+    if (!ValueInObject(lastDispute)) {
+      warToast();
+      router.push("/create");
+    }
+  }, [lastDispute, router, warToast]);
 
   const hoverStyled = `
         cursor: pointer;
@@ -62,7 +114,7 @@ const Success = () => {
                   color={theme.colors.base.secondary}
                   weight={500}
                 >
-                  John Doe
+                  {user.firstName} {user.lastName}
                 </Text>
               </Box>
               <Box
@@ -82,7 +134,10 @@ const Success = () => {
                   color={theme.colors.base.secondary}
                   weight={500}
                 >
-                  $1253, $3270
+                  {lastDispute?.dispute?.map((dispute, i, self) => {
+                    if (i === self.length - 1) return `$${dispute.balance}`;
+                    else return `$${dispute.balance}, `;
+                  }) || "$0"}
                 </Text>
               </Box>
             </Box>
@@ -104,7 +159,9 @@ const Success = () => {
                   color={theme.colors.base.secondary}
                   weight={500}
                 >
-                  Gustavo Melo
+                  {lastDispute && lastDispute?.customer?.firstName
+                    ? `${lastDispute?.customer?.firstName} ${lastDispute?.customer?.lastName}`
+                    : "None"}
                 </Text>
               </Box>
               <Box
@@ -124,7 +181,9 @@ const Success = () => {
                   color={theme.colors.base.secondary}
                   weight={500}
                 >
-                  Equifax, Experian and TransUnion
+                  {(lastDispute?.creditBureau &&
+                    CreditBureau(lastDispute?.creditBureau)) ||
+                    "None"}
                 </Text>
               </Box>
             </Box>
@@ -146,7 +205,9 @@ const Success = () => {
                   color={theme.colors.base.secondary}
                   weight={500}
                 >
-                  000-00-0000
+                  {MaskSocialNumber(
+                    lastDispute?.customer?.ssn || lastDispute?.customer?.itin
+                  ) || "None"}
                 </Text>
               </Box>
               <Box
@@ -166,7 +227,10 @@ const Success = () => {
                   color={theme.colors.base.secondary}
                   weight={500}
                 >
-                  Bank of america, Capital One
+                  {lastDispute?.dispute?.map((dispute, i, self) => {
+                    if (i === self.length - 1) return dispute.dataFunisher;
+                    else return `${dispute.dataFunisher}, `;
+                  }) || "None"}
                 </Text>
               </Box>
             </Box>
@@ -188,7 +252,9 @@ const Success = () => {
                   color={theme.colors.base.secondary}
                   weight={500}
                 >
-                  Dogwood Lane Apt 6202, Marshfield, MA 02050
+                  {lastDispute && lastDispute?.address?.street
+                    ? `${lastDispute?.address?.street} ${lastDispute?.address?.city}, ${lastDispute?.address?.state} ${lastDispute?.address?.zipCode}`
+                    : "None"}
                 </Text>
               </Box>
               <Box
@@ -208,7 +274,7 @@ const Success = () => {
                   color={theme.colors.base.secondary}
                   weight={500}
                 >
-                  2 disputes
+                  {lastDispute?.dispute?.length || 0} dispute(s)
                 </Text>
               </Box>
             </Box>
@@ -230,7 +296,10 @@ const Success = () => {
                   color={theme.colors.base.secondary}
                   weight={500}
                 >
-                  Unknown Account Number, 9909998
+                  {lastDispute?.dispute?.map((dispute, i, self) => {
+                    if (i === self.length - 1) return dispute.accountNumber;
+                    else return `${dispute.accountNumber}, `;
+                  }) || "None"}
                 </Text>
               </Box>
               <Box
@@ -250,7 +319,10 @@ const Success = () => {
                   color={theme.colors.base.secondary}
                   weight={500}
                 >
-                  Charge-offs
+                  {lastDispute?.dispute?.map((dispute, i, self) => {
+                    if (i === self.length - 1) return dispute.type;
+                    else return `${dispute.type}, `;
+                  }) || "None"}
                 </Text>
               </Box>
             </Box>
@@ -260,7 +332,7 @@ const Success = () => {
               wid={180}
               backgroundColor={theme.colors.base.secondary}
               marginTop={50}
-              onClick={() => {}}
+              onClick={handleDownload}
               borderRadius={6}
               padding={10}
               hover={hoverStyled}
@@ -268,10 +340,17 @@ const Success = () => {
             >
               <Box wid="100%" justifyContent="space-between">
                 <Box>
-                  <Download
-                    size={theme.fonts.sizes.md}
-                    color={theme.colors.base.white}
-                  />
+                  {isLoading ? (
+                    <Loading
+                      size={theme.fonts.sizes.md}
+                      color={theme.colors.base.white}
+                    />
+                  ) : (
+                    <Download
+                      size={theme.fonts.sizes.md}
+                      color={theme.colors.base.white}
+                    />
+                  )}
                   <Text
                     fontSize={theme.fonts.sizes.md}
                     color={theme.colors.base.white}
@@ -288,11 +367,11 @@ const Success = () => {
                   weight={500}
                   pointerEvents="none"
                 >
-                  2
+                  {lastDispute?.dispute?.length || 0}
                 </Text>
               </Box>
             </Box>
-            <Box
+            {/* <Box
               wid={180}
               backgroundColor={theme.colors.base.secondary}
               marginTop={50}
@@ -317,7 +396,7 @@ const Success = () => {
                   View Documents
                 </Text>
               </Box>
-            </Box>
+            </Box> */}
           </Box>
         </Box>
       </Page>

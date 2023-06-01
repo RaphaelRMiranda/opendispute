@@ -13,8 +13,8 @@ const Page = ({ title, description, children, filter }: TPage) => {
       borderRadius={6}
       padding={15}
     >
-      {title && description && children && filter && (
-        <Box justifyContent="space-between">
+      {title && description && children && (
+        <Box wid="100%" justifyContent="space-between">
           <Box
             flexDirection="column"
             justifyContent="flex-start"
@@ -35,7 +35,7 @@ const Page = ({ title, description, children, filter }: TPage) => {
               {description}
             </Text>
           </Box>
-          {filter && <Box>{filter}</Box>}
+          {filter && <Box wid="50%">{filter}</Box>}
         </Box>
       )}
       {children}

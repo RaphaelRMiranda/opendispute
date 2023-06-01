@@ -5,52 +5,30 @@ import { theme } from "@/styles/theme";
 import ArrowTurnUpRight from "../icons/ArrowTurnUpRight";
 import { Button } from "@/components/Buttons";
 import ArrowTurnDownRight from "../icons/ArrowTurnDownRight";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Copy from "../icons/Copy";
-import { TDisputeBureau, TDisputeTemplate } from "./types";
+import { TDisputeTemplate } from "./types";
 import { useDocument } from "@/context/Document";
 import Checkbox from "@/components/Inputs/Checkbox";
+import SelectText from "@/components/Selects/Text";
+import ActionByType from "../../utils/ActionByType";
+import JustifyerByType from "../../utils/JustifyerByType";
 
-const ChargeOffTemplate = ({
-  index,
-  disputeId,
-  register,
-}: TDisputeTemplate) => {
-  const { duplicateDispute, removeDispute, letterErrors, letterValues } =
+const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
+  const { duplicateDispute, removeDispute, object, setObject, errors } =
     useDocument();
 
-  const [bureau, setBureau] = useState<string>("waiting");
-
-  const [eq, setEq] = useState<boolean>(false);
-  const [ex, setEx] = useState<boolean>(false);
-  const [tu, setTu] = useState<boolean>(false);
+  const [eq, setEq] = useState<boolean>(
+    object?.dispute[index]?.equifax || false
+  );
+  const [ex, setEx] = useState<boolean>(
+    object?.dispute[index]?.experian || false
+  );
+  const [tu, setTu] = useState<boolean>(
+    object?.dispute[index]?.transunion || false
+  );
 
   const [reverse, setReverse] = useState<boolean>(false);
-
-  const validBureau = () => {
-    if (!eq && !ex && !tu) {
-      setBureau("invalid");
-    } else {
-      setBureau("valid");
-    }
-  };
-
-  useEffect(() => {
-    console.log("eq", eq);
-    console.log("ex", ex);
-    console.log("tu", tu);
-    console.log(!eq && !ex && !tu)
-
-    if (!eq && !ex && !tu) {
-      letterErrors.setError(`dispute[${index}].equifax`, {
-        type: "manual",
-        message: "At least one bureau must be selected",
-      });
-    } else {
-      letterErrors.resetField(`dispute[${index}].equifax`);
-      letterErrors.clean(`dispute[${index}].equifax`);
-    }
-  }, [eq, ex, tu]);
 
   return (
     <Box
@@ -62,10 +40,7 @@ const ChargeOffTemplate = ({
       <Box wid="100%" justifyContent="space-between">
         <Box wid="50%" flexDirection="column" alignItems="flex-start">
           <Box display="none">
-            <InputText
-              reg={register(`dispute[${index}].type`)}
-              value={"Charge-offs"}
-            />
+            <InputText defaultValue={"Charge-offs"} />
           </Box>
           <Text
             fontSize={theme.fonts.sizes.md}
@@ -93,34 +68,66 @@ const ChargeOffTemplate = ({
           </Text>
         </Box>
       </Box>
-      <Box wid="30%" marginTop={10} justifyContent="space-between">
-        <Checkbox
-          label="Equifax"
-          onChange={() => {
-            setEq(!eq);
-          }}
-          checked={eq}
-          marginRight={10}
-          reg={register(`dispute[${index}].equifax`)}
-        />
-        <Checkbox
-          label="Experian"
-          onChange={() => {
-            setEx(!ex);
-          }}
-          checked={ex}
-          marginRight={10}
-          reg={register(`dispute[${index}].experian`)}
-        />
-        <Checkbox
-          label="TransUnion"
-          onChange={() => {
-            setTu(!tu);
-          }}
-          checked={tu}
-          marginRight={10}
-          reg={register(`dispute[${index}].transunion`)}
-        />
+      <Box
+        wid="30%"
+        marginTop={10}
+        flexDirection="column"
+        alignItems="flex-start"
+      >
+        <Box wid="100%" justifyContent="space-between">
+          <Checkbox
+            label="Equifax"
+            onChange={() => {
+              setEq(!eq);
+              setObject((prev) => ({
+                ...prev,
+                dispute: prev.dispute.map((item, i) =>
+                  i === index ? { ...item, equifax: !eq } : item
+                ),
+              }));
+            }}
+            checked={eq}
+            marginRight={10}
+          />
+          <Checkbox
+            label="Experian"
+            onChange={() => {
+              setEx(!ex);
+              setObject((prev) => ({
+                ...prev,
+                dispute: prev.dispute.map((item, i) =>
+                  i === index ? { ...item, experian: !ex } : item
+                ),
+              }));
+            }}
+            checked={ex}
+            marginRight={10}
+          />
+          <Checkbox
+            label="TransUnion"
+            onChange={() => {
+              setTu(!tu);
+              setObject((prev) => ({
+                ...prev,
+                dispute: prev.dispute.map((item, i) =>
+                  i === index ? { ...item, transunion: !tu } : item
+                ),
+              }));
+            }}
+            checked={tu}
+            marginRight={10}
+          />
+        </Box>
+        {errors?.dispute &&
+          errors?.dispute[index]?.equifax &&
+          errors?.dispute[index]?.equifax?.message !== "undefined" && (
+            <Text
+              fontSize={theme.fonts.sizes.sm}
+              color={theme.colors.base.red[200]}
+            >
+              {errors?.dispute[index]?.equifax?.message}
+            </Text>
+          )}
       </Box>
       <Box
         wid="100%"
@@ -134,35 +141,51 @@ const ChargeOffTemplate = ({
           label="Data Furnisher"
           placeholder="Bank of America"
           marginRight={10}
-          reg={register(`dispute[${index}].dataFunisher`)}
-          error={String(
-            (letterErrors?.errors?.dispute as unknown as Array<any>) &&
-              (letterErrors?.errors?.dispute as unknown as Array<any>)[index]
-                ?.dataFunisher?.message
-          )}
+          onChange={(e) => {
+            setObject((prev) => ({
+              ...prev,
+              dispute: prev.dispute.map((item, i) =>
+                i === index ? { ...item, dataFunisher: e.target.value } : item
+              ),
+            }));
+          }}
+          error={
+            errors?.dispute && errors?.dispute[index]?.dataFunisher?.message
+          }
+          defaultValue={object?.dispute[index]?.dataFunisher}
         />
         <InputText
           wid="45%"
           label="Account#"
           placeholder="1234567890"
           marginRight={10}
-          reg={register(`dispute[${index}].accountNumber`)}
-          error={String(
-            (letterErrors?.errors?.dispute as unknown as Array<any>) &&
-              (letterErrors?.errors?.dispute as unknown as Array<any>)[index]
-                ?.accountNumber?.message
-          )}
+          onChange={(e) => {
+            setObject((prev) => ({
+              ...prev,
+              dispute: prev.dispute.map((item, i) =>
+                i === index ? { ...item, accountNumber: e.target.value } : item
+              ),
+            }));
+          }}
+          error={
+            errors?.dispute && errors?.dispute[index]?.accountNumber?.message
+          }
+          defaultValue={object?.dispute[index]?.accountNumber}
         />
         <InputText
           wid="20%"
           label="Balance"
           placeholder="$1,000.00"
-          reg={register(`dispute[${index}].balance`)}
-          error={String(
-            (letterErrors?.errors?.dispute as unknown as Array<any>) &&
-              (letterErrors?.errors?.dispute as unknown as Array<any>)[index]
-                ?.balance?.message
-          )}
+          onChange={(e) => {
+            setObject((prev) => ({
+              ...prev,
+              dispute: prev.dispute.map((item, i) =>
+                i === index ? { ...item, balance: e.target.value } : item
+              ),
+            }));
+          }}
+          error={errors?.dispute && errors?.dispute[index]?.balance?.message}
+          defaultValue={object?.dispute[index]?.balance}
         />
       </Box>
       <Box
@@ -179,39 +202,55 @@ const ChargeOffTemplate = ({
           marginBottom={5}
         >
           <ArrowTurnUpRight size={theme.icons.sizes.sm} margin={`0 0 0 10px`} />
-          {reverse ? (
-            <InputText
+          {!reverse ? (
+            <SelectText
               wid="100%"
               label="Action to be taken"
-              placeholder="Delete this account"
+              options={ActionByType("Charge-offs")}
               marginLeft={10}
-              reg={register(`dispute[${index}].action`)}
-              error={String(
-                (letterErrors?.errors?.dispute as unknown as Array<any>) &&
-                  (letterErrors?.errors?.dispute as unknown as Array<any>)[
-                    index
-                  ]?.action?.message
-              )}
+              onChange={(e) =>
+                setObject((prev) => ({
+                  ...prev,
+                  dispute: prev.dispute.map((item, i) =>
+                    i === index ? { ...item, action: e.target.value } : item
+                  ),
+                }))
+              }
+              error={errors?.dispute && errors?.dispute[index]?.action?.message}
+              defaultValue={object?.dispute[index]?.action}
             />
           ) : (
-            <InputText
+            <SelectText
               wid="100%"
               label="Justifyer for action"
-              placeholder="Account is not mine"
+              options={JustifyerByType("Charge-offs")}
               marginLeft={10}
-              reg={register(`dispute[${index}].justifyer`)}
-              error={String(
-                (letterErrors?.errors?.dispute as unknown as Array<any>) &&
-                  (letterErrors?.errors?.dispute as unknown as Array<any>)[
-                    index
-                  ]?.justifyer?.message
-              )}
+              onChange={(e) =>
+                setObject((prev) => ({
+                  ...prev,
+                  dispute: prev.dispute.map((item, i) =>
+                    i === index ? { ...item, justifyer: e.target.value } : item
+                  ),
+                }))
+              }
+              error={
+                errors?.dispute && errors?.dispute[index]?.justifyer?.message
+              }
+              defaultValue={object?.dispute[index]?.justifyer}
             />
           )}
         </Box>
         <Button
           fontSize={theme.fonts.sizes.md}
-          onClick={() => setReverse(!reverse)}
+          onClick={() => {
+            setReverse(!reverse);
+            setObject((prev) => ({
+              ...prev,
+              dispute: prev.dispute.map((item, i) =>
+                i === index ? { ...item, reverse } : item
+              ),
+            }));
+          }}
         >
           Reverse
         </Button>
@@ -225,33 +264,41 @@ const ChargeOffTemplate = ({
             size={theme.icons.sizes.sm}
             margin={`0 0 0 10px`}
           />
-          {reverse ? (
-            <InputText
+          {!reverse ? (
+            <SelectText
               wid="100%"
               label="Justifyer for action"
-              placeholder="Account is not mine"
+              options={JustifyerByType("Charge-offs")}
               marginLeft={10}
-              reg={register(`dispute[${index}].justifyer`)}
-              error={String(
-                (letterErrors?.errors?.dispute as unknown as Array<any>) &&
-                  (letterErrors?.errors?.dispute as unknown as Array<any>)[
-                    index
-                  ]?.justifyer?.message
-              )}
+              onChange={(e) =>
+                setObject((prev) => ({
+                  ...prev,
+                  dispute: prev.dispute.map((item, i) =>
+                    i === index ? { ...item, justifyer: e.target.value } : item
+                  ),
+                }))
+              }
+              error={
+                errors?.dispute && errors?.dispute[index]?.justifyer?.message
+              }
+              defaultValue={object?.dispute[index]?.justifyer}
             />
           ) : (
-            <InputText
+            <SelectText
               wid="100%"
               label="Action to be taken"
-              placeholder="Delete this account"
+              options={ActionByType("Charge-offs")}
               marginLeft={10}
-              reg={register(`dispute[${index}].action`)}
-              error={String(
-                (letterErrors?.errors?.dispute as unknown as Array<any>) &&
-                  (letterErrors?.errors?.dispute as unknown as Array<any>)[
-                    index
-                  ]?.action?.message
-              )}
+              onChange={(e) =>
+                setObject((prev) => ({
+                  ...prev,
+                  dispute: prev.dispute.map((item, i) =>
+                    i === index ? { ...item, action: e.target.value } : item
+                  ),
+                }))
+              }
+              error={errors?.dispute && errors?.dispute[index]?.action?.message}
+              defaultValue={object?.dispute[index]?.action}
             />
           )}
         </Box>
@@ -268,35 +315,59 @@ const ChargeOffTemplate = ({
           label="EXPERIAN Shows"
           placeholder="5/5/2023"
           marginRight={10}
-          reg={register(`dispute[${index}].shows.experian`)}
-          error={String(
-            (letterErrors?.errors?.dispute as unknown as Array<any>) &&
-              (letterErrors?.errors?.dispute as unknown as Array<any>)[index]
-                ?.shows?.experian?.message
-          )}
+          onChange={(e) => {
+            setObject((prev) => ({
+              ...prev,
+              dispute: prev.dispute.map((item, i) =>
+                i === index
+                  ? {
+                      ...item,
+                      shows: { ...item?.shows, experian: e.target.value },
+                    }
+                  : item
+              ),
+            }));
+          }}
+          defaultValue={object?.dispute[index]?.shows?.experian}
         />
         <InputText
           wid="33%"
           label="EQUIFAX Shows"
           placeholder="5/5/2023"
           marginRight={10}
-          reg={register(`dispute[${index}].shows.equifax`)}
-          error={String(
-            (letterErrors?.errors?.dispute as unknown as Array<any>) &&
-              (letterErrors?.errors?.dispute as unknown as Array<any>)[index]
-                ?.shows?.equifax?.message
-          )}
+          onChange={(e) => {
+            setObject((prev) => ({
+              ...prev,
+              dispute: prev.dispute.map((item, i) =>
+                i === index
+                  ? {
+                      ...item,
+                      shows: { ...item?.shows, equifax: e.target.value },
+                    }
+                  : item
+              ),
+            }));
+          }}
+          defaultValue={object?.dispute[index]?.shows?.equifax}
         />
         <InputText
           wid="33%"
           label="TRANSUNION Shows"
           placeholder="5/5/2023"
-          reg={register(`dispute[${index}].shows.transunion`)}
-          error={String(
-            (letterErrors?.errors?.dispute as unknown as Array<any>) &&
-              (letterErrors?.errors?.dispute as unknown as Array<any>)[index]
-                ?.shows?.transunion?.message
-          )}
+          onChange={(e) => {
+            setObject((prev) => ({
+              ...prev,
+              dispute: prev.dispute.map((item, i) =>
+                i === index
+                  ? {
+                      ...item,
+                      shows: { ...item?.shows, transunion: e.target.value },
+                    }
+                  : item
+              ),
+            }));
+          }}
+          defaultValue={object?.dispute[index]?.shows?.transunion}
         />
       </Box>
       <Box
@@ -310,7 +381,15 @@ const ChargeOffTemplate = ({
           wid="100%"
           label="Additional Comment"
           placeholder="This account is not mine"
-          reg={register(`dispute[${index}].comment`)}
+          onChange={(e) => {
+            setObject((prev) => ({
+              ...prev,
+              dispute: prev.dispute.map((item, i) =>
+                i === index ? { ...item, comment: e.target.value } : item
+              ),
+            }));
+          }}
+          defaultValue={object?.dispute[index]?.comment}
         />
       </Box>
       <Box

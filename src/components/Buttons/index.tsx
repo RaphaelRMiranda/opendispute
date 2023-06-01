@@ -3,7 +3,6 @@ import { TButton } from "./types";
 import Text from "../Text";
 import { theme } from "@/styles/theme";
 import { TBox } from "../Box/types";
-import { CustomButton } from "./styles";
 import { useRef } from "react";
 
 export const Button = ({

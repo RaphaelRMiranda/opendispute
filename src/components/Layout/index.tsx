@@ -5,11 +5,32 @@ import { TLayout } from "./types";
 import { theme } from "@/styles/theme";
 import { useUser } from "@/context/User";
 import Login from "@/views/Login";
+import { useEffect, useState } from "react";
+import usePersistState from "@/utils/PersistState";
 
 const Layout = ({ children }: TLayout) => {
   const { user } = useUser();
 
-  return user && user._id ? (
+  const [isLoading, setLoading] = useState<boolean>(true);
+
+  const [persistedUser, setPersistedUser] = usePersistState(
+    user,
+    "@dispute/user"
+  );
+
+  useEffect(() => {
+    setLoading(true);
+    if (user && user._id) {
+      setPersistedUser(user);
+      setLoading(false);
+    } else setLoading(false);
+  }, [setPersistedUser, user]);
+
+  if (isLoading) {
+    return null;
+  }
+
+  return persistedUser && persistedUser._id ? (
     <Box
       flexDirection="row"
       justifyContent="center"

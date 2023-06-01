@@ -1,3 +1,4 @@
+import { User } from "@/views/Register/types";
 import { Dispatch, SetStateAction } from "react";
 
 export enum UserRole {
@@ -18,6 +19,28 @@ export interface UserInterface extends Document {
   role: UserRole;
 }
 
+export type TUserRegister = {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  email: string;
+  password?: string;
+  role: string;
+  disputesCreated: number;
+  updatedAt: string;
+  createdBy: UserInterface;
+  createdAt: string;
+};
+
+export type TUserEdit = {
+  _id: string;
+  firstName?: string;
+  middleName?: string;
+  lastName?: string;
+  email?: string;
+  role?: string;
+}
+
 export interface UserAuthInterface {
   user: UserInterface;
   token: string;
@@ -28,6 +51,10 @@ export type UserData = {
   password: string;
 };
 
+export type UserDelete = {
+  _id: string;
+};
+
 export interface UserProps {
   user: UserInterface;
   setUser: Dispatch<SetStateAction<UserInterface>>;
@@ -35,4 +62,6 @@ export interface UserProps {
   setToken: Dispatch<SetStateAction<string>>;
   error: string;
   setError: Dispatch<SetStateAction<string>>;
+  object: User;
+  setObject: Dispatch<SetStateAction<User>>;
 }

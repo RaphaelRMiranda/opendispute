@@ -10,8 +10,10 @@ export type TSelect = {
   label?: string;
   error?: string | undefined;
   options?: Array<TOption>;
-  onChange?: ChangeEventHandler<HTMLSelectElement> | TOption[] | TOption;
+  onChange: ChangeEventHandler<HTMLSelectElement> | undefined
   reg?: UseFormRegisterReturn<string>;
+  disabled?: boolean;
+  defaultValue?: string | number;
 };
 
 export type TMultipleSelect = {

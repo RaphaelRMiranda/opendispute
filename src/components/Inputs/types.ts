@@ -10,6 +10,8 @@ export type TInput = {
   reg?: UseFormRegisterReturn<string>;
   value?: string | number;
   readonly?: boolean;
+  defaultValue?: string | number;
+  paddingInput?: string | number | Array<string | number>;
 };
 
 export type TRadio = {

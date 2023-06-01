@@ -64,7 +64,7 @@ const Guides = () => {
           </Text>
           <Text
             fontSize={theme.fonts.sizes.sm}
-            color={theme.colors.base.gray[400]}
+            color={theme.colors.base.gray}
             align="center"
           >
             Caso haja algum problema com a compra não se preocupe, você pode

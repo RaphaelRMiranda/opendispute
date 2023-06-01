@@ -90,7 +90,7 @@ const Login = () => {
             marginTop={20}
             marginBottom={15}
             reg={register("email")}
-            error={errors && errors.email}
+            error={String(errors && errors?.email?.message)}
           />
           <InputPassword
             name="password"
@@ -99,7 +99,7 @@ const Login = () => {
             placeholder="***********"
             marginBottom={35}
             reg={register("password")}
-            error={errors && errors.password}
+            error={String(errors && errors?.password?.message)}
           />
 
           <Button

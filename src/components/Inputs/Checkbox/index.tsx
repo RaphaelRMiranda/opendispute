@@ -9,12 +9,12 @@ import Check from "./icons/Check";
 const Checkbox = ({
   label,
   error,
-  checked,
   reg,
   onChange,
+  checked,
   ...rest
 }: TBox & TRadio) => {
-  const [selected, isSelected] = useState<boolean>(false);
+  const [selected, isSelected] = useState<boolean>(checked || false);
 
   return (
     <Box flexDirection="column" justifyContent="center" alignItems="flex-start">
@@ -27,14 +27,6 @@ const Checkbox = ({
           isSelected(!selected);
         }}
       >
-        <Box>
-          <input
-            type="checkbox"
-            checked={checked ? checked : false}
-            readOnly
-            {...reg}
-          />
-        </Box>
         <Box
           wid={35}
           backgroundColor={theme.colors.base.gray[300]}
@@ -44,7 +36,7 @@ const Checkbox = ({
           <Check
             size={theme.icons.sizes.xs}
             color={
-              checked
+              selected
                 ? theme.colors.base.secondary
                 : theme.colors.base.gray[300]
             }

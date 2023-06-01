@@ -1,6 +1,6 @@
 const Items = [
   "Charge-offs",
-  "3rd party Collector",
+  "3rd Party Collector",
   "Debt Buyers",
   "Student Loans",
   "Personal Info",
@@ -10,6 +10,8 @@ const Items = [
   "Late Payment",
   "Bankrupcty",
   "Child Support",
+  // "Foreclosures",
+  // "Judgements & Liens",
 ];
 
 export default Items;

@@ -1,5 +1,9 @@
 const GreetingSequence = [
   {
+    label: "Select a option",
+    value: "",
+  },
+  {
     label: "Report Research",
     value:
       "I recently looked at my credit report and found something that seems weird. I found accounts that are inaccurate in my credit report. So, I am writing you this letter, because after doing some research I realized that I have the right as a consumer to dispute anything in my credit report that is inaccurately reported there. Please investigate the following accounts: ",

@@ -12,6 +12,8 @@ const SelectText = ({
   options,
   onChange,
   reg,
+  disabled,
+  defaultValue,
   ...rest
 }: TBox & TSelect) => {
   return (
@@ -26,7 +28,7 @@ const SelectText = ({
         </Text>
       )}
       <Box position="relative" wid="100%">
-        <Select onChange={() => onChange && onChange} {...reg}>
+        <Select onChange={onChange} {...reg} disabled={disabled} defaultValue={defaultValue}>
           {options &&
             options.map((item, index) => {
               return (
@@ -39,7 +41,9 @@ const SelectText = ({
         <Box
           position="absolute"
           right="1px"
-          backgroundColor={theme.colors.base.gray[300]}
+          backgroundColor={
+            disabled ? theme.colors.base.gray[100] : theme.colors.base.gray[300]
+          }
           padding={`0 12px 0 0`}
           pointerEvents="none"
         >

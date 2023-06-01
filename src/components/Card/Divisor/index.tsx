@@ -8,6 +8,7 @@ const Divisor = () => {
       hei={40}
       backgroundColor={theme.colors.base.primary}
       borderRadius={50}
+      marginLeft={10}
     />
   );
 };

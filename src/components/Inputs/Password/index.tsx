@@ -14,6 +14,7 @@ const InputPassword = ({
   error,
   onChange,
   reg,
+  readonly,
   ...rest
 }: TBox & TInput) => {
   const [show, setShow] = useState<boolean>(false);
@@ -41,6 +42,7 @@ const InputPassword = ({
           placeholder={placeholder}
           onChange={onChange}
           {...reg}
+          readOnly={readonly}
         />
         <Box
           position="absolute"
@@ -56,13 +58,13 @@ const InputPassword = ({
           )}
         </Box>
       </Box>
-      {error && (
+      {error && error !== "undefined" && (
         <Text
           fontSize={theme.fonts.sizes.sm}
           color={theme.colors.base.red[200]}
           marginLeft={5}
         >
-          {String(error.message)}
+          {error}
         </Text>
       )}
     </Box>

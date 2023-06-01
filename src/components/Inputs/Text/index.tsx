@@ -13,6 +13,8 @@ const InputText = ({
   reg,
   value,
   readonly,
+  defaultValue,
+  paddingInput,
   ...rest
 }: TBox & TInput) => {
   return (
@@ -32,7 +34,15 @@ const InputText = ({
           {label}
         </Text>
       )}
-      <Input placeholder={placeholder} onChange={onChange} {...reg} value={value} readOnly={readonly} />
+      <Input
+        placeholder={placeholder}
+        onChange={onChange}
+        {...reg}
+        value={value}
+        defaultValue={defaultValue}
+        readOnly={readonly}
+        padding={paddingInput}
+      />
       {error && error !== "undefined" && (
         <Text
           fontSize={theme.fonts.sizes.sm}

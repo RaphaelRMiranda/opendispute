@@ -10,5 +10,4 @@ class ApiInstance {
   }
 }
 
-const Instance = new ApiInstance();
-export default Instance.Api;
+export const Api = new ApiInstance().Api;

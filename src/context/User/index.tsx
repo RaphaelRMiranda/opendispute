@@ -5,10 +5,23 @@ import {
   useContext,
   useState,
 } from "react";
-import Api from "@/services/Api";
+
 import { TContext } from "../types";
-import { UserAuthInterface, UserData, UserInterface, UserProps } from "./types";
+import {
+  TUserEdit,
+  TUserRegister,
+  UserAuthInterface,
+  UserData,
+  UserDelete,
+  UserInterface,
+  UserProps,
+} from "./types";
 import { NextRouter } from "next/router";
+import usePersistState from "@/utils/PersistState";
+import { TToken } from "@/views/Create/types";
+import { TDisputeList } from "../Document/types";
+import { Api } from "@/services/Api";
+import { User } from "@/views/Register/types";
 
 const UserContext = createContext<UserProps>({} as UserProps);
 
@@ -26,7 +39,6 @@ export const handleLogin = async (
     .then((response) => {
       setUser(response.data.user);
       setToken(response.data.token);
-
       isLoading(false);
     })
     .catch((error) => {
@@ -41,19 +53,87 @@ export const handleLogout = (
   setToken: Dispatch<SetStateAction<string>>,
   router: NextRouter
 ) => {
+  router.reload();
+  localStorage.removeItem("@dispute/user");
+  localStorage.removeItem("@dispute/token");
   setUser({} as UserInterface);
   setToken("");
-  router.push("/");
+};
+
+export const handleCreateUser = async ({
+  token,
+  ...data
+}: TUserRegister & TToken) => {
+  return await Api.post<TUserRegister>(
+    "/user/create",
+    { ...data },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+};
+
+export const handleEditUser = async ({
+  token,
+  ...data
+}: TUserEdit & TToken) => {
+  return await Api.patch<TUserRegister>(
+    "/user/udapte",
+    { ...data },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+};
+
+export const getUsers = async ({
+  page,
+  limit,
+  sort,
+  since,
+  until,
+  search,
+  token,
+}: TDisputeList & TToken) => {
+  return await Api.get("/user/list", {
+    params: {
+      page,
+      limit,
+      sort,
+      since,
+      until,
+      search,
+    },
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export const deleteUser = async ({ _id, token }: UserDelete & TToken) => {
+  return await Api.delete(`/user/delete/${_id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
 export const UserProvider = ({ children }: TContext) => {
-  const [user, setUser] = useState<UserInterface>({} as UserInterface);
-  const [token, setToken] = useState<string>("" as string);
+  const [object, setObject] = useState<User>({} as User);
+  const [user, setUser] = usePersistState<UserInterface>(
+    {} as UserInterface,
+    "@dispute/user"
+  );
+  const [token, setToken] = usePersistState<string>(
+    "" as string,
+    "@dispute/token"
+  );
   const [error, setError] = useState<string>("" as string);
 
   return (
     <UserContext.Provider
-      value={{ user, setUser, token, setToken, error, setError }}
+      value={{
+        user,
+        setUser,
+        token,
+        setToken,
+        error,
+        setError,
+        object,
+        setObject,
+      }}
     >
       {children}
     </UserContext.Provider>
