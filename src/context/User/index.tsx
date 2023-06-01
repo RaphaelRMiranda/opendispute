@@ -35,6 +35,7 @@ export const handleLogin = async (
   isLoading(true);
   return await Api.post<UserAuthInterface>("/auth", {
     ...data,
+    email: data.email.toLowerCase(),
   })
     .then((response) => {
       setUser(response.data.user);

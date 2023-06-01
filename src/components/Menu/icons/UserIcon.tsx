@@ -8,7 +8,7 @@ type TRegularIcon = {
   type?: "outline" | "half" | "solid";
 };
 
-const User = ({ size, maxSize, color, margin }: TRegularIcon) => (
+const UserIcon = ({ size, maxSize, color, margin }: TRegularIcon) => (
   <svg
     width={size ? (typeof size === "string" ? size : `${size}px`) : 24}
     style={{
@@ -38,4 +38,4 @@ const User = ({ size, maxSize, color, margin }: TRegularIcon) => (
   </svg>
 );
 
-export default User;
+export default UserIcon;

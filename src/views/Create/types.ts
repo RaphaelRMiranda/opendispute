@@ -60,6 +60,21 @@ export type TDisputeArr = {
   disputes: (DisputeInterface & TDisputeList)[];
 };
 
+export type DisputeUpdate = {
+  _id: string;
+  date: string;
+  customer: TCustomer;
+  address: TAddress;
+  disputeRound: number;
+  creditBureau: TCreditBureau;
+  greetingSequence: string;
+  greetingSequenceExtended?: string;
+  closingStatement: string;
+  closingStatementExtended?: string;
+  dispute: TDispute[];
+  [key: string]: any;
+}
+
 export interface DisputeInterface extends Document {
   date: string;
   customer: TCustomer;
