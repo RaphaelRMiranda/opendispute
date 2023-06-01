@@ -6,9 +6,12 @@ import Add from "../icons/Add";
 import { useRouter } from "next/router";
 import { useUser } from "@/context/User";
 import Role from "./utils/Role";
+import { useDocument } from "@/context/Document";
+import { DisputeInterface } from "@/views/Create/types";
 
 const User = () => {
   const { user } = useUser();
+  const { setObject } = useDocument();
 
   const router = useRouter();
 
@@ -18,7 +21,10 @@ const User = () => {
         wid={150}
         fontSize={theme.fonts.sizes.md}
         icon={<Add size={theme.fonts.sizes.md} />}
-        onClick={() => router.push("/create")}
+        onClick={() => {
+          setObject({} as DisputeInterface);
+          router.push("/create");
+        }}
       >
         Create Letter
       </Button>

@@ -12,36 +12,24 @@ import { useEffect, useState } from "react";
 import { handleLogout, useUser } from "@/context/User";
 
 const Menu = () => {
-  const { setUser, setToken } = useUser();
+  const { user, setUser, setToken } = useUser();
 
   const router = useRouter();
 
-  const [menuHeight, setMenuHeight] = useState(0);
-
   const deafultWidth = 150;
 
-  useEffect(() => {
-    const handleResize = () => {
-      const { scrollHeight } = document.documentElement;
-      setMenuHeight(scrollHeight);
-    };
-
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
-
-    const handleRouteChange = () => {
-      setMenuHeight(0);
-      setTimeout(handleResize, 100);
-    };
-
-    router.events.on("routeChangeComplete", handleRouteChange);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [router.events]);
+  const havePermission = (role: string) => {
+    switch (role) {
+      case "ceo":
+        return true;
+      case "dev":
+        return true;
+      case "admin":
+        return true;
+      default:
+        return false;
+    }
+  };
 
   return (
     <Box
@@ -71,24 +59,28 @@ const Menu = () => {
         >
           Listing
         </Button>
-        <Button
-          wid={deafultWidth}
-          fontSize={theme.fonts.sizes.md}
-          marginTop={15}
-          icon={<AddUser size={theme.fonts.sizes.md} />}
-          onClick={() => router.push("/register")}
-        >
-          Register
-        </Button>
-        <Button
-          wid={deafultWidth}
-          fontSize={theme.fonts.sizes.md}
-          marginTop={15}
-          icon={<User size={theme.fonts.sizes.md} />}
-          onClick={() => router.push("/users")}
-        >
-          Users
-        </Button>
+        {havePermission(user.role) && (
+          <Button
+            wid={deafultWidth}
+            fontSize={theme.fonts.sizes.md}
+            marginTop={15}
+            icon={<AddUser size={theme.fonts.sizes.md} />}
+            onClick={() => router.push("/register")}
+          >
+            Register
+          </Button>
+        )}
+        {havePermission(user.role) && (
+          <Button
+            wid={deafultWidth}
+            fontSize={theme.fonts.sizes.md}
+            marginTop={15}
+            icon={<User size={theme.fonts.sizes.md} />}
+            onClick={() => router.push("/users")}
+          >
+            Users
+          </Button>
+        )}
         <Box
           wid="100%"
           hei={1}
