@@ -6,7 +6,6 @@ import Register from "@/views/Register";
 import Users from "@/views/Users";
 import Create from "@/views/Create";
 import Success from "@/views/Success";
-import Viewer from "@/views/Viewer";
 
 const Routers = () => {
   const pathname = usePathname();
@@ -18,7 +17,6 @@ const Routers = () => {
     "/users": Users,
     "/create": Create,
     "/success": Success,
-    // "/viewer": Viewer,
     // "404": "404",
   };
 
