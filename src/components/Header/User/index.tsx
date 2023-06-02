@@ -1,23 +1,154 @@
 import Box from "@/components/Box";
-import { Button } from "@/components/Buttons";
+import * as Buttons from "@/components/Buttons";
 import Text from "@/components/Text";
 import { theme } from "@/styles/theme";
 import Add from "../icons/Add";
 import { useRouter } from "next/router";
-import { useUser } from "@/context/User";
+import { handleChangePicture, useUser } from "@/context/User";
 import Role from "./utils/Role";
 import { useDocument } from "@/context/Document";
 import { DisputeInterface } from "@/views/Create/types";
+import { useRef, useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogOverlay,
+  Button,
+  Image,
+  useDisclosure,
+  useToast,
+} from "@chakra-ui/react";
 
 const User = () => {
-  const { user } = useUser();
+  const { user, setUser, token } = useUser();
   const { setObject } = useDocument();
+
+  const sucToast = useToast({
+    position: "top",
+    duration: 5000,
+    title: "User profile picture updated successfully",
+    description: "The user profile picture was updated successfully",
+    status: "success",
+    isClosable: true,
+    containerStyle: {
+      fontSize: theme.fonts.sizes.sm,
+    },
+  });
+
+  const errToast = useToast({
+    position: "top",
+    duration: 5000,
+    title: "Error when trying to update user profile picture",
+    description: "Please contact support if the problem persists",
+    status: "error",
+    isClosable: true,
+    containerStyle: {
+      fontSize: theme.fonts.sizes.sm,
+    },
+  });
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const cancelRef = useRef<HTMLButtonElement>(null);
+
+  const [isUploading, setUploading] = useState<boolean>(false);
 
   const router = useRouter();
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const [image, setImage] = useState<string>("");
+
+  const handleClickImage = () => {
+    inputRef.current?.click();
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target && e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64 = reader.result;
+        console.log(base64);
+        onOpen();
+        setImage(base64 as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSaveImage = () => {
+    setUploading(true);
+    handleChangePicture({ _id: user._id, picture: image, token })
+      .then((response) => {
+        sucToast();
+        onClose();
+        setUser(response.data.user);
+        setUploading(false);
+      })
+      .catch((error) => {
+        errToast();
+        console.log(error);
+        setUploading(false);
+      });
+  };
+
+  const cleanInput = () => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  };
+
   return (
     <Box wid="40%" justifyContent="flex-end" alignItems="center">
-      <Button
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent padding={5}>
+            <Text fontSize={theme.fonts.sizes.md} weight={500}>
+              Change Profile Picture
+            </Text>
+
+            <Text fontSize={theme.fonts.sizes.sm}>
+              Are you sure you want to change your profile picture?
+            </Text>
+
+            <Box wid="100%" borderRadius="50%" justifyContent="center">
+              <Image width="50%" src={image} alt="Profile" borderRadius="50%" />
+            </Box>
+
+            <AlertDialogFooter padding={0} mt={10}>
+              <Button
+                ref={cancelRef}
+                onClick={() => {
+                  onClose();
+                  cleanInput();
+                }}
+                ml={3}
+                fontSize={theme.fonts.sizes.sm}
+                isDisabled={isUploading}
+              >
+                Cancel
+              </Button>
+              <Button
+                colorScheme="messenger"
+                onClick={handleSaveImage}
+                ml={3}
+                fontSize={theme.fonts.sizes.sm}
+                isLoading={isUploading}
+              >
+                Change
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+
+      <Buttons.Button
         wid={150}
         fontSize={theme.fonts.sizes.md}
         icon={<Add size={theme.fonts.sizes.md} />}
@@ -27,7 +158,7 @@ const User = () => {
         }}
       >
         Create Letter
-      </Button>
+      </Buttons.Button>
       <Box
         wid={2}
         hei={30}
@@ -37,11 +168,33 @@ const User = () => {
         marginRight={10}
       />
       <Box
-        wid={32}
-        hei={32}
+        position="relative"
+        wid={42}
+        hei={42}
         backgroundColor={theme.colors.base.primary}
         borderRadius={50}
-      />
+        hover="cursor:pointer;"
+        onClick={handleClickImage}
+      >
+        {user?.picture && (
+          <Image
+            width={42}
+            height={42}
+            src={user.picture}
+            alt="Picture"
+            borderRadius="50%"
+          />
+        )}
+        <Box display="none">
+          <input ref={inputRef} type="file" onChange={handleImageChange} />
+        </Box>
+        <Box position="absolute" right={"0"} bottom={"0"}>
+          <Add
+            size={theme.fonts.sizes.sm}
+            color={theme.colors.base.gray[300]}
+          />
+        </Box>
+      </Box>
       <Box
         minWid="17%"
         flexDirection="column"

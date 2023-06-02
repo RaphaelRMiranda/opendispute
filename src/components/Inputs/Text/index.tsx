@@ -15,6 +15,7 @@ const InputText = ({
   readonly,
   defaultValue,
   paddingInput,
+  maxLength,
   ...rest
 }: TBox & TInput) => {
   return (
@@ -42,6 +43,7 @@ const InputText = ({
         defaultValue={defaultValue}
         readOnly={readonly}
         padding={paddingInput}
+        maxLength={maxLength}
       />
       {error && error !== "undefined" && (
         <Text

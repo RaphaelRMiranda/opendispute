@@ -83,6 +83,17 @@ export const handleEditUser = async ({
   );
 };
 
+export const handleChangePicture = async ({
+  token,
+  ...data
+}: TUserEdit & TToken) => {
+  return await Api.patch<UserAuthInterface>(
+    "/user/update",
+    { ...data },
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+};
+
 export const getUsers = async ({
   page,
   limit,
