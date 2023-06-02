@@ -13,10 +13,13 @@ import Checkbox from "@/components/Inputs/Checkbox";
 import SelectText from "@/components/Selects/Text";
 import ActionByType from "../../utils/ActionByType";
 import JustifyerByType from "../../utils/JustifyerByType";
+import DolarMask from "../../utils/DolarMask";
 
 const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
   const { duplicateDispute, removeDispute, object, setObject, errors } =
     useDocument();
+
+  const [balance, setBalance] = useState<string>("");
 
   const [eq, setEq] = useState<boolean>(
     object?.dispute[index]?.equifax || false
@@ -29,6 +32,11 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
   );
 
   const [reverse, setReverse] = useState<boolean>(false);
+
+  const handleBalance = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setBalance(DolarMask(value));
+  };
 
   return (
     <Box
@@ -177,6 +185,7 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
           label="Balance"
           placeholder="$1,000.00"
           onChange={(e) => {
+            handleBalance(e);
             setObject((prev) => ({
               ...prev,
               dispute: prev.dispute.map((item, i) =>
@@ -186,6 +195,7 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
           }}
           error={errors?.dispute && errors?.dispute[index]?.balance?.message}
           defaultValue={object?.dispute[index]?.balance}
+          value={balance || object?.dispute[index]?.balance}
         />
       </Box>
       <Box

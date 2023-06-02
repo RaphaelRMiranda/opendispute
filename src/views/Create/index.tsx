@@ -10,13 +10,11 @@ import Disputes from "./Disputes";
 import SelectText from "@/components/Selects/Text";
 import Radio from "@/components/Inputs/Radio";
 import { useState, useEffect } from "react";
-import GreetingSequence from "./utils/GreetingSequence";
 import DisputeRound from "./utils/DisputeRound";
 import Layout from "@/components/Layout";
 import SwitchTemplate from "./utils/SwitchType";
 import { Form } from "../Login/styles";
 import {
-  getDispute,
   handleCreateDocument,
   handleUpdateDocument,
   useDocument,
@@ -31,6 +29,9 @@ import { DisputeInterface, DisputeUpdate } from "./types";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import CloseStatementByRound from "./utils/CloseStatementByRound";
+import GreetingSequenceByRound from "./utils/GreetingSequenceByRound";
+import SocialNumberMask from "./utils/SocialNumberMask";
+import DolarMask from "./utils/DolarMask";
 
 const Create = () => {
   const { token } = useUser();
@@ -76,6 +77,8 @@ const Create = () => {
   });
 
   const [loading, isLoading] = useState<boolean>(false);
+
+  const [socialNumber, setSocialNumber] = useState<string>("");
 
   const [social, setSocial] = useState<string>(
     object?.customer?.ssn ? "ssn" : object?.customer?.itin ? "itin" : ""
@@ -128,6 +131,8 @@ const Create = () => {
   }, [isEditing, isFactual, setObject, social]);
 
   useEffect(() => {
+    console.log(object);
+
     if (!object.date)
       setObject((prev) => ({
         ...prev,
@@ -142,10 +147,26 @@ const Create = () => {
 
     if (Object.keys(errors).length === 0) {
       setErrors({} as TObjectErrors);
-
       if (isEditing) {
         const data = RemoveEmptyFields(object) as DisputeUpdate;
-        handleUpdateDocument({ ...data, token })
+
+        const balance = data.dispute?.map((dispute) => {
+          return {
+            ...dispute,
+            balance: Number(
+              DolarMask(String(dispute.balance).replace(/\D/g, ""))
+                .replaceAll("$", "")
+                .replaceAll(",", "")
+            ),
+          };
+        });
+
+        const filteredData = {
+          ...data,
+          dispute: balance,
+        };
+
+        handleUpdateDocument({ ...filteredData, token })
           .then((response) => {
             isLoading(false);
             sucEditToast();
@@ -159,7 +180,24 @@ const Create = () => {
           });
       } else {
         const data = RemoveEmptyFields(object) as DisputeInterface;
-        handleCreateDocument({ ...data, token })
+
+        const balance = data.dispute?.map((dispute) => {
+          return {
+            ...dispute,
+            balance: Number(
+              DolarMask(String(dispute.balance).replace(/\D/g, ""))
+                .replaceAll("$", "")
+                .replaceAll(",", "")
+            ),
+          };
+        });
+
+        const filteredData = {
+          ...data,
+          dispute: balance,
+        };
+
+        handleCreateDocument({ ...filteredData, token })
           .then((response) => {
             isLoading(false);
             setLastDispute(response.data.dispute);
@@ -206,6 +244,11 @@ const Create = () => {
       ...prev,
       dispute: [...(prev?.dispute ?? []), newDispute],
     }));
+  };
+
+  const handleChangeSocialNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSocialNumber(SocialNumberMask(value));
   };
 
   return (
@@ -268,7 +311,9 @@ const Create = () => {
                   placeholder="5/5/2023"
                   defaultValue={
                     object.date
-                      ? new Date(object.date).toLocaleDateString("en-US")
+                      ? isFactual
+                        ? new Date().toLocaleDateString("en-US")
+                        : new Date(object.date).toLocaleDateString("en-US")
                       : new Date().toLocaleDateString("en-US")
                   }
                   readonly
@@ -476,6 +521,7 @@ const Create = () => {
                   label="Social Number"
                   placeholder="###-##-###"
                   onChange={(e) => {
+                    handleChangeSocialNumber(e);
                     social === "ssn"
                       ? setObject((prev) => ({
                           ...prev,
@@ -494,13 +540,14 @@ const Create = () => {
                           },
                         }));
                   }}
+                  maxLength={11}
                   error={errors?.customer?.ssn?.message}
-                  defaultValue={
+                  value={
                     social === "ssn"
-                      ? object?.customer?.ssn
+                      ? SocialNumberMask(object?.customer?.ssn)
                       : social === "itin"
-                      ? object?.customer?.itin
-                      : ""
+                      ? SocialNumberMask(object?.customer?.itin)
+                      : socialNumber
                   }
                 />
               </Box>
@@ -594,7 +641,7 @@ const Create = () => {
                 <SelectText
                   wid="49%"
                   label="Greeting Sequence"
-                  options={GreetingSequence}
+                  options={GreetingSequenceByRound(object?.disputeRound || 1)}
                   onChange={(e) =>
                     setObject((prev) => ({
                       ...prev,

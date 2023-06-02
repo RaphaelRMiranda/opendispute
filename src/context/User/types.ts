@@ -17,6 +17,7 @@ export interface UserInterface extends Document {
   email: string;
   password: string;
   role: UserRole;
+  picture?: string;
 }
 
 export type TUserRegister = {
@@ -33,12 +34,13 @@ export type TUserRegister = {
 };
 
 export type TUserEdit = {
-  _id: string;
+  _id?: string;
   firstName?: string;
   middleName?: string;
   lastName?: string;
   email?: string;
   role?: string;
+  picture?: string;
 }
 
 export interface UserAuthInterface {

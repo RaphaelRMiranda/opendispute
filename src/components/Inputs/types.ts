@@ -12,6 +12,7 @@ export type TInput = {
   readonly?: boolean;
   defaultValue?: string | number;
   paddingInput?: string | number | Array<string | number>;
+  maxLength?: number;
 };
 
 export type TRadio = {
