@@ -7,7 +7,6 @@ import Text from "@/components/Text";
 import {
   getDispute,
   handleDownloadDocument,
-  useDocument,
 } from "@/context/Document";
 import { theme } from "@/styles/theme";
 import { useEffect, useState } from "react";
@@ -15,15 +14,12 @@ import { useUser } from "@/context/User";
 import CreditBureau from "./utils/CreditBureau";
 import MaskSocialNumber from "./utils/MaskSocialNumber";
 import { useRouter } from "next/router";
-import ValueInObject from "../Create/utils/ValueInObject";
 import { Skeleton, useToast } from "@chakra-ui/react";
 import Loading from "@/components/Buttons/icons/Loading";
 import { DisputeInterface } from "../Create/types";
-import SuccessSkeleton from "./skeleton";
 
 const Success = () => {
   const { user, token } = useUser();
-  const { lastDispute } = useDocument();
 
   const router = useRouter();
 
@@ -36,7 +32,7 @@ const Success = () => {
 
   const handleDownload = () => {
     onDownloading(true);
-    handleDownloadDocument({ _id: lastDispute._id, token })
+    handleDownloadDocument({ _id: dispute._id, token })
       .then((response) => {
         onDownloading(false);
         const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -135,7 +131,11 @@ const Success = () => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
               >
-                <Skeleton isLoaded={!isLoading}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.sm}
                     color={theme.colors.base.secondary}
@@ -143,7 +143,13 @@ const Success = () => {
                     Created by
                   </Text>
                 </Skeleton>
-                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                  height={6}
+                  marginTop={2}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.md}
                     color={theme.colors.base.secondary}
@@ -159,7 +165,11 @@ const Success = () => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
               >
-                <Skeleton isLoaded={!isLoading}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.sm}
                     color={theme.colors.base.secondary}
@@ -167,7 +177,13 @@ const Success = () => {
                     Balances
                   </Text>
                 </Skeleton>
-                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                  height={6}
+                  marginTop={2}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.md}
                     color={theme.colors.base.secondary}
@@ -188,7 +204,11 @@ const Success = () => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
               >
-                <Skeleton isLoaded={!isLoading}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.sm}
                     color={theme.colors.base.secondary}
@@ -196,13 +216,19 @@ const Success = () => {
                     Customer
                   </Text>
                 </Skeleton>
-                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                  height={6}
+                  marginTop={2}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.md}
                     color={theme.colors.base.secondary}
                     weight={500}
                   >
-                    {lastDispute && dispute?.customer?.firstName
+                    {dispute && dispute?.customer?.firstName
                       ? `${dispute?.customer?.firstName} ${dispute?.customer?.lastName}`
                       : "None"}
                   </Text>
@@ -214,7 +240,11 @@ const Success = () => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
               >
-                <Skeleton isLoaded={!isLoading}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.sm}
                     color={theme.colors.base.secondary}
@@ -222,7 +252,13 @@ const Success = () => {
                     Credit bureau
                   </Text>
                 </Skeleton>
-                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                  height={6}
+                  marginTop={2}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.md}
                     color={theme.colors.base.secondary}
@@ -242,7 +278,11 @@ const Success = () => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
               >
-                <Skeleton isLoaded={!isLoading}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.sm}
                     color={theme.colors.base.secondary}
@@ -250,7 +290,13 @@ const Success = () => {
                     SSN/ITIN
                   </Text>
                 </Skeleton>
-                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                  height={6}
+                  marginTop={2}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.md}
                     color={theme.colors.base.secondary}
@@ -268,7 +314,11 @@ const Success = () => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
               >
-                <Skeleton isLoaded={!isLoading}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.sm}
                     color={theme.colors.base.secondary}
@@ -276,7 +326,13 @@ const Success = () => {
                     Disputes funishers
                   </Text>
                 </Skeleton>
-                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                  height={6}
+                  marginTop={2}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.md}
                     color={theme.colors.base.secondary}
@@ -297,7 +353,11 @@ const Success = () => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
               >
-                <Skeleton isLoaded={!isLoading}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.sm}
                     color={theme.colors.base.secondary}
@@ -305,13 +365,19 @@ const Success = () => {
                     Full address
                   </Text>
                 </Skeleton>
-                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                  height={6}
+                  marginTop={2}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.md}
                     color={theme.colors.base.secondary}
                     weight={500}
                   >
-                    {lastDispute && dispute?.address?.street
+                    {dispute && dispute?.address?.street
                       ? `${dispute?.address?.street} ${dispute?.address?.city}, ${dispute?.address?.state} ${dispute?.address?.zipCode}`
                       : "None"}
                   </Text>
@@ -323,7 +389,11 @@ const Success = () => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
               >
-                <Skeleton isLoaded={!isLoading}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.sm}
                     color={theme.colors.base.secondary}
@@ -331,7 +401,13 @@ const Success = () => {
                     Amount of disputes
                   </Text>
                 </Skeleton>
-                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                  height={6}
+                  marginTop={2}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.md}
                     color={theme.colors.base.secondary}
@@ -349,7 +425,11 @@ const Success = () => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
               >
-                <Skeleton isLoaded={!isLoading}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.sm}
                     color={theme.colors.base.secondary}
@@ -357,7 +437,13 @@ const Success = () => {
                     Account number#
                   </Text>
                 </Skeleton>
-                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                  height={6}
+                  marginTop={2}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.md}
                     color={theme.colors.base.secondary}
@@ -376,7 +462,11 @@ const Success = () => {
                 justifyContent="flex-end"
                 alignItems="flex-end"
               >
-                <Skeleton isLoaded={!isLoading}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.sm}
                     color={theme.colors.base.secondary}
@@ -384,7 +474,13 @@ const Success = () => {
                     Disputes types
                   </Text>
                 </Skeleton>
-                <Skeleton isLoaded={!isLoading} height={6} marginTop={2}>
+                <Skeleton
+                  startColor={theme.colors.base.gray[300]}
+                  endColor={theme.colors.base.gray[400]}
+                  isLoaded={!isLoading}
+                  height={6}
+                  marginTop={2}
+                >
                   <Text
                     fontSize={theme.fonts.sizes.md}
                     color={theme.colors.base.secondary}
@@ -401,7 +497,12 @@ const Success = () => {
           </Box>
 
           <Box wid="100%" justifyContent="center">
-            <Skeleton isLoaded={!isLoading} marginTop={50}>
+            <Skeleton
+              startColor={theme.colors.base.gray[300]}
+              endColor={theme.colors.base.gray[400]}
+              isLoaded={!isLoading}
+              marginTop={50}
+            >
               <Box
                 wid={180}
                 backgroundColor={theme.colors.base.secondary}
@@ -439,7 +540,7 @@ const Success = () => {
                     weight={500}
                     pointerEvents="none"
                   >
-                    {dispute?.dispute?.length || 0}
+                    {dispute?.archives?.length || 0}
                   </Text>
                 </Box>
               </Box>

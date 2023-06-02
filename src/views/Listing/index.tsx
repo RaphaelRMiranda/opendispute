@@ -21,7 +21,6 @@ import SelectText from "@/components/Selects/Text";
 import DisputeRoundAt from "./utils/DisputeRoundAt";
 import FactualDisputes from "./utils/FactualDisputes";
 import Pagination from "@/components/Pagination";
-import ListingSkeleton from "./skeleton";
 import OrderFilter from "./utils/OrderFilter";
 import InputText from "@/components/Inputs/Text";
 import Search from "./icons/Search";
@@ -34,6 +33,7 @@ import {
   AlertDialogFooter,
   AlertDialogOverlay,
   Button,
+  Skeleton,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -43,6 +43,7 @@ import FindSelectedRound, {
   EditSelectedRound,
 } from "./utils/FindSelectedRound";
 import { useRouter } from "next/router";
+import Add from "@/components/Header/icons/Add";
 
 const Listing = () => {
   const router = useRouter();
@@ -273,11 +274,36 @@ const Listing = () => {
       >
         {isLoading && (
           <>
-            <ListingSkeleton />
-            <ListingSkeleton />
-            <ListingSkeleton />
+            <Skeleton
+              width="100%"
+              height={90}
+              isLoaded={false}
+              marginBottom={15}
+              borderRadius={6}
+              startColor={theme.colors.base.gray[300]}
+              endColor={theme.colors.base.gray[100]}
+            />
+            <Skeleton
+              width="100%"
+              height={90}
+              isLoaded={false}
+              marginBottom={15}
+              borderRadius={6}
+              startColor={theme.colors.base.gray[300]}
+              endColor={theme.colors.base.gray[100]}
+            />
+            <Skeleton
+              width="100%"
+              height={90}
+              isLoaded={false}
+              marginBottom={15}
+              borderRadius={6}
+              startColor={theme.colors.base.gray[300]}
+              endColor={theme.colors.base.gray[100]}
+            />
           </>
         )}
+
         {!isLoading &&
           disputes &&
           disputes.length > 0 &&
@@ -294,7 +320,7 @@ const Listing = () => {
                 }
               >
                 <Box
-                  wid="65%"
+                  wid="60%"
                   justifyContent="space-between"
                   alignItems="flex-start"
                 >
@@ -457,7 +483,7 @@ const Listing = () => {
                     </Text>
                   </Item>
                 </Box>
-                <Box wid="30%" justifyContent="flex-end">
+                <Box wid="40%" justifyContent="flex-end">
                   <Box
                     wid="40%"
                     justifyContent="center"
@@ -472,17 +498,12 @@ const Listing = () => {
                         FactualDisputes,
                         dispute.disputes
                       )}
-                      onChange={
-                        (e) =>
-                          EditSelectedRound(
-                            dispute._id.socialNumber,
-                            Number(e.target.value),
-                            setFactualDisputeRound
-                          )
-                        // setFactualDisputeRound({
-                        //   id: dispute._id.socialNumber,
-                        //   round: Number(e.target.value),
-                        // })
+                      onChange={(e) =>
+                        EditSelectedRound(
+                          dispute._id.socialNumber,
+                          Number(e.target.value),
+                          setFactualDisputeRound
+                        )
                       }
                       disabled={isDownloading}
                       defaultValue={FindSelectedRound(
@@ -500,6 +521,23 @@ const Listing = () => {
                       isDownloading ? "cursor:not-allowed;" : "cursor:pointer;"
                     }
                   >
+                    <Box
+                      marginRight={25}
+                      hover="cursor:pointer;"
+                      onClick={() => {
+                        setObject(
+                          dispute.disputes[
+                            FindSelectedRound(
+                              dispute._id.socialNumber,
+                              factualDisputeRound
+                            )
+                          ]
+                        );
+                        router.push(`/factual`);
+                      }}
+                    >
+                      <Add size={theme.fonts.sizes.md} />
+                    </Box>
                     <Box
                       marginRight={25}
                       hover="cursor:pointer;"
