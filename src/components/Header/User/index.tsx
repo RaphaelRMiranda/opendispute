@@ -79,6 +79,7 @@ const User = () => {
   };
 
   const handleSaveImage = () => {
+    setUploading(true);
     handleChangePicture({ _id: user._id, picture: image, token })
       .then((response) => {
         sucToast();
@@ -89,6 +90,7 @@ const User = () => {
       .catch((error) => {
         errToast();
         console.log(error);
+        setUploading(false);
       });
   };
 

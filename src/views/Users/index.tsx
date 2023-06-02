@@ -29,6 +29,7 @@ import {
   AlertDialogFooter,
   AlertDialogOverlay,
   Button,
+  Image,
   Skeleton,
   useDisclosure,
   useToast,
@@ -276,6 +277,23 @@ const Users = () => {
                   justifyContent="space-between"
                   alignItems="flex-start"
                 >
+                  <Box
+                    wid={42}
+                    hei={42}
+                    backgroundColor={theme.colors.base.primary}
+                    borderRadius={50}
+                  >
+                    {user?.picture && (
+                      <Image
+                        width={42}
+                        height={42}
+                        src={user?.picture}
+                        alt="Picture"
+                        borderRadius="50%"
+                      />
+                    )}
+                  </Box>
+
                   <Item>
                     <Text
                       fontSize={theme.fonts.sizes.sm}

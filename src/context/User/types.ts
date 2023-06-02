@@ -31,6 +31,7 @@ export type TUserRegister = {
   updatedAt: string;
   createdBy: UserInterface;
   createdAt: string;
+  picture?: string;
 };
 
 export type TUserEdit = {

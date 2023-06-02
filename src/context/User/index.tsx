@@ -88,7 +88,7 @@ export const handleChangePicture = async ({
   ...data
 }: TUserEdit & TToken) => {
   return await Api.patch<UserAuthInterface>(
-    "/user/udapte",
+    "/user/update",
     { ...data },
     { headers: { Authorization: `Bearer ${token}` } }
   );
