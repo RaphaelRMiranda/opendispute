@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Box from "@/components/Box";
 import Add from "@/components/Header/icons/Add";
 import InputText from "@/components/Inputs/Text";
@@ -15,6 +16,7 @@ import Layout from "@/components/Layout";
 import SwitchTemplate from "./utils/SwitchType";
 import { Form } from "../Login/styles";
 import {
+  getDispute,
   handleCreateDocument,
   handleUpdateDocument,
   useDocument,
@@ -32,7 +34,7 @@ import CloseStatementByRound from "./utils/CloseStatementByRound";
 
 const Create = () => {
   const { token } = useUser();
-  const { object, setObject, errors, setErrors, lastDispute, setLastDispute } =
+  const { object, setObject, errors, setErrors, setLastDispute } =
     useDocument();
 
   const router = useRouter();
@@ -76,7 +78,7 @@ const Create = () => {
   const [loading, isLoading] = useState<boolean>(false);
 
   const [social, setSocial] = useState<string>(
-    object?.customer?.ssn ? "ssn" : object?.customer?.ssn ? "itin" : ""
+    object?.customer?.ssn ? "ssn" : object?.customer?.itin ? "itin" : ""
   );
 
   const [eq, setEq] = useState<boolean>(object?.creditBureau?.equifax || false);
@@ -91,8 +93,12 @@ const Create = () => {
     object?._id && router.pathname.indexOf(`/update`) >= 0 ? true : false
   );
 
+  const [isFactual] = useState<boolean>(
+    object?._id && router.pathname.indexOf(`/factual`) >= 0 ? true : false
+  );
+
   useEffect(() => {
-    if (isEditing) {
+    if (isEditing || isFactual) {
       social === "ssn"
         ? setObject((prev) => ({
             ...prev,
@@ -111,7 +117,15 @@ const Create = () => {
             },
           }));
     }
-  }, [isEditing, setObject, social]);
+
+    if (isFactual) {
+      setObject((prev) => ({
+        ...prev,
+        _id: "",
+        dispute: [],
+      }));
+    }
+  }, [isEditing, isFactual, setObject, social]);
 
   useEffect(() => {
     if (!object.date)
@@ -119,9 +133,7 @@ const Create = () => {
         ...prev,
         date: new Date().toLocaleDateString("en-US"),
       }));
-
-    setLastDispute(object);
-  }, [object, setLastDispute, setObject, isEditing, social]);
+  }, [object, isEditing, social]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     isLoading(true);

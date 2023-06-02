@@ -21,7 +21,6 @@ import Search from "../Listing/icons/Search";
 import InputDate from "@/components/Inputs/Date";
 import SelectText from "@/components/Selects/Text";
 import OrderFilter from "../Listing/utils/OrderFilter";
-import ListingSkeleton from "../Listing/skeleton";
 import Pagination from "@/components/Pagination";
 import Role from "@/components/Header/User/utils/Role";
 import {
@@ -30,6 +29,7 @@ import {
   AlertDialogFooter,
   AlertDialogOverlay,
   Button,
+  Skeleton,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -236,9 +236,33 @@ const Users = () => {
       >
         {isLoading && (
           <>
-            <ListingSkeleton />
-            <ListingSkeleton />
-            <ListingSkeleton />
+            <Skeleton
+              width="100%"
+              height={90}
+              isLoaded={false}
+              marginBottom={15}
+              borderRadius={6}
+              startColor={theme.colors.base.gray[300]}
+              endColor={theme.colors.base.gray[100]}
+            />
+            <Skeleton
+              width="100%"
+              height={90}
+              isLoaded={false}
+              marginBottom={15}
+              borderRadius={6}
+              startColor={theme.colors.base.gray[300]}
+              endColor={theme.colors.base.gray[100]}
+            />
+            <Skeleton
+              width="100%"
+              height={90}
+              isLoaded={false}
+              marginBottom={15}
+              borderRadius={6}
+              startColor={theme.colors.base.gray[300]}
+              endColor={theme.colors.base.gray[100]}
+            />
           </>
         )}
         {!isLoading &&

@@ -87,6 +87,7 @@ export interface DisputeInterface extends Document {
   closingStatement: string;
   closingStatementExtended?: string;
   dispute: TDispute[];
+  archives: TArchives[];
   [key: string]: any;
 }
 
