@@ -181,6 +181,99 @@ const APR = [
   },
 ];
 
+const API = [
+  {
+    label: "Select a action to be taken",
+    value: null,
+  },
+  {
+    label: "Please remove it from my credit report.",
+    value: "Please remove it from my credit report.",
+  },
+  {
+    label: "Remove it from my credit report.",
+    value: "Remove it from my credit report.",
+  },
+  {
+    label: "Please delete it from my credit report.",
+    value: "Please delete it from my credit report.",
+  },
+  {
+    label: "Delete this from my credit report.",
+    value: "Delete this from my credit report.",
+  },
+  {
+    label: "it needs to be removed from my credit report.",
+    value: "it needs to be removed from my credit report.",
+  },
+  {
+    label: "it needs to be deleted from my credit report.",
+    value: "it needs to be deleted from my credit report.",
+  },
+  {
+    label: "Erase this from my credit report.",
+    value: "Erase this from my credit report.",
+  },
+  {
+    label: "This needs to be erased from my credit report.",
+    value: "This needs to be erased from my credit report.",
+  },
+  {
+    label: "Please delete this employment information from my credit report.",
+    value: "Please delete this employment information from my credit report.",
+  },
+  {
+    label: "Please remove this employment information from my credit report.",
+    value: "Please remove this employment information from my credit report.",
+  },
+  {
+    label: "Please erase this employment information from my credit report.",
+    value: "Please erase this employment information from my credit report.",
+  },
+  {
+    label: "Delete this employment information from my credit report.",
+    value: "Delete this employment information from my credit report.",
+  },
+  {
+    label: "Remove this employment information from my credit report.",
+    value: "Remove this employment information from my credit report.",
+  },
+  {
+    label: "Erase this employment information from my credit report.",
+    value: "Erase this employment information from my credit report.",
+  },
+  {
+    label: "Please remove this phone number from my credit report.",
+    value: "Please remove this phone number from my credit report.",
+  },
+  {
+    label: "Please delete this phone number from my credit report.",
+    value: "Please delete this phone number from my credit report.",
+  },
+  {
+    label: "Please erase this phone number from my credit report.",
+    value: "Please erase this phone number from my credit report.",
+  },
+  {
+    label: "Please remove any social security variation from my credit report.",
+    value: "Please remove any social security variation from my credit report.",
+  },
+  {
+    label: "Please delete any social security variation from my credit report.",
+    value: "Please delete any social security variation from my credit report.",
+  },
+  {
+    label: "Please erase any social security variation from my credit report.",
+    value: "Please erase any social security variation from my credit report.",
+  },
+  {
+    label:
+      "Please correct/remove any name variation or aliases from my credit report.",
+    value:
+      "Please correct/remove any name variation or aliases from my credit report.",
+  },
+];
+
 const ActionByType = (type: string) => {
   switch (type) {
     case "Charge-offs":
@@ -192,7 +285,7 @@ const ActionByType = (type: string) => {
     case "Student Loans":
       return ACO as TOption[];
     case "Personal Info":
-      return ACO as TOption[]; 
+      return API as TOption[];
     case "Inquiries":
       return AIQ as TOption[];
     case "Repossessions":

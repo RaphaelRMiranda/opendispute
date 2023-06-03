@@ -2,19 +2,14 @@ import { DisputeInterface, TDispute } from "@/views/Create/types";
 import { TObjectErrors } from "@/views/Create/validation/types";
 import { Dispatch, SetStateAction } from "react";
 
-export type DocumentProps = {
-  disputes: TDisputeObject[];
-  setDisputes: Dispatch<SetStateAction<TDisputeObject[]>>;
-  lastDispute: DisputeInterface;
-  setLastDispute: Dispatch<SetStateAction<DisputeInterface>>;
-  errors: TObjectErrors;
-  setErrors: Dispatch<SetStateAction<TObjectErrors>>;
-  object: DisputeInterface;
-  setObject: Dispatch<SetStateAction<DisputeInterface>>;
-  // editDispute: (id: string, dispute: TEditDispute) => void;
+export interface DocumentProps<T = TDispute> {
   duplicateDispute: (type: string, id: string) => void;
   removeDispute: (id: string) => void;
-};
+  errors: TObjectErrors;
+  setErrors: Dispatch<SetStateAction<TObjectErrors>>;
+  object: DisputeInterface<T>;
+  setObject: Dispatch<SetStateAction<DisputeInterface<T>>>;
+}
 
 export type TEditDispute = {
   equifax: boolean;
@@ -22,7 +17,7 @@ export type TEditDispute = {
   transunion: boolean;
 };
 
-export type TDisputeObject = TDispute & {
+export type TDisputeObject<T = TDispute> = T & {
   id?: string;
   template?: React.ReactNode;
 };
@@ -38,4 +33,4 @@ export type TDisputeList = {
   since: string;
   until: string;
   search: string;
-}
+};

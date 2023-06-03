@@ -14,6 +14,7 @@ import SelectText from "@/components/Selects/Text";
 import ActionByType from "../../utils/ActionByType";
 import JustifyerByType from "../../utils/JustifyerByType";
 import DolarMask from "../../utils/DolarMask";
+import DateMask from "../../utils/DateMask";
 
 const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
   const { duplicateDispute, removeDispute, object, setObject, errors } =
@@ -32,6 +33,25 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
   );
 
   const [reverse, setReverse] = useState<boolean>(false);
+
+  const [EXShows, setEXShows] = useState<string>("");
+  const [EQShows, setEQShows] = useState<string>("");
+  const [TUShows, setTUShows] = useState<string>("");
+
+  const handleChangeEXShows = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEXShows(DateMask(value));
+  };
+
+  const handleChangeEQShows = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setEQShows(DateMask(value));
+  };
+
+  const handleChangeTUShows = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setTUShows(DateMask(value));
+  };
 
   const handleBalance = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -320,12 +340,13 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
         alignItems="center"
         marginTop={10}
       >
-        <InputText
+                <InputText
           wid="33%"
           label="EXPERIAN Shows"
           placeholder="5/5/2023"
           marginRight={10}
           onChange={(e) => {
+            handleChangeEXShows(e);
             setObject((prev) => ({
               ...prev,
               dispute: prev.dispute.map((item, i) =>
@@ -338,7 +359,12 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
               ),
             }));
           }}
-          defaultValue={object?.dispute[index]?.shows?.experian}
+          value={
+            EXShows
+              ? DateMask(EXShows)
+              : DateMask(object?.dispute[index]?.shows?.experian) || ""
+          }
+          maxLength={10}
         />
         <InputText
           wid="33%"
@@ -346,6 +372,7 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
           placeholder="5/5/2023"
           marginRight={10}
           onChange={(e) => {
+            handleChangeEQShows(e);
             setObject((prev) => ({
               ...prev,
               dispute: prev.dispute.map((item, i) =>
@@ -358,13 +385,19 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
               ),
             }));
           }}
-          defaultValue={object?.dispute[index]?.shows?.equifax}
+          value={
+            EQShows
+              ? DateMask(EQShows)
+              : DateMask(object?.dispute[index]?.shows?.equifax) || ""
+          }
+          maxLength={10}
         />
         <InputText
           wid="33%"
           label="TRANSUNION Shows"
           placeholder="5/5/2023"
           onChange={(e) => {
+            handleChangeTUShows(e);
             setObject((prev) => ({
               ...prev,
               dispute: prev.dispute.map((item, i) =>
@@ -377,7 +410,12 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
               ),
             }));
           }}
-          defaultValue={object?.dispute[index]?.shows?.transunion}
+          value={
+            TUShows
+              ? DateMask(TUShows)
+              : DateMask(object?.dispute[index]?.shows?.transunion) || ""
+          }
+          maxLength={10}
         />
       </Box>
       <Box

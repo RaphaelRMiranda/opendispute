@@ -40,7 +40,7 @@ import { User } from "../Register/types";
 const Users = () => {
   const router = useRouter();
 
-  const { setUser, token, setObject } = useUser();
+  const { user, setUser, token, setObject } = useUser();
 
   const today = new Date();
   const yesterday = today.setDate(today.getDate() - 1);
@@ -269,9 +269,9 @@ const Users = () => {
         {!isLoading &&
           users &&
           users.length > 0 &&
-          users.map((user) => {
+          users.map((u) => {
             return (
-              <Card key={user.email}>
+              <Card key={u.email}>
                 <Box
                   wid="70%"
                   justifyContent="space-between"
@@ -283,11 +283,11 @@ const Users = () => {
                     backgroundColor={theme.colors.base.primary}
                     borderRadius={50}
                   >
-                    {user?.picture && (
+                    {u?.picture && (
                       <Image
                         width={42}
                         height={42}
-                        src={user?.picture}
+                        src={u?.picture}
                         alt="Picture"
                         borderRadius="50%"
                       />
@@ -306,8 +306,7 @@ const Users = () => {
                       color={theme.colors.base.secondary}
                       weight={500}
                     >
-                      {user.firstName} {user.middleName.charAt(0)}.{" "}
-                      {user.lastName}
+                      {u.firstName} {u.middleName.charAt(0)}. {u.lastName}
                     </Text>
                   </Item>
                   <Item>
@@ -322,7 +321,7 @@ const Users = () => {
                       color={theme.colors.base.green}
                       weight={500}
                     >
-                      {user.disputesCreated}
+                      {u.disputesCreated}
                     </Text>
                   </Item>
                   <Item>
@@ -337,7 +336,7 @@ const Users = () => {
                       color={theme.colors.base.secondary}
                       weight={500}
                     >
-                      {new Date(user.updatedAt).toLocaleString("en-US", {
+                      {new Date(u.updatedAt).toLocaleString("en-US", {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
@@ -358,7 +357,7 @@ const Users = () => {
                       color={theme.colors.base.secondary}
                       weight={500}
                     >
-                      {`${user.createdBy.firstName} ${user.createdBy.lastName}`}
+                      {`${u.createdBy.firstName} ${u.createdBy.lastName}`}
                     </Text>
                   </Item>
                   <Item>
@@ -373,7 +372,7 @@ const Users = () => {
                       color={theme.colors.base.secondary}
                       weight={500}
                     >
-                      {new Date(user.createdAt).toLocaleString("en-US", {
+                      {new Date(u.createdAt).toLocaleString("en-US", {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
@@ -394,39 +393,42 @@ const Users = () => {
                       color={theme.colors.base.secondary}
                       weight={500}
                     >
-                      {Role(user.role as UserRole)}
+                      {Role(u.role as UserRole)}
                     </Text>
                   </Item>
                 </Box>
                 <Box wid="25%" justifyContent="flex-end">
-                  <Box wid="40%" justifyContent="flex-end">
-                    <Box
-                      marginRight={25}
-                      hover="cursor:pointer;"
-                      onClick={() => {
-                        setObject(user as User);
-                        router.push(`/register`);
-                      }}
-                    >
-                      <Edit size={theme.icons.sizes.xs} />
-                    </Box>
-                    <Box
-                      hover="cursor:pointer;"
-                      onClick={() => {
-                        onOpen();
-                        setDelete(user?._id);
-                      }}
-                    >
-                      <Text
-                        fontSize={theme.fonts.sizes.md}
-                        color={theme.colors.base.red[200]}
-                        weight={500}
-                        pointerEvents="none"
+                  {user?.email !== u.email && (
+                    <Box wid="40%" justifyContent="flex-end">
+                      <Box
+                        marginRight={25}
+                        hover="cursor:pointer;"
+                        onClick={() => {
+                          setObject(u as User);
+                          router.push(`/register`);
+                        }}
                       >
-                        Delete
-                      </Text>
+                        <Edit size={theme.icons.sizes.xs} />
+                      </Box>
+
+                      <Box
+                        hover="cursor:pointer;"
+                        onClick={() => {
+                          onOpen();
+                          setDelete(u?._id);
+                        }}
+                      >
+                        <Text
+                          fontSize={theme.fonts.sizes.md}
+                          color={theme.colors.base.red[200]}
+                          weight={500}
+                          pointerEvents="none"
+                        >
+                          Delete
+                        </Text>
+                      </Box>
                     </Box>
-                  </Box>
+                  )}
                 </Box>
               </Card>
             );

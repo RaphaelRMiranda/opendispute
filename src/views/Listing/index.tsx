@@ -8,7 +8,7 @@ import Layout from "@/components/Layout";
 import Page from "@/components/Page";
 import Text from "@/components/Text";
 import { theme } from "@/styles/theme";
-import { DisputeInterface, TDisputeArr } from "../Create/types";
+import { DisputeInterface, TDispute, TDisputeArr } from "../Create/types";
 import { useEffect, useRef, useState } from "react";
 import { useUser } from "@/context/User";
 import {
@@ -93,7 +93,7 @@ const Listing = () => {
   const [search, setSearch] = useState<string>("");
   const debounceValue = useDebounce(search, 1000);
 
-  const [disputes, setDisputes] = useState<TDisputeArr[]>([]);
+  const [disputes, setDisputes] = useState<TDisputeArr<TDispute>[]>([]);
   const [factualDisputeRound, setFactualDisputeRound] = useState<
     TFactualDispute[]
   >([]);

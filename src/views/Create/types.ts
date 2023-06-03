@@ -48,17 +48,30 @@ export type TDispute = {
   [key: string]: any;
 };
 
+export type TDisputePI = {
+  type: string;
+  inaccurateInformation: string;
+  equifax: boolean;
+  experian: boolean;
+  transunion: boolean;
+  action: string;
+  justifyer: string;
+  comment?: string;
+  reverse?: boolean;
+  [key: string]: any;
+};
+
 export type TDisputeProps = {
   disputes: TDisputeObject[];
   loading?: boolean;
   handleEdit?: (e: React.FormEvent<HTMLFormElement>) => void;
 };
 
-export type TDisputeArr = {
+export type TDisputeArr<T extends TDispute = TDispute> = {
   _id: {
     socialNumber: string;
   };
-  disputes: (DisputeInterface & TDisputeList)[];
+  disputes: (DisputeInterface<T> & TDisputeList)[];
 };
 
 export type DisputeUpdate = {
@@ -68,15 +81,16 @@ export type DisputeUpdate = {
   address: TAddress;
   disputeRound: number;
   creditBureau: TCreditBureau;
-  greetingSequence: string;
+  greetingSequence: string; 
   greetingSequenceExtended?: string;
   closingStatement: string;
   closingStatementExtended?: string;
   dispute: TDispute[];
   [key: string]: any;
-}
+};
 
-export interface DisputeInterface extends Document {
+export interface DisputeInterface<T = TDispute>
+  extends Document {
   date: string;
   customer: TCustomer;
   address: TAddress;
@@ -86,7 +100,22 @@ export interface DisputeInterface extends Document {
   greetingSequenceExtended?: string;
   closingStatement: string;
   closingStatementExtended?: string;
-  dispute: TDispute[];
+  dispute: T[];
+  archives: TArchives[];
+  [key: string]: any;
+}
+
+export interface DisputeInterfacePI extends Document {
+  date: string;
+  customer: TCustomer;
+  address: TAddress;
+  disputeRound: number;
+  creditBureau: TCreditBureau;
+  greetingSequence: string;
+  greetingSequenceExtended?: string;
+  closingStatement: string;
+  closingStatementExtended?: string;
+  dispute: TDisputePI[];
   archives: TArchives[];
   [key: string]: any;
 }

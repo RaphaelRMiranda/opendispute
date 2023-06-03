@@ -25,18 +25,18 @@ import ObjectValidation from "./validation/Object";
 import { TObjectErrors } from "./validation/types";
 import RemoveEmptyFields from "./utils/RemoveEmptyFields";
 import { useUser } from "@/context/User";
-import { DisputeInterface, DisputeUpdate } from "./types";
+import { DisputeInterface, DisputeUpdate, TDisputePI } from "./types";
 import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import CloseStatementByRound from "./utils/CloseStatementByRound";
 import GreetingSequenceByRound from "./utils/GreetingSequenceByRound";
 import SocialNumberMask from "./utils/SocialNumberMask";
 import DolarMask from "./utils/DolarMask";
+import DateMask from "./utils/DateMask";
 
 const Create = () => {
   const { token } = useUser();
-  const { object, setObject, errors, setErrors, setLastDispute } =
-    useDocument();
+  const { object, setObject, errors, setErrors } = useDocument();
 
   const router = useRouter();
 
@@ -79,6 +79,7 @@ const Create = () => {
   const [loading, isLoading] = useState<boolean>(false);
 
   const [socialNumber, setSocialNumber] = useState<string>("");
+  const [dateOfBirth, setDateOfBirth] = useState<string>("");
 
   const [social, setSocial] = useState<string>(
     object?.customer?.ssn ? "ssn" : object?.customer?.itin ? "itin" : ""
@@ -131,8 +132,6 @@ const Create = () => {
   }, [isEditing, isFactual, setObject, social]);
 
   useEffect(() => {
-    console.log(object);
-
     if (!object.date)
       setObject((prev) => ({
         ...prev,
@@ -200,7 +199,6 @@ const Create = () => {
         handleCreateDocument({ ...filteredData, token })
           .then((response) => {
             isLoading(false);
-            setLastDispute(response.data.dispute);
             router.push(`/success/${response.data.dispute._id}`);
             setObject({} as DisputeInterface);
           })
@@ -249,6 +247,11 @@ const Create = () => {
   const handleChangeSocialNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSocialNumber(SocialNumberMask(value));
+  };
+
+  const handleChangeDateOfBirth = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setDateOfBirth(DateMask(value));
   };
 
   return (
@@ -450,6 +453,7 @@ const Create = () => {
                   placeholder="5/5/1980"
                   marginRight={10}
                   onChange={(e) => {
+                    handleChangeDateOfBirth(e);
                     setObject((prev) => ({
                       ...prev,
                       customer: {
@@ -459,7 +463,12 @@ const Create = () => {
                     }));
                   }}
                   error={errors?.customer?.dateOfBirth?.message}
-                  defaultValue={object?.customer?.dateOfBirth || ""}
+                  value={
+                    dateOfBirth
+                      ? DateMask(dateOfBirth)
+                      : DateMask(object?.customer?.dateOfBirth) || ""
+                  }
+                  maxLength={10}
                 />
                 <Box
                   wid="20%"

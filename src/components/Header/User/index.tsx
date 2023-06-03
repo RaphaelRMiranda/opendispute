@@ -70,7 +70,6 @@ const User = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64 = reader.result;
-        console.log(base64);
         onOpen();
         setImage(base64 as string);
       };

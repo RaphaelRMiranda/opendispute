@@ -101,12 +101,7 @@ export const DocumentProvider = ({ children }: TContext) => {
     {} as DisputeInterface
   );
 
-  const [disputes, setDisputes] = useState<TDisputeObject[]>([]); // Não usado
-
   const [errors, setErrors] = useState<TObjectErrors>({} as TObjectErrors);
-  const [lastDispute, setLastDispute] = useState<DisputeInterface>(
-    {} as DisputeInterface
-  );
 
   const duplicateDispute = (type: string, id: string) => {
     const duplicateDispute = object.dispute.find((item) =>
@@ -142,14 +137,10 @@ export const DocumentProvider = ({ children }: TContext) => {
   return (
     <DocumentContext.Provider
       value={{
-        disputes,
-        setDisputes,
         duplicateDispute,
         removeDispute,
         errors,
         setErrors,
-        lastDispute,
-        setLastDispute,
         object,
         setObject,
       }}
