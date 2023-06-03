@@ -5,7 +5,7 @@ import { theme } from "@/styles/theme";
 import ArrowTurnUpRight from "../icons/ArrowTurnUpRight";
 import { Button } from "@/components/Buttons";
 import ArrowTurnDownRight from "../icons/ArrowTurnDownRight";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Copy from "../icons/Copy";
 import { TDisputeTemplate } from "./types";
 import { useDocument } from "@/context/Document";
@@ -13,10 +13,19 @@ import Checkbox from "@/components/Inputs/Checkbox";
 import SelectText from "@/components/Selects/Text";
 import ActionByType from "../../utils/ActionByType";
 import JustifyerByType from "../../utils/JustifyerByType";
+import { DisputeInterface, TDisputePI } from "../../types";
 
 const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
   const { duplicateDispute, removeDispute, object, setObject, errors } =
     useDocument();
+
+  const [objectPI, setObjectPI] = useState<DisputeInterface<TDisputePI>>(
+    object as unknown as DisputeInterface<TDisputePI>
+  );
+
+  useEffect(() => {
+    setObject(objectPI as unknown as DisputeInterface);
+  }, [objectPI, setObject]);
 
   const [eq, setEq] = useState<boolean>(false);
   const [ex, setEx] = useState<boolean>(false);
@@ -73,7 +82,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             label="Equifax"
             onChange={() => {
               setEq(!eq);
-              setObject((prev) => ({
+              setObjectPI((prev) => ({
                 ...prev,
                 dispute: prev.dispute.map((item, i) =>
                   i === index ? { ...item, equifax: !eq } : item
@@ -87,7 +96,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             label="Experian"
             onChange={() => {
               setEx(!ex);
-              setObject((prev) => ({
+              setObjectPI((prev) => ({
                 ...prev,
                 dispute: prev.dispute.map((item, i) =>
                   i === index ? { ...item, experian: !ex } : item
@@ -101,7 +110,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             label="TransUnion"
             onChange={() => {
               setTu(!tu);
-              setObject((prev) => ({
+              setObjectPI((prev) => ({
                 ...prev,
                 dispute: prev.dispute.map((item, i) =>
                   i === index ? { ...item, transunion: !tu } : item
@@ -131,55 +140,24 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
         marginTop={20}
       >
         <InputText
-          wid="35%"
-          label="Data Furnisher"
-          placeholder="Bank of America"
-          marginRight={10}
+          wid="100%"
+          label="Inaccurate information"
+          placeholder="This account is not mine"
           onChange={(e) => {
-            setObject((prev) => ({
+            setObjectPI((prev) => ({
               ...prev,
               dispute: prev.dispute.map((item, i) =>
-                i === index ? { ...item, dataFunisher: e.target.value } : item
+                i === index
+                  ? { ...item, inaccurateInformation: e.target.value }
+                  : item
               ),
             }));
           }}
           error={
-            errors?.dispute && errors?.dispute[index]?.dataFunisher?.message
+            errors?.dispute &&
+            errors?.dispute[index]?.inaccurateInformation?.message
           }
-          defaultValue={object?.dispute[index]?.dataFunisher}
-        />
-        <InputText
-          wid="45%"
-          label="Account#"
-          placeholder="1234567890"
-          marginRight={10}
-          onChange={(e) => {
-            setObject((prev) => ({
-              ...prev,
-              dispute: prev.dispute.map((item, i) =>
-                i === index ? { ...item, accountNumber: e.target.value } : item
-              ),
-            }));
-          }}
-          error={
-            errors?.dispute && errors?.dispute[index]?.accountNumber?.message
-          }
-          defaultValue={object?.dispute[index]?.accountNumber}
-        />
-        <InputText
-          wid="20%"
-          label="Balance"
-          placeholder="$1,000.00"
-          onChange={(e) => {
-            setObject((prev) => ({
-              ...prev,
-              dispute: prev.dispute.map((item, i) =>
-                i === index ? { ...item, balance: e.target.value } : item
-              ),
-            }));
-          }}
-          error={errors?.dispute && errors?.dispute[index]?.balance?.message}
-          defaultValue={object?.dispute[index]?.balance}
+          defaultValue={objectPI?.dispute[index]?.inaccurateInformation}
         />
       </Box>
       <Box
@@ -203,7 +181,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
               options={ActionByType("Personal Info")}
               marginLeft={10}
               onChange={(e) =>
-                setObject((prev) => ({
+                setObjectPI((prev) => ({
                   ...prev,
                   dispute: prev.dispute.map((item, i) =>
                     i === index ? { ...item, action: e.target.value } : item
@@ -211,7 +189,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
                 }))
               }
               error={errors?.dispute && errors?.dispute[index]?.action?.message}
-              defaultValue={object?.dispute[index]?.action}
+              defaultValue={objectPI?.dispute[index]?.action}
             />
           ) : (
             <SelectText
@@ -220,7 +198,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
               options={JustifyerByType("Personal Info")}
               marginLeft={10}
               onChange={(e) =>
-                setObject((prev) => ({
+                setObjectPI((prev) => ({
                   ...prev,
                   dispute: prev.dispute.map((item, i) =>
                     i === index ? { ...item, justifyer: e.target.value } : item
@@ -230,7 +208,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
               error={
                 errors?.dispute && errors?.dispute[index]?.justifyer?.message
               }
-              defaultValue={object?.dispute[index]?.justifyer}
+              defaultValue={objectPI?.dispute[index]?.justifyer}
             />
           )}
         </Box>
@@ -238,7 +216,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
           fontSize={theme.fonts.sizes.md}
           onClick={() => {
             setReverse(!reverse);
-            setObject((prev) => ({
+            setObjectPI((prev) => ({
               ...prev,
               dispute: prev.dispute.map((item, i) =>
                 i === index ? { ...item, reverse } : item
@@ -265,7 +243,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
               options={JustifyerByType("Personal Info")}
               marginLeft={10}
               onChange={(e) =>
-                setObject((prev) => ({
+                setObjectPI((prev) => ({
                   ...prev,
                   dispute: prev.dispute.map((item, i) =>
                     i === index ? { ...item, justifyer: e.target.value } : item
@@ -275,7 +253,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
               error={
                 errors?.dispute && errors?.dispute[index]?.justifyer?.message
               }
-              defaultValue={object?.dispute[index]?.justifyer}
+              defaultValue={objectPI?.dispute[index]?.justifyer}
             />
           ) : (
             <SelectText
@@ -284,7 +262,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
               options={ActionByType("Personal Info")}
               marginLeft={10}
               onChange={(e) =>
-                setObject((prev) => ({
+                setObjectPI((prev) => ({
                   ...prev,
                   dispute: prev.dispute.map((item, i) =>
                     i === index ? { ...item, action: e.target.value } : item
@@ -292,77 +270,10 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
                 }))
               }
               error={errors?.dispute && errors?.dispute[index]?.action?.message}
-              defaultValue={object?.dispute[index]?.action}
+              defaultValue={objectPI?.dispute[index]?.action}
             />
           )}
         </Box>
-      </Box>
-      <Box
-        wid="100%"
-        flexDirection="row"
-        justifyContent="flex-start"
-        alignItems="center"
-        marginTop={10}
-      >
-        <InputText
-          wid="33%"
-          label="EXPERIAN Shows"
-          placeholder="5/5/2023"
-          marginRight={10}
-          onChange={(e) => {
-            setObject((prev) => ({
-              ...prev,
-              dispute: prev.dispute.map((item, i) =>
-                i === index
-                  ? {
-                      ...item,
-                      shows: { ...item?.shows, experian: e.target.value },
-                    }
-                  : item
-              ),
-            }));
-          }}
-          defaultValue={object?.dispute[index]?.shows?.experian}
-        />
-        <InputText
-          wid="33%"
-          label="EQUIFAX Shows"
-          placeholder="5/5/2023"
-          marginRight={10}
-          onChange={(e) => {
-            setObject((prev) => ({
-              ...prev,
-              dispute: prev.dispute.map((item, i) =>
-                i === index
-                  ? {
-                      ...item,
-                      shows: { ...item?.shows, equifax: e.target.value },
-                    }
-                  : item
-              ),
-            }));
-          }}
-          defaultValue={object?.dispute[index]?.shows?.equifax}
-        />
-        <InputText
-          wid="33%"
-          label="TRANSUNION Shows"
-          placeholder="5/5/2023"
-          onChange={(e) => {
-            setObject((prev) => ({
-              ...prev,
-              dispute: prev.dispute.map((item, i) =>
-                i === index
-                  ? {
-                      ...item,
-                      shows: { ...item?.shows, transunion: e.target.value },
-                    }
-                  : item
-              ),
-            }));
-          }}
-          defaultValue={object?.dispute[index]?.shows?.transunion}
-        />
       </Box>
       <Box
         wid="100%"
@@ -376,14 +287,14 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
           label="Additional Comment"
           placeholder="This account is not mine"
           onChange={(e) => {
-            setObject((prev) => ({
+            setObjectPI((prev) => ({
               ...prev,
               dispute: prev.dispute.map((item, i) =>
                 i === index ? { ...item, comment: e.target.value } : item
               ),
             }));
           }}
-          defaultValue={object?.dispute[index]?.comment}
+          defaultValue={objectPI?.dispute[index]?.comment}
         />
       </Box>
       <Box

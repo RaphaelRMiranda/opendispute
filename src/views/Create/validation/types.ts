@@ -28,6 +28,7 @@ export type TCreditBureauError = {
 
 export type TDisputeError = {
   type?: TErrorMessage;
+  inaccurateInformation?: TErrorMessage;
   dataFunisher?: TErrorMessage;
   equifax?: TErrorMessage;
   experian?: TErrorMessage;
@@ -38,7 +39,7 @@ export type TDisputeError = {
   justifyer?: TErrorMessage;
 };
 
-export type TObjectErrors = {
+export type TObjectErrors<T = TDisputeError> = {
   date?: TErrorMessage;
   customer?: TCustomerError;
   address?: TAddressError;
@@ -48,5 +49,5 @@ export type TObjectErrors = {
   greetingSequenceExtended?: TErrorMessage;
   closingStatement?: TErrorMessage;
   closingStatementExtended?: TErrorMessage;
-  dispute?: TDisputeError[];
+  dispute?: T[];
 };

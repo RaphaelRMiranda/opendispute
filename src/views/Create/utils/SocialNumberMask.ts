@@ -1,6 +1,4 @@
 const SocialNumberMask = (value: string | undefined): string => {
-  console.log(value)
-
   const digits = value?.replace(/\D/g, "");
   if (digits && digits.length > 0)
     return digits

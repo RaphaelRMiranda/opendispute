@@ -1,4 +1,3 @@
-import { UseFormRegister, FieldValues } from "react-hook-form";
 
 export type TDisputeTemplate = {
   index: number;
@@ -9,4 +8,4 @@ export type TDisputeBureau = {
   equifax: boolean;
   experian: boolean;
   transunion: boolean;
-}
+};

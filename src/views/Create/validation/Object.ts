@@ -190,20 +190,30 @@ const ObjectValidation = (obj: DisputeInterface) => {
         disputeErrors.type = { message: "Type is required" };
       }
 
-      if (!dispute?.dataFunisher) {
-        disputeErrors.dataFunisher = {
-          message: "Data furnisher is required",
-        };
-      }
+      console.log(dispute?.type)
 
-      if (!dispute?.accountNumber) {
-        disputeErrors.accountNumber = {
-          message: "Account number is required",
-        };
-      }
+      if (dispute?.type === "Personal Info") {
+        if (!dispute?.inaccurateInformation) {
+          disputeErrors.inaccurateInformation = {
+            message: "Inaccurate information is required",
+          };
+        }
+      } else {
+        if (!dispute?.dataFunisher) {
+          disputeErrors.dataFunisher = {
+            message: "Data furnisher is required",
+          };
+        }
 
-      if (!dispute?.balance) {
-        disputeErrors.balance = { message: "Balance is required" };
+        if (!dispute?.accountNumber) {
+          disputeErrors.accountNumber = {
+            message: "Account number is required",
+          };
+        }
+
+        if (!dispute?.balance) {
+          disputeErrors.balance = { message: "Balance is required" };
+        }
       }
 
       if (!dispute?.action) {
