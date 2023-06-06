@@ -14,7 +14,7 @@ import SelectText from "@/components/Selects/Text";
 import ActionByType from "../../utils/ActionByType";
 import JustifyerByType from "../../utils/JustifyerByType";
 import DolarMask from "../../utils/DolarMask";
-import DateMask from "../../utils/DateMask";
+import DateMaskOptional from "../../utils/DateMaskOptional";
 
 const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
   const { duplicateDispute, removeDispute, object, setObject, errors } =
@@ -40,17 +40,17 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
 
   const handleChangeEXShows = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setEXShows(DateMask(value));
+    setEXShows(DateMaskOptional(value));
   };
 
   const handleChangeEQShows = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setEQShows(DateMask(value));
+    setEQShows(DateMaskOptional(value));
   };
 
   const handleChangeTUShows = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setTUShows(DateMask(value));
+    setTUShows(DateMaskOptional(value));
   };
 
   const handleBalance = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -214,8 +214,7 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             }));
           }}
           error={errors?.dispute && errors?.dispute[index]?.balance?.message}
-          defaultValue={object?.dispute[index]?.balance}
-          value={balance || object?.dispute[index]?.balance}
+          value={balance || DolarMask(String(object?.dispute[index]?.balance))}
         />
       </Box>
       <Box
@@ -340,7 +339,7 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
         alignItems="center"
         marginTop={10}
       >
-                <InputText
+        <InputText
           wid="33%"
           label="EXPERIAN Shows"
           placeholder="5/5/2023"
@@ -361,8 +360,8 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
           }}
           value={
             EXShows
-              ? DateMask(EXShows)
-              : DateMask(object?.dispute[index]?.shows?.experian) || ""
+              ? DateMaskOptional(EXShows)
+              : DateMaskOptional(object?.dispute[index]?.shows?.experian) || ""
           }
           maxLength={10}
         />
@@ -387,8 +386,8 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
           }}
           value={
             EQShows
-              ? DateMask(EQShows)
-              : DateMask(object?.dispute[index]?.shows?.equifax) || ""
+              ? DateMaskOptional(EQShows)
+              : DateMaskOptional(object?.dispute[index]?.shows?.equifax) || ""
           }
           maxLength={10}
         />
@@ -412,8 +411,9 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
           }}
           value={
             TUShows
-              ? DateMask(TUShows)
-              : DateMask(object?.dispute[index]?.shows?.transunion) || ""
+              ? DateMaskOptional(TUShows)
+              : DateMaskOptional(object?.dispute[index]?.shows?.transunion) ||
+                ""
           }
           maxLength={10}
         />

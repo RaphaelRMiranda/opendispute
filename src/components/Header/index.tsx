@@ -1,10 +1,12 @@
 import Box from "@/components/Box";
 import User from "./User";
-import { useUser } from "@/context/User";
-import UserSkeleton from "./User/skeleton";
+import Menu from "./icons/Menu";
+import { theme } from "@/styles/theme";
+import DrawerMenu from "../Drawer";
+import { useDisclosure } from "@chakra-ui/react";
 
 const Header = () => {
-  const { user } = useUser();
+  const { onOpen, isOpen, onClose } = useDisclosure();
 
   return (
     <Box
@@ -14,7 +16,15 @@ const Header = () => {
       padding={10}
       marginBottom={15}
     >
-      {user && user._id ? <User /> : <UserSkeleton />}
+      <DrawerMenu isOpen={isOpen} onClose={onClose} />
+      <Box
+        display={["flex", "flex", "flex", "none"]}
+        paddingLeft={10}
+        onClick={onOpen}
+      >
+        <Menu size={theme.icons.sizes.sm} />
+      </Box>
+      <User />
     </Box>
   );
 };

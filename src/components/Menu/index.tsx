@@ -32,6 +32,7 @@ const Menu = () => {
 
   return (
     <Box
+      display={["none", "none", "none", "flex"]}
       position="relative"
       flexDirection="column"
       justifyContent="flex-start"

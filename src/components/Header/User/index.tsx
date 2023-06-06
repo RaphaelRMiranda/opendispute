@@ -16,6 +16,8 @@ import {
   AlertDialogOverlay,
   Button,
   Image,
+  Skeleton,
+  SkeletonCircle,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
@@ -100,7 +102,8 @@ const User = () => {
   };
 
   return (
-    <Box wid="40%" justifyContent="flex-end" alignItems="center">
+    // Caso precise alterar o Header com um Menu ou algo assim, altere o wid abaixo
+    <Box wid="100%" justifyContent="flex-end" alignItems="center">
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
@@ -166,6 +169,7 @@ const User = () => {
         marginLeft={10}
         marginRight={10}
       />
+
       <Box
         position="relative"
         wid={42}
@@ -175,46 +179,75 @@ const User = () => {
         hover="cursor:pointer;"
         onClick={handleClickImage}
       >
-        {user?.picture && (
-          <Image
-            width={42}
-            height={42}
-            src={user.picture}
-            alt="Picture"
-            borderRadius="50%"
-          />
-        )}
+        <SkeletonCircle
+          size={"42px"}
+          startColor={theme.colors.base.gray[300]}
+          endColor={theme.colors.base.gray[400]}
+          isLoaded={user && user._id ? true : false}
+        >
+          {user?.picture && (
+            <Image
+              width={42}
+              height={42}
+              src={user.picture}
+              alt="Picture"
+              borderRadius="50%"
+            />
+          )}
+        </SkeletonCircle>
         <Box display="none">
           <input ref={inputRef} type="file" onChange={handleImageChange} />
         </Box>
         <Box position="absolute" right={"0"} bottom={"0"}>
-          <Add
+          <SkeletonCircle
             size={theme.fonts.sizes.sm}
-            color={theme.colors.base.gray[300]}
-          />
+            startColor={theme.colors.base.gray[300]}
+            endColor={theme.colors.base.gray[400]}
+            isLoaded={user && user._id ? true : false}
+          >
+            <Add
+              size={theme.fonts.sizes.sm}
+              color={theme.colors.base.gray[300]}
+            />
+          </SkeletonCircle>
         </Box>
       </Box>
       <Box
-        minWid="17%"
         flexDirection="column"
         justifyContent="flex-start"
         alignItems="flex-start"
         marginLeft={10}
         paddingRight={10}
       >
-        <Text
-          fontSize={theme.fonts.sizes.sm}
-          weight={500}
-          color={theme.colors.base.secondary}
+        <Skeleton
+          startColor={theme.colors.base.gray[300]}
+          endColor={theme.colors.base.gray[400]}
+          borderRadius={4}
+          isLoaded={user && user._id ? true : false}
         >
-          {user.firstName} {user.lastName.charAt(0)}.
-        </Text>
-        <Text
-          fontSize={theme.fonts.sizes.sm}
-          color={theme.colors.base.secondary}
+          <Text
+            fontSize={theme.fonts.sizes.sm}
+            weight={500}
+            color={theme.colors.base.secondary}
+          >
+            {user.firstName} {user.lastName.charAt(0)}.
+          </Text>
+        </Skeleton>
+        <Skeleton
+          height={5}
+          startColor={theme.colors.base.gray[300]}
+          endColor={theme.colors.base.gray[400]}
+          borderRadius={3}
+          isLoaded={user && user._id ? true : false}
+          mt={1}
         >
-          {Role(user.role)}
-        </Text>
+          <Text
+            fontSize={theme.fonts.sizes.sm}
+            color={theme.colors.base.secondary}
+          >
+            {Role(user.role)}
+          </Text>
+        </Skeleton>
       </Box>
     </Box>
   );

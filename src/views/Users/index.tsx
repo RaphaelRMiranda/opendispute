@@ -188,8 +188,8 @@ const Users = () => {
       </AlertDialog>
 
       <Page
-        title="Card listing"
-        description="List of all cards, you can filter by date or name"
+        title="Users listing"
+        description="List of all users, you can filter by date or name"
         filter={
           <Box wid="100%" justifyContent="flex-end" marginBottom={25}>
             <Box position="relative" wid="55%" marginRight={15}>
@@ -282,6 +282,7 @@ const Users = () => {
                     hei={42}
                     backgroundColor={theme.colors.base.primary}
                     borderRadius={50}
+                    marginRight={10}
                   >
                     {u?.picture && (
                       <Image

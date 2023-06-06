@@ -150,6 +150,7 @@ const Create = () => {
         const data = RemoveEmptyFields(object) as DisputeUpdate;
 
         const balance = data.dispute?.map((dispute) => {
+          delete dispute._id;
           return {
             ...dispute,
             balance: Number(
@@ -181,6 +182,7 @@ const Create = () => {
         const data = RemoveEmptyFields(object) as DisputeInterface;
 
         const balance = data.dispute?.map((dispute) => {
+          delete dispute._id;
           return {
             ...dispute,
             balance: Number(
