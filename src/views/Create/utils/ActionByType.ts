@@ -274,6 +274,85 @@ const API = [
   },
 ];
 
+const ALP = [
+  {
+    label: "Select a action to be taken",
+    value: null,
+  },
+  {
+    label: "Please Update should report as on time and never late",
+    value: "Please Update should report as on time and never late",
+  },
+  {
+    label: "Please remove this late payment from my credit report.",
+    value: "Please remove this late payment from my credit report.",
+  },
+  {
+    label: "Please update this late payment to current.",
+    value: "Please update this late payment to current.",
+  },
+  {
+    label: "Remove this late payment from my report.",
+    value: "Remove this late payment from my report.",
+  },
+  {
+    label: "Update this late payment to current.",
+    value: "Update this late payment to current.",
+  },
+  {
+    label: "Should state as current and never late.",
+    value: "Should state as current and never late.",
+  },
+  {
+    label: "This payment needs to be removed from my report.",
+    value: "This payment needs to be removed from my report.",
+  },
+  {
+    label: "Otherwise remove this late payment from my report. ",
+    value: "Otherwise remove this late payment from my report. ",
+  },
+  {
+    label:
+      "Otherwise this account needs to be updated to on time and never late.",
+    value:
+      "Otherwise this account needs to be updated to on time and never late.",
+  },
+  {
+    label: "You need to remove this from my credit report.",
+    value: "You need to remove this from my credit report.",
+  },
+  {
+    label: "Delete this account for inaccuracy.",
+    value: "Delete this account for inaccuracy.",
+  },
+  {
+    label: "Remove this account for inaccuracy.",
+    value: "Remove this account for inaccuracy.",
+  },
+  {
+    label: "you need to update to paid as agreed",
+    value: "you need to update to paid as agreed",
+  },
+  {
+    label: "or you need to remove these unverified late payments immediately",
+    value: "or you need to remove these unverified late payments immediately",
+  },
+  {
+    label: "Please provide proof or update to current and never late.",
+    value: "Please provide proof or update to current and never late.",
+  },
+  {
+    label: "this is inaccurate and all lates need to be removed",
+    value: "this is inaccurate and all lates need to be removed",
+  },
+  {
+    label:
+      "and if you cannot furnish bank records that prove when my payments were accepted, the account needs to be removed",
+    value:
+      "and if you cannot furnish bank records that prove when my payments were accepted, the account needs to be removed",
+  },
+];
+
 const ActionByType = (type: string) => {
   switch (type) {
     case "Charge-offs":
@@ -293,7 +372,7 @@ const ActionByType = (type: string) => {
     case "Public Records":
       return APR as TOption[];
     case "Late Payment":
-      return ACO as TOption[];
+      return ALP as TOption[];
     case "Bankrupcty":
       return ACO as TOption[];
     case "Child Support":
