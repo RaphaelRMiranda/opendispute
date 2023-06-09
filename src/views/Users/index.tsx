@@ -146,6 +146,19 @@ const Users = () => {
       });
   };
 
+  const havePermission = (role: string) => {
+    switch (role) {
+      case "ceo":
+        return true;
+      case "dev":
+        return true;
+      case "admin":
+        return true;
+      default:
+        return false;
+    }
+  };
+
   return (
     <Layout>
       <AlertDialog
@@ -307,7 +320,7 @@ const Users = () => {
                       color={theme.colors.base.secondary}
                       weight={500}
                     >
-                      {u.firstName} {u.middleName.charAt(0)}. {u.lastName}
+                      {u.firstName} {u.middleName?.charAt(0)}. {u.lastName}
                     </Text>
                   </Item>
                   <Item>
@@ -325,27 +338,30 @@ const Users = () => {
                       {u.disputesCreated}
                     </Text>
                   </Item>
-                  <Item>
-                    <Text
-                      fontSize={theme.fonts.sizes.sm}
-                      color={theme.colors.base.secondary}
-                    >
-                      Last active
-                    </Text>
-                    <Text
-                      fontSize={theme.fonts.sizes.md}
-                      color={theme.colors.base.secondary}
-                      weight={500}
-                    >
-                      {new Date(u.updatedAt).toLocaleString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                        hour: "numeric",
-                        minute: "numeric",
-                      })}
-                    </Text>
-                  </Item>
+                  {user && user?.role && havePermission(user.role) && (
+                    <Item>
+                      <Text
+                        fontSize={theme.fonts.sizes.sm}
+                        color={theme.colors.base.secondary}
+                      >
+                        Last active
+                      </Text>
+                      <Text
+                        fontSize={theme.fonts.sizes.md}
+                        color={theme.colors.base.secondary}
+                        weight={500}
+                      >
+                        {u?.lastActive &&
+                          new Date(u.lastActive).toLocaleString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                          })}
+                      </Text>
+                    </Item>
+                  )}
                   <Item>
                     <Text
                       fontSize={theme.fonts.sizes.sm}

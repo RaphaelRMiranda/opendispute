@@ -86,9 +86,7 @@ const Listing = () => {
   const [limit, setLimit] = useState<number>(5);
   const [total, setTotal] = useState<number>(0);
   const [sort, setSort] = useState<string>("-createdAt");
-  const [since, setSince] = useState<string>(
-    new Date(yesterday).toISOString().split("T")[0]
-  );
+  const [since, setSince] = useState<string>("");
   const [until, setUntil] = useState<string>("");
   const [search, setSearch] = useState<string>("");
   const debounceValue = useDebounce(search, 1000);
@@ -132,7 +130,7 @@ const Listing = () => {
 
   useEffect(() => {
     if (token && token.length > 0) handleDisputes();
-  }, [limit, page, debounceValue, since, sort, token, until, setUser]);
+  }, [limit, page, debounceValue, since, sort, token, until]);
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -410,12 +408,7 @@ const Listing = () => {
                       weight={500}
                     >
                       {new Date(
-                        dispute.disputes[
-                          FindSelectedRound(
-                            dispute._id.socialNumber,
-                            factualDisputeRound
-                          )
-                        ].updatedAt
+                        dispute.disputes[dispute.disputes.length - 1].updatedAt
                       ).toLocaleString("en-US", {
                         year: "numeric",
                         month: "long",
@@ -450,7 +443,7 @@ const Listing = () => {
                           dispute._id.socialNumber,
                           factualDisputeRound
                         )
-                      ].createdBy.lastName.charAt(0)}
+                      ].createdBy.lastName?.charAt(0)}
                       .
                     </Text>
                   </Item>

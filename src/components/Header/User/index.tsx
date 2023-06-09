@@ -230,7 +230,7 @@ const User = () => {
             weight={500}
             color={theme.colors.base.secondary}
           >
-            {user.firstName} {user.lastName.charAt(0)}.
+            {user.firstName} {user.lastName?.charAt(0)}.
           </Text>
         </Skeleton>
         <Skeleton
