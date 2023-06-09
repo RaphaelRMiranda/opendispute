@@ -56,6 +56,7 @@ const Pagination: React.FC<PaginationProps> = ({
         options={limits}
         onChange={handleLimitChange}
         marginRight={10}
+        defaultValue={limit}
       />
       {pageNumbers.map((pageNumber) => (
         <Box
@@ -91,7 +92,7 @@ const Pagination: React.FC<PaginationProps> = ({
           </Box>
         </Box>
       ))}
-      {totalPages > 6 && (
+      {totalPages > 5 && (
         <>
           <Text
             fontSize={theme.fonts.sizes.md}
