@@ -6,122 +6,216 @@ const JCO = [
     value: null,
   },
   {
-    label: "this account does not belong to me",
-    value: "this account does not belong to me",
+    label: "Doesn't belong to me",
+    value: "This account does not belong to me.",
   },
   {
-    label: "this account has the wrong balance",
-    value: "this account has the wrong balance",
+    label: "Inaccurate balance 1",
+    value: "This account has the wrong balance.",
   },
   {
-    label: "this creditor does not own this account",
-    value: "this creditor does not own this account",
-  },
-  {
-    label: "this account was sold but still reports a balance",
-    value: "this account was sold but still reports a balance",
-  },
-  {
-    label:
-      "doesn't show transferred/sold but does not say paid and doesn't have a balance",
+    label: "Inaccurate balance 2",
     value:
-      "doesn't show transferred/sold but does not say paid and doesn't have a balance",
+      "The balance on this account is inconsistent on all three credit bureaus.",
   },
   {
-    label: "each bureau reports a different date of last activity",
-    value: "each bureau reports a different date of last activity",
+    label: "Inaccurate balance 3",
+    value: "Why is each bureau showing a different balance on this account?",
   },
   {
-    label: "account has been re-aged",
-    value: "account has been re-aged",
+    label: "Creditor does Not Own Account.",
+    value: "This creditor does not own this account.",
   },
   {
-    label:
-      "I disputed this account and nothing was sent to me to legally verify this account",
+    label: "Sold to collection with a balance 1",
+    value: "This account was sold but still reports a balance?",
+  },
+  {
+    label: "Sold to collection with a balance 2",
     value:
-      "I disputed this account and nothing was sent to me to legally verify this account",
+      "This account was sold and both data furnishers are reporting a balance.",
   },
   {
-    label: "monthly payment reported on closed account",
-    value: "monthly payment reported on closed account",
+    label: "Sold to collection with a balance 3",
+    value:
+      "Why am I seeing a balance on this account when it has been sold to a 3rd party company?",
   },
   {
-    label: 'Account has different dates listed under "date of last payment"',
+    label: "$0 Balance(not transfered, sold or paid)",
+    value:
+      "Account doesn't show transferred/sold but does not say paid and doesn't have a balance.",
+  },
+  {
+    label: "Date Last Active 1",
+    value: "Each bureau is reporting a different date of last activity.",
+  },
+  {
+    label: "Date Last Active 2",
+    value: "Date last active is incorrect.",
+  },
+  {
+    label: "Date Last Active 3",
+    value: "Date last active is inconsisntent.",
+  },
+  {
+    label: "Date Last Active 4",
+    value: "Inaccurate date last active.",
+  },
+  {
+    label: "Date of Last payment 1",
     value: 'Account has different dates listed under "date of last payment"',
   },
   {
-    label: "account shows different creditor names",
-    value: "account shows different creditor names",
+    label: "Date of Last payment 2",
+    value: "Date of last payment is inconsistent on all three credit bureaus.",
   },
   {
-    label: "I never had an account with this creditor",
-    value: "I never had an account with this creditor",
+    label: "Date of Last payment 3",
+    value: "Date of last payment on this account is incorrect.",
   },
   {
-    label:
-      "creditor stated they would remove this after payment and it's still on my credit report",
+    label: "Date of Last payment 4",
+    value: "Inaccurate date of last payment.",
+  },
+  {
+    label: "Account has re-aged 1",
+    value: "Date last active has changed and account has been re-aged.",
+  },
+  {
+    label: "Account has re-aged 2",
     value:
-      "creditor stated they would remove this after payment and it's still on my credit report",
+      "Why am I seeing a more recent date on this account after I disputed with you? Did you re-age this account?",
   },
   {
-    label:
-      "I sent you proof directly from the creditor that this would be removed and does not belong on my credit report but I am still seeing it listed!",
+    label: "Account has re-aged 3",
     value:
-      "I sent you proof directly from the creditor that this would be removed and does not belong on my credit report but I am still seeing it listed!",
+      "The recent change in the date last active on this account shows you have re-aged this inaccurate account on my credit report. ",
   },
   {
-    label:
+    label: "Monthly  payment on closed account 1",
+    value: "why am I seeing a monthly payment reported on closed account?",
+  },
+  {
+    label: "Monthly  Payment on closed account 2",
+    value:
       'how can this account be closed and yet, it states that I am still paying on it in the monthly payment section? Once an account is closed, there should be no monthly payment unless the status says "now paying, was charged-off"',
-    value:
-      'how can this account be closed and yet, it states that I am still paying on it in the monthly payment section? Once an account is closed, there should be no monthly payment unless the status says "now paying, was charged-off"',
   },
   {
-    label: "this was paid but I am still seeing a balance",
-    value: "this was paid but I am still seeing a balance",
-  },
-  {
-    label: "the past due is wrong",
-    value: "the past due is wrong",
-  },
-  {
-    label: "the balance is higher than the high balance",
-    value: "the balance is higher than the high balance",
-  },
-  {
-    label: "the high balance is lower than the balance",
-    value: "the high balance is lower than the balance",
-  },
-  {
-    label: "there shouldn't be any late payments after the account was closed!",
+    label: "Payment after Close",
     value: "there shouldn't be any late payments after the account was closed!",
   },
   {
-    label:
-      "why am I seeing years of late payments after the close date? It's not possible to be late on a closed account!",
+    label: "Payment after close",
     value:
       "why am I seeing years of late payments after the close date? It's not possible to be late on a closed account!",
   },
   {
-    label: "This account is outdated and needs to be removed",
-    value: "This account is outdated and needs to be removed",
+    label: "No Proof (MOV 2.1)",
+    value:
+      "I disputed this account and nothing was sent to me to legally verify this account.",
   },
   {
-    label:
-      "Please send me all business and transaction documents to prove that this account was legally verified",
+    label: "No Proof (MOV 2.2)",
     value:
-      "Please send me all business and transaction documents to prove that this account was legally verified",
+      "I still don't see any proof you legally verified this account, where is it?",
   },
   {
-    label:
-      "Stating that this account was “verified” does not change the fact that it’s still reporting inaccurately and needs to be removed",
+    label: "No Proof (MOV 2.3)",
     value:
-      "Stating that this account was “verified” does not change the fact that it’s still reporting inaccurately and needs to be removed",
+      "Depited being disputed and requested I see no proof you legally verified this account.",
   },
   {
-    label:
-      "I disputed this account directly with creditor and no notice of dispute was correctly entered in. ",
+    label: "No Notice of Dispute 1",
     value:
-      "I disputed this account directly with creditor and no notice of dispute was correctly entered in. ",
+      "I disputed this account directly with creditor and no notice of dispute was correctly entered in.",
+  },
+  {
+    label: "No Notice of Dispute 2",
+    value:
+      "There is no notice of dispute on this account despite the fact that is was previously disputed.",
+  },
+  {
+    label: "No Notice of Dispute 3",
+    value:
+      "This account does not show notice of dispute despite being disputed which is legally required.",
+  },
+  {
+    label: "High balance Lower 1",
+    value:
+      "The balance is higher than the high balance that is completely incorrect.",
+  },
+  {
+    label: "High balance Lower 2",
+    value: "The high balance is lower than the balance how is this possible?",
+  },
+  {
+    label: "Inaccurate Data furnisher",
+    value: "account shows different creditor names",
+  },
+  {
+    label: "Unverifiable Data Funisher",
+    value:
+      'Unverifiable data furnisher, the name on this account just states "Collection".',
+  },
+  {
+    label: "Deletion After Payment",
+    value:
+      "creditor stated they would remove this after payment and it's still on my credit report.",
+  },
+  {
+    label: "Proof of Deletion",
+    value:
+      "I sent you proof directly from the creditor that this would be removed and does not belong on my credit report but I am still seeing it listed!",
+  },
+  {
+    label: "Unkown Creditor",
+    value: "I never had an account with this creditor.",
+  },
+  {
+    label: "Paid with a balance",
+    value: "This was paid but I am still seeing a balance, why is that?",
+  },
+  {
+    label: "Wrong past due",
+    value: "The past due is wrong, why?",
+  },
+  {
+    label: "Oudated",
+    value: "This account is outdated and needs to be removed.",
+  },
+  {
+    label: "Send proof (MOV1.1)",
+    value:
+      "Please send me all business and transaction documents to prove that this account was legally verified.",
+  },
+  {
+    label: "Send proof (MOV1.2)",
+    value: "Please provide proof of independent investigation on this account.",
+  },
+  {
+    label: "Send proof (MOV1.3)",
+    value:
+      "Either you provide proof this account has been properly investigated outside of Eoscar.",
+  },
+  {
+    label: "Send proof (MOV1.4)",
+    value:
+      "You stated this account has been verfied as accurate, well provide physical proof.",
+  },
+  {
+    label: "Verified but innacurate",
+    value:
+      "Stating that this account was “verified” does not change the fact that it’s still reporting inaccurately and needs to be removed.",
+  },
+  {
+    label: "Status Date Unchanged 1",
+    value:
+      "I previously disputed this account and clearly no investigation took place since the date updated remains unchanged.",
+  },
+  {
+    label: "Status Date Unchanged 2",
+    value:
+      "The date updated remains unchanged after my recent dispute which proves no investigation took place on this account.",
   },
 ];
 
