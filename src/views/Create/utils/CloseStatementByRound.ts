@@ -203,6 +203,208 @@ const CSFD3 = [
   },
 ];
 
+const CSFD4 = [
+  {
+    label: "Select a closing statement",
+    value: null,
+  },
+  {
+    label: "I expect you to either send",
+    value:
+      "I expect you to either send me actual proof that an independent investigation took place this time or these inaccurate accounts better be removed from my credit report. I will take legal action if necessary because it’s your job to make sure a consumer’s credit profile is accurate.",
+  },
+  {
+    label: "It is imperative that you furnish",
+    value:
+      "It is imperative that you furnish me with concrete evidence of an independent investigation being conducted this time, or else I demand the immediate removal of these erroneous accounts from my credit report. Failure to comply may result in legal consequences, as it is your responsibility to ensure the accuracy of a consumer's credit profile.",
+  },
+  {
+    label: "Either provide me with substantiated",
+    value:
+      "Either provide me with substantiated proof of an independent investigation taking place now, or take swift action to eliminate these erroneous accounts from my credit report. I will not hesitate to resort to legal measures if required, as it is your duty to ensure the precision of a consumer's credit profile.",
+  },
+  {
+    label: "I anticipate receiving tangible",
+    value:
+      "I anticipate receiving tangible evidence of a thorough independent investigation being carried out this time. Alternatively, I insist that you promptly delete these misleading accounts from my credit report. Failure to meet these expectations may result in legal repercussions, as it is your primary obligation to ensure the accuracy of a consumer's credit profile.",
+  },
+  {
+    label: "You must furnish me with legitimate",
+    value:
+      "You must furnish me with legitimate evidence indicating the completion of an independent investigation, or else I demand the immediate removal of these inaccurate accounts from my credit report. I am prepared to take legal action, if necessary, as it is your responsibility to guarantee the precision of a consumer's credit profile.",
+  },
+  {
+    label: "I expect you to provide me with",
+    value:
+      "I expect you to provide me with verifiable proof of an independent investigation having taken place this time. Failing to do so will require the prompt removal of these erroneous accounts from my credit report. If this demand is not met, I will not hesitate to pursue legal action, as it is your duty to ensure the accuracy of a consumer's credit profile.",
+  },
+  {
+    label: "Either present me with actual evidence",
+    value:
+      "Either present me with actual evidence that an independent investigation has been conducted, or take immediate steps to rectify these inaccurate accounts on my credit report. I am prepared to initiate legal proceedings if necessary, as it is your responsibility to ensure the accuracy of a consumer's credit profile.",
+  },
+  {
+    label: "I demand that you provide me with",
+    value:
+      "I demand that you provide me with concrete proof of an independent investigation having been carried out this time. If you fail to comply, I expect these erroneous accounts to be promptly expunged from my credit report. Should this not occur, I will not hesitate to take legal action, as it is your obligation to ensure the accuracy of a consumer's credit profile.",
+  },
+  {
+    label: "I insist on receiving substantive proof",
+    value:
+      "I insist on receiving substantive proof of an independent investigation taking place this time. Alternatively, I expect the removal of these inaccurate accounts from my credit report without delay. If my demands are not met, I am fully prepared to pursue legal recourse, as it is your responsibility to ensure the accuracy of a consumer's credit profile.",
+  },
+  {
+    label: "You are expected to furnish me",
+    value:
+      "You are expected to furnish me with legitimate evidence indicating that an independent investigation has been conducted. If you fail to meet this requirement, I demand the immediate removal of these misleading accounts from my credit report. Failure to comply may result in legal action, as it is your duty to ensure the accuracy of a consumer's credit profile.",
+  },
+  {
+    label: "I demand that you either provide",
+    value:
+      "I demand that you either provide me with actual proof of an independent investigation or promptly eliminate these inaccurate accounts from my credit report. Failure to comply may lead to legal repercussions, as it is your responsibility to ensure the accuracy of a consumer's credit profile.",
+  },
+];
+
+const CSFD5 = [
+  {
+    label: "Select a closing statement",
+    value: null,
+  },
+  {
+    label:
+      "I am waiting for a new credit report with the above-referenced inaccuracies removed.",
+    value:
+      "I am waiting for a new credit report with the above-referenced inaccuracies removed.",
+  },
+  {
+    label:
+      "I eagerly await a revised credit report wherein the aforementioned inaccuracies have been rectified.",
+    value:
+      "I eagerly await a revised credit report wherein the aforementioned inaccuracies have been rectified.",
+  },
+  {
+    label:
+      "I am patiently anticipating a fresh credit report that no longer contains the mentioned inaccuracies.",
+    value:
+      "I am patiently anticipating a fresh credit report that no longer contains the mentioned inaccuracies.",
+  },
+  {
+    label:
+      "My expectation is to receive a new credit report that has effectively addressed the mentioned inaccuracies.",
+    value:
+      "My expectation is to receive a new credit report that has effectively addressed the mentioned inaccuracies.",
+  },
+  {
+    label:
+      "I am currently in a state of anticipation, waiting for a revised credit report that excludes the inaccuracies mentioned above.",
+    value:
+      "I am currently in a state of anticipation, waiting for a revised credit report that excludes the inaccuracies mentioned above.",
+  },
+  {
+    label:
+      "I eagerly look forward to receiving an updated credit report with the removal of the inaccuracies referenced above.",
+    value:
+      "I eagerly look forward to receiving an updated credit report with the removal of the inaccuracies referenced above.",
+  },
+  {
+    label:
+      "I am eagerly awaiting the arrival of a new credit report wherein the inaccuracies highlighted above have been expunged.",
+    value:
+      "I am eagerly awaiting the arrival of a new credit report wherein the inaccuracies highlighted above have been expunged.",
+  },
+  {
+    label:
+      "I am patiently waiting for a revised credit report that reflects the removal of the inaccuracies mentioned earlier.",
+    value:
+      "I am patiently waiting for a revised credit report that reflects the removal of the inaccuracies mentioned earlier.",
+  },
+  {
+    label:
+      "I anxiously await a new credit report that has been rectified to eliminate the aforementioned inaccuracies.",
+    value:
+      "I anxiously await a new credit report that has been rectified to eliminate the aforementioned inaccuracies.",
+  },
+  {
+    label:
+      "I am eagerly anticipating the delivery of a credit report that no longer contains the inaccuracies mentioned above.",
+    value:
+      "I am eagerly anticipating the delivery of a credit report that no longer contains the inaccuracies mentioned above.",
+  },
+  {
+    label:
+      "My expectation is to receive a fresh credit report wherein the above-mentioned inaccuracies have been removed.",
+    value:
+      "My expectation is to receive a fresh credit report wherein the above-mentioned inaccuracies have been removed.",
+  },
+];
+
+const CSFD6 = [
+  {
+    label: "Select a closing statement",
+    value: null,
+  },
+  {
+    label:
+      "Enclosed, you will find copies of the formal complaint I have submitted to the CFPB for your reference. It is imperative that I receive an updated credit report in response to this complaint.",
+    value:
+      "Enclosed, you will find copies of the formal complaint I have submitted to the CFPB for your reference. It is imperative that I receive an updated credit report in response to this complaint.",
+  },
+  {
+    label:
+      "Attached herewith are the copies of the formal complaint I have forwarded to the CFPB. It is my expectation to receive an updated credit report in light of this complaint.",
+    value:
+      "Attached herewith are the copies of the formal complaint I have forwarded to the CFPB. It is my expectation to receive an updated credit report in light of this complaint.",
+  },
+  {
+    label:
+      "Please review the attached copies of the formal complaint that I have sent to the CFPB. In accordance with this complaint, I anticipate receiving an updated credit report promptly.",
+    value:
+      "Please review the attached copies of the formal complaint that I have sent to the CFPB. In accordance with this complaint, I anticipate receiving an updated credit report promptly.",
+  },
+  {
+    label:
+      "I have provided the attached copies of the formal complaint that I have lodged with the CFPB. As a result, I expect to receive an updated credit report in response to this complaint.",
+    value:
+      "I have provided the attached copies of the formal complaint that I have lodged with the CFPB. As a result, I expect to receive an updated credit report in response to this complaint.",
+  },
+  {
+    label:
+      "Kindly refer to the attached copies of the formal complaint I have submitted to the CFPB. I request that you take appropriate action by providing me with an updated credit report.",
+    value:
+      "Kindly refer to the attached copies of the formal complaint I have submitted to the CFPB. I request that you take appropriate action by providing me with an updated credit report.",
+  },
+  {
+    label:
+      "I hereby share with you the attached copies of the formal complaint that I have officially filed with the CFPB. Consequently, I expect to receive an updated credit report in order to address the concerns raised in this complaint.",
+    value:
+      "I hereby share with you the attached copies of the formal complaint that I have officially filed with the CFPB. Consequently, I expect to receive an updated credit report in order to address the concerns raised in this complaint.",
+  },
+  {
+    label:
+      "Please take a moment to review the attached copies of the formal complaint I have lodged with the CFPB. In light of this complaint, it is essential that I receive an updated credit report as a matter of urgency.",
+    value:
+      "Please take a moment to review the attached copies of the formal complaint I have lodged with the CFPB. In light of this complaint, it is essential that I receive an updated credit report as a matter of urgency.",
+  },
+  {
+    label:
+      "Enclosed, you will find the attached copies of the formal complaint that I have submitted to the CFPB. It is crucial that I receive an updated credit report in response to the concerns raised in this complaint.",
+    value:
+      "Enclosed, you will find the attached copies of the formal complaint that I have submitted to the CFPB. It is crucial that I receive an updated credit report in response to the concerns raised in this complaint.",
+  },
+  {
+    label:
+      "Attached herewith are the copies of the formal complaint I have forwarded to the CFPB for your attention. As a result, I anticipate receiving an updated credit report to address the issues mentioned in this complaint.",
+    value:
+      "Attached herewith are the copies of the formal complaint I have forwarded to the CFPB for your attention. As a result, I anticipate receiving an updated credit report to address the issues mentioned in this complaint.",
+  },
+  {
+    label:
+      "I have attached copies of the formal complaint that I have recently filed with the CFPB. In light of this complaint, I expect to receive an updated credit report to ensure that the concerns raised are appropriately addressed.",
+    value:
+      "I have attached copies of the formal complaint that I have recently filed with the CFPB. In light of this complaint, I expect to receive an updated credit report to ensure that the concerns raised are appropriately addressed.",
+  },
+];
+
 const CloseStatementByRound = (disputeRound: number) => {
   switch (disputeRound) {
     case 1:
@@ -211,6 +413,12 @@ const CloseStatementByRound = (disputeRound: number) => {
       return CSFD2 as TOption[];
     case 3:
       return CSFD3 as TOption[];
+    case 4:
+      return CSFD4 as TOption[];
+    case 5:
+      return CSFD5 as TOption[];
+    case 6:
+      return CSFD6 as TOption[];
     default:
       return CSFD1 as TOption[];
   }
