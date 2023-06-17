@@ -15,8 +15,8 @@ const Disputes = ({ disputes, loading }: TDisputeProps) => {
 
   const router = useRouter();
 
-  const generateNewTemplate = (_id: string, type: string) => {
-    return SwitchTemplate(disputes.length - 1, type, _id);
+  const generateNewTemplate = (index: number, _id: string, type: string) => {
+    return SwitchTemplate(index, type, _id);
   };
 
   return (
@@ -53,11 +53,11 @@ const Disputes = ({ disputes, loading }: TDisputeProps) => {
       ) : (
         disputes &&
         disputes.length > 0 &&
-        disputes.map((dispute) => {
+        disputes.map((dispute, index) => {
           return (
             <Card key={dispute.id || dispute?._id}>
               {dispute.template ||
-                generateNewTemplate(dispute?._id, dispute.type)}
+                generateNewTemplate(index, dispute?._id, dispute.type)}
             </Card>
           );
         })

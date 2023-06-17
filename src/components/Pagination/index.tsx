@@ -58,7 +58,7 @@ const Pagination: React.FC<PaginationProps> = ({
         marginRight={10}
         defaultValue={limit}
       />
-      {pageNumbers.map((pageNumber) => (
+      {pageNumbers.slice(0, 5).map((pageNumber) => (
         <Box
           position="relative"
           wid="46px"

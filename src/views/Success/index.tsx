@@ -4,10 +4,7 @@ import Download from "@/components/Card/icons/Download";
 import Layout from "@/components/Layout";
 import Page from "@/components/Page";
 import Text from "@/components/Text";
-import {
-  getDispute,
-  handleDownloadDocument,
-} from "@/context/Document";
+import { getDispute, handleDownloadDocument } from "@/context/Document";
 import { theme } from "@/styles/theme";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/User";
@@ -189,10 +186,19 @@ const Success = () => {
                     color={theme.colors.base.secondary}
                     weight={500}
                   >
-                    {dispute?.dispute?.map((dispute, i, self) => {
-                      if (i === self.length - 1) return `$${dispute.balance}`;
-                      else return `$${dispute.balance}, `;
-                    }) || "$0.00"}
+                    {dispute?.dispute?.length > 3
+                      ? `${dispute?.dispute
+                          ?.slice(0, 3)
+                          ?.map((dispute, i, self) => {
+                            if (i === self.length - 1) {
+                              return `$${dispute.balance}`;
+                            } else return `$${dispute.balance}`;
+                          })} and more ${dispute?.dispute?.length}` || "$0.00"
+                      : dispute?.dispute?.map((dispute, i, self) => {
+                          if (i === self.length - 1)
+                            return `$${dispute.balance}`;
+                          else return `$${dispute.balance}, `;
+                        }) || "$0.00"}
                   </Text>
                 </Skeleton>
               </Box>
@@ -323,7 +329,7 @@ const Success = () => {
                     fontSize={theme.fonts.sizes.sm}
                     color={theme.colors.base.secondary}
                   >
-                    Disputes funishers
+                    Disputes furnishers
                   </Text>
                 </Skeleton>
                 <Skeleton
@@ -338,10 +344,19 @@ const Success = () => {
                     color={theme.colors.base.secondary}
                     weight={500}
                   >
-                    {dispute?.dispute?.map((dispute, i, self) => {
-                      if (i === self.length - 1) return dispute.dataFunisher;
-                      else return `${dispute.dataFunisher}, `;
-                    }) || "None"}
+                    {dispute?.dispute?.length > 3
+                      ? `${dispute?.dispute
+                          ?.slice(0, 3)
+                          ?.map((dispute, i, self) => {
+                            if (i === self.length - 1)
+                              return dispute.dataFunisher;
+                            else return `${dispute.dataFunisher}`;
+                          })} and more ${dispute?.dispute?.length}` || "None"
+                      : dispute?.dispute?.map((dispute, i, self) => {
+                          if (i === self.length - 1)
+                            return dispute.dataFunisher;
+                          else return `${dispute.dataFunisher}, `;
+                        }) || "None"}
                   </Text>
                 </Skeleton>
               </Box>
@@ -449,10 +464,19 @@ const Success = () => {
                     color={theme.colors.base.secondary}
                     weight={500}
                   >
-                    {dispute?.dispute?.map((dispute, i, self) => {
-                      if (i === self.length - 1) return dispute.accountNumber;
-                      else return `${dispute.accountNumber}, `;
-                    }) || "None"}
+                    {dispute?.dispute?.length > 3
+                      ? `${dispute?.dispute
+                          ?.slice(0, 3)
+                          ?.map((dispute, i, self) => {
+                            if (i === self.length - 1)
+                              return dispute.accountNumber;
+                            else return dispute.accountNumber;
+                          })} and more ${dispute?.dispute?.length}` || "None"
+                      : dispute?.dispute?.map((dispute, i, self) => {
+                          if (i === self.length - 1)
+                            return dispute.accountNumber;
+                          else return `${dispute.accountNumber}, `;
+                        }) || "None"}
                   </Text>
                 </Skeleton>
               </Box>
@@ -486,10 +510,17 @@ const Success = () => {
                     color={theme.colors.base.secondary}
                     weight={500}
                   >
-                    {dispute?.dispute?.map((dispute, i, self) => {
-                      if (i === self.length - 1) return dispute.type;
-                      else return `${dispute.type}, `;
-                    }) || "None"}
+                    {dispute?.dispute?.length > 3
+                      ? `${dispute?.dispute
+                          ?.slice(0, 3)
+                          ?.map((dispute, i, self) => {
+                            if (i === self.length - 1) return dispute.type;
+                            else return dispute.type;
+                          })} and more ${dispute?.dispute?.length}` || "None"
+                      : dispute?.dispute?.map((dispute, i, self) => {
+                          if (i === self.length - 1) return dispute.type;
+                          else return `${dispute.type}, `;
+                        }) || "None"}
                   </Text>
                 </Skeleton>
               </Box>
