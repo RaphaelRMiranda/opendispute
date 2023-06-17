@@ -27,9 +27,15 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
     setObject(objectPI as unknown as DisputeInterface);
   }, [objectPI, setObject]);
 
-  const [eq, setEq] = useState<boolean>(false);
-  const [ex, setEx] = useState<boolean>(false);
-  const [tu, setTu] = useState<boolean>(false);
+  const [eq, setEq] = useState<boolean>(
+    object?.dispute[index]?.equifax || false
+  );
+  const [ex, setEx] = useState<boolean>(
+    object?.dispute[index]?.experian || false
+  );
+  const [tu, setTu] = useState<boolean>(
+    object?.dispute[index]?.transunion || false
+  );
 
   const [reverse, setReverse] = useState<boolean>(false);
 
