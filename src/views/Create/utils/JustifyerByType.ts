@@ -1700,8 +1700,8 @@ const JustifyerByType = (type: string) => {
       return JFC as TOption[];
     case "Child Support":
       return JCS as TOption[];
-    case "Judgements & Liens":
-      return JJL as TOption[];
+    // case "Judgements & Liens":
+    //   return JJL as TOption[];
     default:
       return JCO as TOption[];
   }

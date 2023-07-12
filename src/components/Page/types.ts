@@ -3,4 +3,5 @@ export type TPage = {
   description?: string;
   children: React.ReactNode | React.ReactNode[];
   filter?: React.ReactNode | React.ReactNode[]
+  filterSize?: number;
 };

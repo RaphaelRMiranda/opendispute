@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Box from "@/components/Box";
+import CustomBox from "@/components/Box";
 import Add from "@/components/Header/icons/Add";
 import InputText from "@/components/Inputs/Text";
 import Page from "@/components/Page";
@@ -26,7 +26,7 @@ import { TObjectErrors } from "./validation/types";
 import RemoveEmptyFields from "./utils/RemoveEmptyFields";
 import { useUser } from "@/context/User";
 import { DisputeInterface, DisputeUpdate, TDisputePI } from "./types";
-import { useToast } from "@chakra-ui/react";
+import { Box, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import CloseStatementByRound from "./utils/CloseStatementByRound";
 import GreetingSequenceByRound from "./utils/GreetingSequenceByRound";
@@ -263,12 +263,41 @@ const Create = () => {
         description="Create your letter carefully, always check that the information is correct"
       >
         <Box
-          wid="100%"
+          w="100%"
+          display="flex"
           flexDirection="row"
           justifyContent="flex-start"
           alignItems="flex-start"
+          flexWrap={["wrap", "wrap", "wrap", "nowrap"]}
         >
-          <Box
+          <CustomBox
+            wid="100%"
+            flexDirection="column"
+            display={["flex", "flex", "flex", "none"]}
+          >
+            <SelectText
+              wid="100%"
+              label="Dispute type"
+              options={[
+                {
+                  label: "Select a dispute type",
+                  value: "",
+                },
+                ...Items.map((item) => {
+                  return { value: item, label: item };
+                }),
+              ]}
+              onChange={(e) => AddDispute(e.target.value)}
+            />
+            <CustomBox
+              wid="100%"
+              hei="1px"
+              backgroundColor={theme.colors.base.gray[100]}
+              margin={`10px 0 0 0`}
+            />
+          </CustomBox>
+          <CustomBox
+            display={["none", "none", "none", "flex"]}
             minWid={250}
             flexDirection="column"
             backgroundColor={theme.colors.base.white}
@@ -277,7 +306,7 @@ const Create = () => {
           >
             {Items.map((item) => {
               return (
-                <Box
+                <CustomBox
                   key={item}
                   wid="100%"
                   hover={"cursor:pointer;"}
@@ -296,22 +325,26 @@ const Create = () => {
                   >
                     {item}
                   </Text>
-                </Box>
+                </CustomBox>
               );
             })}
-          </Box>
-          <Box
+          </CustomBox>
+          <CustomBox
             wid="100%"
-            maxWid={1000}
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
-            marginLeft={20}
+            marginLeft={[0, 0, 0, 20]}
+            marginTop={[20, 20, 20, 0]}
           >
             <Form onSubmit={handleSubmit}>
-              <Box wid="100%" justifyContent="flex-start" alignItems="center">
+              <CustomBox
+                wid="100%"
+                justifyContent="flex-start"
+                alignItems="center"
+              >
                 <InputText
-                  wid="30%"
+                  wid={["100%", "100%", "100%", "30%"]}
                   label="Date"
                   placeholder="5/5/2023"
                   defaultValue={
@@ -323,8 +356,8 @@ const Create = () => {
                   }
                   readonly
                 />
-              </Box>
-              <Box
+              </CustomBox>
+              <CustomBox
                 wid="100%"
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -333,10 +366,10 @@ const Create = () => {
                 flexWrap="wrap"
               >
                 <InputText
-                  wid="32.65%"
+                  wid={["100%", "100%", "100%", "32.65%"]}
                   label="First Name"
                   placeholder="John"
-                  marginRight={10}
+                  marginRight={[0, 0, 0, 10]}
                   onChange={(e) => {
                     setObject((prev) => ({
                       ...prev,
@@ -347,10 +380,11 @@ const Create = () => {
                   defaultValue={object?.customer?.firstName || ""}
                 />
                 <InputText
-                  wid="32.65%"
+                  wid={["100%", "100%", "100%", "32.65%"]}
                   label="Middle Name"
                   placeholder="Doe"
-                  marginRight={10}
+                  marginRight={[0, 0, 0, 10]}
+                  marginTop={[10, 10, 10, 0]}
                   onChange={(e) => {
                     setObject((prev) => ({
                       ...prev,
@@ -364,9 +398,10 @@ const Create = () => {
                   defaultValue={object?.customer?.middleName || ""}
                 />
                 <InputText
-                  wid="32.65%"
+                  wid={["100%", "100%", "100%", "32.65%"]}
                   label="Last Name"
                   placeholder="Steve"
+                  marginTop={[10, 10, 10, 0]}
                   onChange={(e) => {
                     setObject((prev) => ({
                       ...prev,
@@ -376,8 +411,8 @@ const Create = () => {
                   error={errors?.customer?.lastName?.message}
                   defaultValue={object?.customer?.lastName || ""}
                 />
-              </Box>
-              <Box
+              </CustomBox>
+              <CustomBox
                 wid="100%"
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -386,10 +421,11 @@ const Create = () => {
                 flexWrap="wrap"
               >
                 <InputText
-                  wid="30%"
+                  wid={["100%", "100%", "100%", "30%"]}
                   label="Street Address"
                   placeholder="1234 Main St"
-                  marginRight={10}
+                  marginRight={[0, 0, 0, 10]}
+                  marginBottom={[10, 10, 10, 0]}
                   onChange={(e) => {
                     setObject((prev) => ({
                       ...prev,
@@ -400,7 +436,7 @@ const Create = () => {
                   defaultValue={object?.address?.street || ""}
                 />
                 <InputText
-                  wid="30%"
+                  wid={["50%", "50%", "50%", "30%"]}
                   label="City"
                   placeholder="New York"
                   marginRight={10}
@@ -414,7 +450,7 @@ const Create = () => {
                   defaultValue={object?.address?.city || ""}
                 />
                 <InputText
-                  wid="18.5%"
+                  wid={["20%", "20%", "20%", "18.5%"]}
                   label="State"
                   placeholder="CA"
                   marginRight={10}
@@ -428,7 +464,7 @@ const Create = () => {
                   defaultValue={object?.address?.state || ""}
                 />
                 <InputText
-                  wid="18.5%"
+                  wid={["24%", "24%", "24%", "18.5%"]}
                   label="Zip Code"
                   placeholder="10001"
                   onChange={(e) => {
@@ -440,8 +476,8 @@ const Create = () => {
                   error={errors?.address?.zipCode?.message}
                   defaultValue={object?.address?.zipCode || ""}
                 />
-              </Box>
-              <Box
+              </CustomBox>
+              <CustomBox
                 wid="100%"
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -450,10 +486,10 @@ const Create = () => {
                 flexWrap="wrap"
               >
                 <InputText
-                  wid="35%"
+                  wid={["100%", "100%", "100%", "35%"]}
                   label="Date of Birth"
                   placeholder="5/5/1980"
-                  marginRight={10}
+                  marginRight={[0, 0, 0, 10]}
                   onChange={(e) => {
                     handleChangeDateOfBirth(e);
                     setObject((prev) => ({
@@ -472,14 +508,22 @@ const Create = () => {
                   }
                   maxLength={10}
                 />
-                <Box
-                  wid="20%"
-                  marginTop={20}
+                <CustomBox
+                  wid={["100%", "100%", "100%", "20%"]}
+                  marginTop={[15, 15, 15, 20]}
                   flexDirection="column"
                   justifyContent="center"
                   alignItems="flex-start"
                 >
-                  <Box wid="100%" justifyContent="flex-start">
+                  <CustomBox
+                    wid="100%"
+                    justifyContent={[
+                      "flex-end",
+                      "flex-end",
+                      "flex-end",
+                      "flex-start",
+                    ]}
+                  >
                     <Radio
                       label="SSN"
                       onChange={() => {
@@ -516,7 +560,7 @@ const Create = () => {
                       checked={social === "itin"}
                       marginLeft={10}
                     />
-                  </Box>
+                  </CustomBox>
                   {errors?.customer?.selectedSsn?.message &&
                     errors?.customer?.selectedSsn?.message !== "undefined" && (
                       <Text
@@ -526,9 +570,9 @@ const Create = () => {
                         {errors?.customer?.selectedSsn?.message}
                       </Text>
                     )}
-                </Box>
+                </CustomBox>
                 <InputText
-                  wid="44%"
+                  wid={["100%", "100%", "100%", "44%"]}
                   label="Social Number"
                   placeholder="###-##-###"
                   onChange={(e) => {
@@ -560,9 +604,10 @@ const Create = () => {
                       ? SocialNumberMask(object?.customer?.itin)
                       : socialNumber
                   }
+                  marginTop={[10, 10, 10, 0]}
                 />
-              </Box>
-              <Box
+              </CustomBox>
+              <CustomBox
                 wid="100%"
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -570,7 +615,7 @@ const Create = () => {
                 marginTop={10}
                 flexWrap="wrap"
               >
-                <Box wid="20%" minWid={200}>
+                <CustomBox wid={["100%", "100%", "100%", "20%"]} minWid={200}>
                   <SelectText
                     wid="100%"
                     label="Dispute Round"
@@ -585,15 +630,15 @@ const Create = () => {
                     error={errors?.disputeRound?.message}
                     defaultValue={object?.disputeRound || ""}
                   />
-                </Box>
-                <Box
-                  wid="30%"
-                  marginTop={20}
-                  marginRight={10}
+                </CustomBox>
+                <CustomBox
+                  wid={["100%", "100%", "100%", "30%"]}
+                  marginTop={[15, 15, 15, 20]}
+                  marginRight={[0, 0, 0, 10]}
                   flexDirection="column"
                   alignItems="flex-start"
                 >
-                  <Box justifyContent="center">
+                  <CustomBox justifyContent="center">
                     <Checkbox
                       label="Equifax"
                       marginRight={10}
@@ -638,7 +683,7 @@ const Create = () => {
                       }
                       checked={tu}
                     />
-                  </Box>
+                  </CustomBox>
                   {errors?.creditBureau?.equifax?.message &&
                     errors?.creditBureau?.equifax?.message !== "undefined" && (
                       <Text
@@ -648,11 +693,12 @@ const Create = () => {
                         {errors?.creditBureau?.equifax?.message}
                       </Text>
                     )}
-                </Box>
+                </CustomBox>
                 <SelectText
-                  wid="49%"
+                  wid={["100%", "100%", "100%", "49%"]}
                   label="Greeting Sequence"
                   options={GreetingSequenceByRound(object?.disputeRound || 1)}
+                  marginTop={[15, 15, 15, 0]}
                   onChange={(e) =>
                     setObject((prev) => ({
                       ...prev,
@@ -662,8 +708,8 @@ const Create = () => {
                   error={errors?.greetingSequence?.message}
                   defaultValue={object?.greetingSequence || ""}
                 />
-              </Box>
-              <Box
+              </CustomBox>
+              <CustomBox
                 wid="100%"
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -683,8 +729,8 @@ const Create = () => {
                   error={errors?.greetingSequenceExtended?.message}
                   defaultValue={object?.greetingSequenceExtended || ""}
                 />
-              </Box>
-              <Box
+              </CustomBox>
+              <CustomBox
                 wid="100%"
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -704,8 +750,8 @@ const Create = () => {
                   error={errors?.closingStatement?.message}
                   defaultValue={object?.closingStatement || ""}
                 />
-              </Box>
-              <Box
+              </CustomBox>
+              <CustomBox
                 wid="100%"
                 flexDirection="row"
                 justifyContent="flex-start"
@@ -725,10 +771,10 @@ const Create = () => {
                   error={errors?.closingStatementExtended?.message}
                   defaultValue={object?.closingStatementExtended || ""}
                 />
-              </Box>
+              </CustomBox>
               <Disputes disputes={object?.dispute} loading={loading} />
             </Form>
-          </Box>
+          </CustomBox>
         </Box>
       </Page>
     </Layout>

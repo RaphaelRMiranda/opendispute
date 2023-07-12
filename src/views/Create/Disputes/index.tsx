@@ -76,7 +76,7 @@ const Disputes = ({ disputes, loading }: TDisputeProps) => {
           )}
 
           <Button
-            wid="25%"
+            wid={["100%", "100%", "50%", "25%"]}
             justifyContent="center"
             backgroundColor={theme.colors.base.secondary}
             fontSize={theme.fonts.sizes.md}

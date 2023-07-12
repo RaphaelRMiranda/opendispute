@@ -6,7 +6,7 @@ import Download from "@/components/Card/icons/Download";
 import Edit from "@/components/Card/icons/Edit";
 import Layout from "@/components/Layout";
 import Page from "@/components/Page";
-import Text from "@/components/Text";
+import CustomText from "@/components/Text";
 import { theme } from "@/styles/theme";
 import { DisputeInterface, TDispute, TDisputeArr } from "../Create/types";
 import { useEffect, useRef, useState } from "react";
@@ -33,9 +33,15 @@ import {
   AlertDialogFooter,
   AlertDialogOverlay,
   Button,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Skeleton,
   useDisclosure,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 import Loading from "@/components/Buttons/icons/Loading";
 import { TFactualDispute } from "./types";
@@ -44,6 +50,7 @@ import FindSelectedRound, {
 } from "./utils/FindSelectedRound";
 import { useRouter } from "next/router";
 import Add from "@/components/Header/icons/Add";
+import Dots from "./icons/Dots";
 
 const Listing = () => {
   const router = useRouter();
@@ -190,13 +197,13 @@ const Listing = () => {
       >
         <AlertDialogOverlay>
           <AlertDialogContent padding={5}>
-            <Text fontSize={theme.fonts.sizes.md} weight={500}>
+            <CustomText fontSize={theme.fonts.sizes.md} weight={500}>
               Delete Dispute
-            </Text>
+            </CustomText>
 
-            <Text fontSize={theme.fonts.sizes.sm}>
+            <CustomText fontSize={theme.fonts.sizes.sm}>
               Are you sure? You cant undo this action afterwards.
-            </Text>
+            </CustomText>
 
             <AlertDialogFooter padding={0} mt={10}>
               <Button
@@ -226,8 +233,18 @@ const Listing = () => {
         title="Dispute listing"
         description="List of all disputes, you can filter by date or name"
         filter={
-          <Box wid="100%" justifyContent="flex-end" marginBottom={25}>
-            <Box position="relative" wid="55%" marginRight={15}>
+          <Box
+            wid="100%"
+            justifyContent="flex-end"
+            flexWrap={["wrap", "wrap", "nowrap"]}
+            marginBottom={25}
+          >
+            <Box
+              position="relative"
+              wid={["100%", "100%", "40%"]}
+              marginRight={[0, 0, 15]}
+              marginBottom={[10, 10, 0]}
+            >
               <InputText
                 label="Search customer"
                 wid="100%"
@@ -247,28 +264,31 @@ const Listing = () => {
                 />
               </Box>
             </Box>
-            <InputDate
-              label="Initial date"
-              wid="30%"
-              marginRight={15}
-              paddingInput={11}
-              onChange={(e) => setSince(e.target.value)}
-            />
-            <InputDate
-              label="Final date"
-              wid="30%"
-              marginRight={15}
-              paddingInput={11}
-              onChange={(e) => setUntil(e.target.value)}
-            />
-            <SelectText
-              label="Order by"
-              wid="30%"
-              options={OrderFilter}
-              onChange={(e) => setSort(e.target.value)}
-            />
+            <Box wid={["100%", "100%", "60%"]} justifyContent="space-between">
+              <InputDate
+                label="Initial date"
+                wid="32%"
+                marginRight={15}
+                paddingInput={11}
+                onChange={(e) => setSince(e.target.value)}
+              />
+              <InputDate
+                label="Final date"
+                wid="32%"
+                marginRight={15}
+                paddingInput={11}
+                onChange={(e) => setUntil(e.target.value)}
+              />
+              <SelectText
+                label="Order by"
+                wid="32%"
+                options={OrderFilter}
+                onChange={(e) => setSort(e.target.value)}
+              />
+            </Box>
           </Box>
         }
+        filterSize={70}
       >
         {isLoading && (
           <>
@@ -318,18 +338,49 @@ const Listing = () => {
                 }
               >
                 <Box
-                  wid="60%"
+                  wid={["100%", "100%", "100%", "75%"]}
                   justifyContent="space-between"
+                  flexWrap="wrap"
                   alignItems="flex-start"
                 >
+                  <Box
+                    display={["flex", "flex", "flex", "none"]}
+                    wid={["90%", "90%", "95%"]}
+                    justifyContent="flex-end"
+                    opacity={isDownloading ? 0.5 : 1}
+                    hover={
+                      isDownloading ? "cursor:not-allowed;" : "cursor:pointer;"
+                    }
+                    marginBottom={5}
+                  >
+                    <SelectText
+                      wid={["100%", "100%", "40%"]}
+                      options={DisputeRoundAt(
+                        FactualDisputes,
+                        dispute.disputes
+                      )}
+                      onChange={(e) =>
+                        EditSelectedRound(
+                          dispute._id.socialNumber,
+                          Number(e.target.value),
+                          setFactualDisputeRound
+                        )
+                      }
+                      disabled={isDownloading}
+                      defaultValue={FindSelectedRound(
+                        dispute._id.socialNumber,
+                        factualDisputeRound
+                      )}
+                    />
+                  </Box>
                   <Item>
-                    <Text
+                    <CustomText
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
                     >
                       Name
-                    </Text>
-                    <Text
+                    </CustomText>
+                    <CustomText
                       fontSize={theme.fonts.sizes.md}
                       color={theme.colors.base.secondary}
                       weight={500}
@@ -350,16 +401,16 @@ const Listing = () => {
                           )
                         ].customer.lastName
                       }
-                    </Text>
+                    </CustomText>
                   </Item>
                   <Item>
-                    <Text
+                    <CustomText
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
                     >
                       Disputed
-                    </Text>
-                    <Text
+                    </CustomText>
+                    <CustomText
                       fontSize={theme.fonts.sizes.md}
                       color={theme.colors.base.green}
                       weight={500}
@@ -372,16 +423,16 @@ const Listing = () => {
                           )
                         ].disputeRound
                       }
-                    </Text>
+                    </CustomText>
                   </Item>
                   <Item>
-                    <Text
+                    <CustomText
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
                     >
                       Deleted
-                    </Text>
-                    <Text
+                    </CustomText>
+                    <CustomText
                       fontSize={theme.fonts.sizes.md}
                       color={theme.colors.base.orange}
                       weight={500}
@@ -393,16 +444,16 @@ const Listing = () => {
                             factualDisputeRound
                           )
                         ].disputeRound}
-                    </Text>
+                    </CustomText>
                   </Item>
                   <Item>
-                    <Text
+                    <CustomText
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
                     >
                       Last update
-                    </Text>
-                    <Text
+                    </CustomText>
+                    <CustomText
                       fontSize={theme.fonts.sizes.md}
                       color={theme.colors.base.secondary}
                       weight={500}
@@ -416,16 +467,16 @@ const Listing = () => {
                         hour: "numeric",
                         minute: "numeric",
                       })}
-                    </Text>
+                    </CustomText>
                   </Item>
                   <Item>
-                    <Text
+                    <CustomText
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
                     >
                       Created by
-                    </Text>
-                    <Text
+                    </CustomText>
+                    <CustomText
                       fontSize={theme.fonts.sizes.md}
                       color={theme.colors.base.secondary}
                       weight={500}
@@ -445,16 +496,16 @@ const Listing = () => {
                         )
                       ].createdBy.lastName?.charAt(0)}
                       .
-                    </Text>
+                    </CustomText>
                   </Item>
                   <Item>
-                    <Text
+                    <CustomText
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
                     >
                       Created at
-                    </Text>
-                    <Text
+                    </CustomText>
+                    <CustomText
                       fontSize={theme.fonts.sizes.md}
                       color={theme.colors.base.secondary}
                       weight={500}
@@ -473,12 +524,13 @@ const Listing = () => {
                         hour: "numeric",
                         minute: "numeric",
                       })}
-                    </Text>
+                    </CustomText>
                   </Item>
                 </Box>
-                <Box wid="40%" justifyContent="flex-end">
+                <Box wid="20%" justifyContent="flex-end">
                   <Box
-                    wid="40%"
+                    display={["none", "none", "none", "flex"]}
+                    wid="100%"
                     justifyContent="center"
                     opacity={isDownloading ? 0.5 : 1}
                     hover={
@@ -506,99 +558,153 @@ const Listing = () => {
                     />
                   </Box>
 
-                  <Box
-                    wid="40%"
-                    justifyContent="flex-end"
-                    opacity={isDownloading ? 0.5 : 1}
-                    hover={
-                      isDownloading ? "cursor:not-allowed;" : "cursor:pointer;"
-                    }
-                  >
-                    <Box
-                      marginRight={25}
-                      hover="cursor:pointer;"
-                      onClick={() => {
-                        setObject(
-                          dispute.disputes[
-                            FindSelectedRound(
-                              dispute._id.socialNumber,
-                              factualDisputeRound
-                            )
-                          ]
-                        );
-                        router.push(`/factual`);
-                      }}
+                  <Menu aria-label="Menu" placement="bottom-end">
+                    <MenuButton
+                      pos={{ base: "absolute", lg: "relative" }}
+                      top={{ base: `28px`, lg: `0px` }}
+                      right={{ base: `15px`, lg: `0px` }}
+                      as={IconButton}
+                      aria-label="Edit"
+                      icon={<Dots size={theme.icons.sizes.xs} />}
+                      backgroundColor="transparent"
+                      ml={3}
+                      _hover={{ backgroundColor: theme.colors.base.primary }}
+                    />
+                    <MenuList
+                      bg={theme.colors.base.white}
+                      borderRadius={8}
+                      boxShadow={`0 4px 12px 0 rgba(0 0 0 / 17%)`}
+                      p={3}
+                      border="none"
                     >
-                      <Add size={theme.fonts.sizes.md} />
-                    </Box>
-                    <Box
-                      marginRight={25}
-                      hover="cursor:pointer;"
-                      onClick={
-                        isDownloading
-                          ? () => {}
-                          : () =>
-                              handleDownload(
-                                dispute.disputes[
-                                  FindSelectedRound(
-                                    dispute._id.socialNumber,
-                                    factualDisputeRound
-                                  )
-                                ]
+                      <MenuItem
+                        icon={
+                          <Add
+                            size={theme.icons.sizes.xs}
+                            color={theme.colors.base.secondary}
+                          />
+                        }
+                        iconSpacing={3}
+                        bg="transparent"
+                        onClick={() => {
+                          setObject(
+                            dispute.disputes[
+                              FindSelectedRound(
+                                dispute._id.socialNumber,
+                                factualDisputeRound
                               )
-                      }
-                    >
-                      {isDownloading ? (
-                        <Loading size={theme.icons.sizes.xs} />
-                      ) : (
-                        <Download size={theme.icons.sizes.xs} />
-                      )}
-                    </Box>
-                    <Box
-                      marginRight={25}
-                      hover="cursor:pointer;"
-                      onClick={() => {
-                        setObject(
-                          dispute.disputes[
-                            FindSelectedRound(
-                              dispute._id.socialNumber,
-                              factualDisputeRound
-                            )
-                          ]
-                        );
-                        router.push(`/update`);
-                      }}
-                    >
-                      <Edit size={theme.icons.sizes.xs} />
-                    </Box>
-                    <Box
-                      hover="cursor:pointer;"
-                      onClick={
-                        isDownloading
-                          ? () => {}
-                          : () => {
-                              onOpen();
-                              setDelete(
-                                dispute.disputes[
-                                  FindSelectedRound(
-                                    dispute._id.socialNumber,
-                                    factualDisputeRound
-                                  )
-                                ]._id
-                              );
-                            }
-                      }
-                    >
-                      <Text
-                        fontSize={theme.fonts.sizes.md}
-                        color={theme.colors.base.red[200]}
-                        weight={500}
-                        pointerEvents="none"
+                            ]
+                          );
+                          router.push(`/factual`);
+                        }}
                       >
-                        Delete
-                      </Text>
-                    </Box>
-                  </Box>
+                        <Text
+                          fontSize={theme.fonts.sizes.md}
+                          color={theme.colors.base.secondary}
+                        >
+                          Add Round
+                        </Text>
+                      </MenuItem>
+                      <MenuItem
+                        icon={
+                          isDownloading ? (
+                            <Loading
+                              size={theme.icons.sizes.xs}
+                              color={theme.colors.base.secondary}
+                            />
+                          ) : (
+                            <Download
+                              size={theme.icons.sizes.xs}
+                              color={theme.colors.base.secondary}
+                            />
+                          )
+                        }
+                        iconSpacing={3}
+                        bg="transparent"
+                        onClick={
+                          isDownloading
+                            ? () => {}
+                            : () =>
+                                handleDownload(
+                                  dispute.disputes[
+                                    FindSelectedRound(
+                                      dispute._id.socialNumber,
+                                      factualDisputeRound
+                                    )
+                                  ]
+                                )
+                        }
+                      >
+                        <Text
+                          fontSize={theme.fonts.sizes.md}
+                          color={theme.colors.base.secondary}
+                        >
+                          {isDownloading
+                            ? "Downloading..."
+                            : "Download Dispute"}
+                        </Text>
+                      </MenuItem>
+                      <MenuItem
+                        icon={
+                          <Edit
+                            size={theme.icons.sizes.xs}
+                            color={theme.colors.base.secondary}
+                          />
+                        }
+                        iconSpacing={3}
+                        bg="transparent"
+                        onClick={() => {
+                          setObject(
+                            dispute.disputes[
+                              FindSelectedRound(
+                                dispute._id.socialNumber,
+                                factualDisputeRound
+                              )
+                            ]
+                          );
+                          router.push(`/update`);
+                        }}
+                      >
+                        <Text
+                          fontSize={theme.fonts.sizes.md}
+                          color={theme.colors.base.secondary}
+                        >
+                          Edit Dispute
+                        </Text>
+                      </MenuItem>
+                      <Box
+                        wid="100%"
+                        hei="1px"
+                        backgroundColor={theme.colors.base.gray[100]}
+                        margin={`10px 0`}
+                      />
+                      <MenuItem
+                        bg="transparent"
+                        onClick={
+                          isDownloading
+                            ? () => {}
+                            : () => {
+                                onOpen();
+                                setDelete(
+                                  dispute.disputes[
+                                    FindSelectedRound(
+                                      dispute._id.socialNumber,
+                                      factualDisputeRound
+                                    )
+                                  ]._id
+                                );
+                              }
+                        }
+                      >
+                        <Text
+                          fontSize={theme.fonts.sizes.md}
+                          color={theme.colors.base.red[200]}
+                        >
+                          Delete this Dispute
+                        </Text>
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 </Box>
               </Card>
             );

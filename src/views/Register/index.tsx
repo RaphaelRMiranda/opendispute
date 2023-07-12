@@ -159,7 +159,6 @@ const Register = () => {
           <Form onSubmit={handleSubmit}>
             <Box
               wid="100%"
-              maxWid={1000}
               flexDirection="column"
               justifyContent="center"
               alignItems="center"
@@ -297,12 +296,11 @@ const Register = () => {
             </Box>
             <Box
               wid="100%"
-              maxWid={1000}
               justifyContent="flex-end"
               alignItems="center"
             >
               <Button
-                wid="30%"
+                wid="40%"
                 justifyContent="center"
                 backgroundColor={theme.colors.base.secondary}
                 fontSize={theme.fonts.sizes.md}

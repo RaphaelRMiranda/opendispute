@@ -2,13 +2,14 @@ import Box from "@/components/Box";
 import { TItem } from "./types";
 import Divisor from "../Divisor";
 
-const Item = ({ children }: TItem) => {
+const Item = ({ children, w }: TItem) => {
   return (
     <Box
-      wid="15%"
+      wid={w || ["100%", "100%", "15%"]}
       justifyContent="space-between"
       alignItems="center"
-      marginRight={10}
+      marginRight={[0, 0, 10]}
+      marginBottom={[5, 5, 0]}
     >
       <Box
         flexDirection="column"
@@ -17,7 +18,9 @@ const Item = ({ children }: TItem) => {
       >
         {children}
       </Box>
-      <Divisor />
+      <Box display={["none", "none", "flex"]}>
+        <Divisor />
+      </Box>
     </Box>
   );
 };

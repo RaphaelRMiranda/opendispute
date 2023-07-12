@@ -97,16 +97,16 @@ const AIQ = [
     value: "Delete this inquiry from my report.",
   },
   {
-    label: "Remove this inquiry from my report. ",
-    value: "Remove this inquiry from my report. ",
+    label: "Remove this inquiry from my report.",
+    value: "Remove this inquiry from my report.",
   },
   {
     label: "Get this off my report now.",
     value: "Get this off my report now.",
   },
   {
-    label: "Remove this from my report now. ",
-    value: "Remove this from my report now. ",
+    label: "Remove this from my report now.",
+    value: "Remove this from my report now.",
   },
 ];
 

@@ -1,4 +1,7 @@
 import axios, { AxiosInstance } from "axios";
+import { useUser } from "@/context/User";
+import { UserInterface, UserProps } from "@/context/User/types";
+import { useEffect } from "react";
 
 class ApiInstance {
   public Api: AxiosInstance;
@@ -7,18 +10,36 @@ class ApiInstance {
     this.Api = axios.create({
       baseURL: process.env.NEXT_PUBLIC_API_HOST,
     });
-
-    this.Api.interceptors.response.use((config) => {
-      const location = window.location.pathname;
-      if (config.status === 401 && location !== "/") {
-        window.location.href = "/";
-      } else if (location === "/" && config.status === 401) {
-        window.location.reload();
-      }
-
-      return config;
-    });
   }
 }
 
+const ApiWrapper = () => {
+  const { setToken, setUser } = useUser();
+
+  const Api = new ApiInstance().Api;
+
+  useEffect(() => {
+    Api.interceptors.response.use(
+      async (response) => {
+        return response;
+      },
+      (err) => {
+        if (err.response.status === 401) {
+          localStorage.removeItem("@dispute/user");
+          localStorage.removeItem("@dispute/token");
+          setToken("");
+          setUser({} as UserInterface);
+          window.location.pathname = "/";
+        }
+
+        return Promise.reject(err);
+      }
+    );
+  }, [Api, setToken, setUser]);
+
+  return null;
+};
+
 export const Api = new ApiInstance().Api;
+
+export default ApiWrapper;

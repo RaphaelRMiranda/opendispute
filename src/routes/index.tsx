@@ -7,6 +7,7 @@ import Users from "@/views/Users";
 import Create from "@/views/Create";
 import Success from "@/views/Success";
 import { useUser } from "@/context/User";
+import Settings from "@/views/Settings";
 
 const Routers = () => {
   const { user } = useUser();
@@ -33,6 +34,7 @@ const Routers = () => {
     "/listing": Listing,
     "/register": Register,
     "/users": Users,
+    "/settings": Settings,
     "/create": Create,
     "/update": Create,
     "/factual": Create,
