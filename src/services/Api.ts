@@ -29,7 +29,7 @@ const ApiWrapper = () => {
           localStorage.removeItem("@dispute/token");
           setToken("");
           setUser({} as UserInterface);
-          window.location.pathname = "/";
+          window.location.reload();
         }
 
         return Promise.reject(err);

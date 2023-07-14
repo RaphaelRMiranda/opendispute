@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 type TInput = {
   padding?: number | string | Array<number | string>;
+  fontSize?: number | string;
 };
 
 export const Input = styled.input<TInput>`
@@ -10,7 +11,7 @@ export const Input = styled.input<TInput>`
   background-color: ${({ theme }) => theme.colors.base.gray[300]};
   border: none;
   border-radius: 6px;
-  font-size: ${({ theme }) => theme.fonts.sizes.md};
+  font-size: ${({ theme, fontSize }) => fontSize || theme.fonts.sizes.md};
   ${({ padding }) => {
     if (typeof padding === "object") {
       const query = new Array<string>();
@@ -56,7 +57,11 @@ export const Input = styled.input<TInput>`
       return `& { ${query.join("")} }`;
     } else {
       return `padding: ${
-        typeof padding === "number" ? `${padding}px` : padding ? padding : "12px"
+        typeof padding === "number"
+          ? `${padding}px`
+          : padding
+          ? padding
+          : "12px"
       };`;
     }
   }}

@@ -113,59 +113,7 @@ const Settings = () => {
               </Text>
             </Box>
           </Skeleton>
-          <Skeleton
-            h="full"
-            isLoaded={!onLoading}
-            borderRadius={6}
-            startColor={theme.colors.base.gray[300]}
-            endColor={theme.colors.base.gray[100]}
-          >
-            <Box
-              w="100%"
-              h="full"
-              display="flex"
-              flexDir="column"
-              justifyContent="flex-start"
-              alignItems="flex-start"
-              bg={theme.colors.base.white}
-              p={5}
-              mb={{ base: 5, md: 0 }}
-              borderRadius={8}
-              _hover={
-                onError
-                  ? {
-                      cursor: "not-allowed",
-                      "& > span": {
-                        pointerEvents: "none",
-                      },
-                    }
-                  : {
-                      cursor: "pointer",
-                      boxShadow: `0 2px 20px 0 rgba(0 0 0 / 5%)`,
-                      "& > span": {
-                        pointerEvents: "none",
-                      },
-                    }
-              }
-              opacity={onError ? 0.5 : 1}
-              onClick={() => router.push("/settings/closing")}
-            >
-              <Text
-                fontSize={theme.fonts.sizes.md}
-                color={theme.colors.base.secondary}
-                weight={500}
-              >
-                Closing Statement
-              </Text>
-              <Text
-                fontSize={theme.fonts.sizes.sm}
-                color={theme.colors.base.gray[300]}
-              >
-                Change closing statement options by adding, removing or editing
-                current ones based on the factual round
-              </Text>
-            </Box>
-          </Skeleton>
+
           <Skeleton
             h="full"
             isLoaded={!onLoading}
@@ -254,21 +202,21 @@ const Settings = () => {
                     }
               }
               opacity={onError ? 0.5 : 1}
-              onClick={() => router.push("/settings/justifyers")}
+              onClick={() => router.push("/settings/closing")}
             >
               <Text
                 fontSize={theme.fonts.sizes.md}
                 color={theme.colors.base.secondary}
                 weight={500}
               >
-                Justifyers
+                Closing Statement
               </Text>
               <Text
                 fontSize={theme.fonts.sizes.sm}
                 color={theme.colors.base.gray[300]}
               >
-                Change action options by adding, removing or editing current
-                ones based on dispute TYPES
+                Change closing statement options by adding, removing or editing
+                current ones based on the factual round
               </Text>
             </Box>
           </Skeleton>
@@ -307,6 +255,7 @@ const Settings = () => {
                     }
               }
               opacity={onError ? 0.5 : 1}
+              onClick={() => router.push("/settings/types")}
             >
               <Text
                 fontSize={theme.fonts.sizes.md}
@@ -324,6 +273,60 @@ const Settings = () => {
               </Text>
             </Box>
           </Skeleton>
+          <Skeleton
+            h="full"
+            isLoaded={!onLoading}
+            borderRadius={6}
+            startColor={theme.colors.base.gray[300]}
+            endColor={theme.colors.base.gray[100]}
+          >
+            <Box
+              w="100%"
+              h="full"
+              display="flex"
+              flexDir="column"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+              bg={theme.colors.base.white}
+              p={5}
+              mb={{ base: 5, md: 0 }}
+              borderRadius={8}
+              _hover={
+                onError
+                  ? {
+                      cursor: "not-allowed",
+                      "& > span": {
+                        pointerEvents: "none",
+                      },
+                    }
+                  : {
+                      cursor: "pointer",
+                      boxShadow: `0 2px 20px 0 rgba(0 0 0 / 5%)`,
+                      "& > span": {
+                        pointerEvents: "none",
+                      },
+                    }
+              }
+              opacity={onError ? 0.5 : 1}
+              onClick={() => router.push("/settings/justifyers")}
+            >
+              <Text
+                fontSize={theme.fonts.sizes.md}
+                color={theme.colors.base.secondary}
+                weight={500}
+              >
+                Justifyers
+              </Text>
+              <Text
+                fontSize={theme.fonts.sizes.sm}
+                color={theme.colors.base.gray[300]}
+              >
+                Change action options by adding, removing or editing current
+                ones based on dispute TYPES
+              </Text>
+            </Box>
+          </Skeleton>
+
           <Skeleton
             h="full"
             isLoaded={!onLoading}
