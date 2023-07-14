@@ -3,19 +3,30 @@ import Text from "@/components/Text";
 import { theme } from "@/styles/theme";
 import { TPage } from "./types";
 
-const Page = ({ title, description, children, filter }: TPage) => {
+const Page = ({ title, description, children, filter, filterSize }: TPage) => {
   return (
     <Box
       wid="100%"
       flexDirection="column"
       alignItems="flex-start"
       backgroundColor={theme.colors.base.primary}
-      borderRadius={6}
+      borderRadius={[0, 0, 6]}
       padding={15}
     >
       {title && description && children && (
-        <Box wid="100%" justifyContent="space-between">
+        <Box
+          wid="100%"
+          flexDirection="row"
+          justifyContent="space-between"
+          flexWrap="wrap"
+        >
           <Box
+            wid={[
+              "100%",
+              "100%",
+              "100%",
+              `${filterSize && 100 - filterSize}%` || "unset",
+            ]}
             flexDirection="column"
             justifyContent="flex-start"
             alignItems="flex-start"
@@ -35,7 +46,11 @@ const Page = ({ title, description, children, filter }: TPage) => {
               {description}
             </Text>
           </Box>
-          {filter && <Box wid="50%">{filter}</Box>}
+          {filter && (
+            <Box wid={["100%", "100%", "100%", `${filterSize}%` || "50%"]}>
+              {filter}
+            </Box>
+          )}
         </Box>
       )}
       {children}

@@ -9,6 +9,7 @@ import Exit from "./icons/Exit";
 import { useRouter } from "next/router";
 import { handleLogout, useUser } from "@/context/User";
 import { User } from "@/views/Register/types";
+import Settings from "./icons/Settings";
 
 const Menu = () => {
   const { user, setUser, setToken, setObject } = useUser();
@@ -39,9 +40,11 @@ const Menu = () => {
       alignItems="center"
       wid="40%"
       maxWid={320}
-      hei="100%"
+      // hei="100%"
       backgroundColor={theme.colors.base.primary}
       padding={20}
+      borderRadius={8}
+      marginTop={10}
     >
       <Logo size={theme.icons.sizes.xxl} />
       <Box
@@ -66,7 +69,7 @@ const Menu = () => {
             marginTop={15}
             icon={<AddUser size={theme.fonts.sizes.md} />}
             onClick={() => {
-              router.push("/register")
+              router.push("/register");
               setObject({} as User);
             }}
           >
@@ -82,6 +85,17 @@ const Menu = () => {
             onClick={() => router.push("/users")}
           >
             Users
+          </Button>
+        )}
+        {havePermission(user.role) && (
+          <Button
+            wid={deafultWidth}
+            fontSize={theme.fonts.sizes.md}
+            marginTop={15}
+            icon={<Settings size={theme.fonts.sizes.md} />}
+            onClick={() => router.push("/settings")}
+          >
+            Settings
           </Button>
         )}
         <Box

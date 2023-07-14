@@ -58,40 +58,78 @@ const Pagination: React.FC<PaginationProps> = ({
         marginRight={10}
         defaultValue={limit}
       />
-      {pageNumbers.slice(0, 5).map((pageNumber) => (
-        <Box
-          position="relative"
-          wid="46px"
-          hei="46px"
-          key={pageNumber}
-          onClick={() => handlePageChange(pageNumber)}
-          opacity={page === pageNumber ? 0.5 : 1}
-          backgroundColor={
-            page === pageNumber
-              ? theme.colors.base.gray[300]
-              : theme.colors.base.white
-          }
-          borderRadius={5}
-          marginRight={5}
-          marginLeft={5}
-          hover={pageNumber !== page ? "cursor:pointer;" : ""}
-        >
+      <Box display={["none", "none", "flex"]}>
+        {pageNumbers.slice(0, 5).map((pageNumber) => (
           <Box
-            position="absolute"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
+            position="relative"
+            wid="46px"
+            hei="46px"
+            key={pageNumber}
+            onClick={() => handlePageChange(pageNumber)}
+            opacity={page === pageNumber ? 0.5 : 1}
+            backgroundColor={
+              page === pageNumber
+                ? theme.colors.base.gray[300]
+                : theme.colors.base.white
+            }
+            borderRadius={5}
+            marginRight={5}
+            marginLeft={5}
+            hover={pageNumber !== page ? "cursor:pointer;" : ""}
           >
-            <Text
-              fontSize={theme.fonts.sizes.md}
-              color={theme.colors.base.secondary}
-              pointerEvents="none"
+            <Box
+              position="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%, -50%)"
             >
-              {pageNumber}
-            </Text>
+              <Text
+                fontSize={theme.fonts.sizes.md}
+                color={theme.colors.base.secondary}
+                pointerEvents="none"
+              >
+                {pageNumber}
+              </Text>
+            </Box>
           </Box>
-        </Box>
-      ))}
+        ))}
+      </Box>
+      <Box display={["flex", "flex", "none"]}>
+        {pageNumbers.slice(0, 2).map((pageNumber) => (
+          <Box
+            position="relative"
+            wid="46px"
+            hei="46px"
+            key={pageNumber}
+            onClick={() => handlePageChange(pageNumber)}
+            opacity={page === pageNumber ? 0.5 : 1}
+            backgroundColor={
+              page === pageNumber
+                ? theme.colors.base.gray[300]
+                : theme.colors.base.white
+            }
+            borderRadius={5}
+            marginRight={5}
+            marginLeft={5}
+            hover={pageNumber !== page ? "cursor:pointer;" : ""}
+          >
+            <Box
+              position="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%, -50%)"
+            >
+              <Text
+                fontSize={theme.fonts.sizes.md}
+                color={theme.colors.base.secondary}
+                pointerEvents="none"
+              >
+                {pageNumber}
+              </Text>
+            </Box>
+          </Box>
+        ))}
+      </Box>
       {totalPages > 5 && (
         <>
           <Text

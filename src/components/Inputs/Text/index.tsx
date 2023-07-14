@@ -16,6 +16,7 @@ const InputText = ({
   defaultValue,
   paddingInput,
   maxLength,
+  fontSize,
   ...rest
 }: TBox & TInput) => {
   return (
@@ -24,6 +25,7 @@ const InputText = ({
       flexDirection="column"
       justifyContent="center"
       alignItems="flex-start"
+      borderRadius={6}
       {...rest}
     >
       {label && (
@@ -44,6 +46,7 @@ const InputText = ({
         readOnly={readonly}
         padding={paddingInput}
         maxLength={maxLength}
+        fontSize={fontSize}
       />
       {error && error !== "undefined" && (
         <Text

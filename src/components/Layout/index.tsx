@@ -7,12 +7,10 @@ import { useUser } from "@/context/User";
 import Login from "@/views/Login";
 import { useEffect, useState } from "react";
 import usePersistState from "@/utils/PersistState";
-import { useRouter } from "next/router";
+import ApiWrapper from "@/services/Api";
 
 const Layout = ({ children }: TLayout) => {
-  const { user, setUser, setToken } = useUser();
-
-  const router = useRouter();
+  const { user } = useUser();
 
   const [isLoading, setLoading] = useState<boolean>(true);
 
@@ -20,13 +18,6 @@ const Layout = ({ children }: TLayout) => {
     user,
     "@dispute/user"
   );
-
-  const insideLogout = () => {
-    router.reload();
-    localStorage.removeItem("@dispute/user");
-    localStorage.removeItem("@dispute/token");
-    setToken("");
-  };
 
   useEffect(() => {
     setLoading(true);
@@ -50,9 +41,11 @@ const Layout = ({ children }: TLayout) => {
       minHei="100vh"
       backgroundColor={theme.colors.base.white}
     >
-      <Menu />
+      <ApiWrapper />
+      {/* <Menu /> */}
       <Box
         wid="100%"
+        maxWid={1200}
         flexDirection="column"
         justifyContent="flex-start"
         alignItems="flex-start"
@@ -61,7 +54,6 @@ const Layout = ({ children }: TLayout) => {
         <Box
           wid="100%"
           // maxWid={1200}
-          padding={20}
         >
           {children}
         </Box>

@@ -34,7 +34,7 @@ export type TStyledBox = {
   flex?: string;
   gap?: string | number | Array<string | number>;
   flexDirection?: string | Array<string>;
-  flexWrap?: string;
+  flexWrap?: string | Array<string>;
   justifyContent?:
     | "center"
     | "flex-start"
@@ -46,7 +46,7 @@ export type TStyledBox = {
   alignItems?: string | Array<string>;
   border?: string | boolean;
   borderColor?: string;
-  borderRadius?: string | number;
+  borderRadius?: string | number | Array<string | number>;
   borderStyle?: string;
   borderWidth?: number;
   borderTop?: string;

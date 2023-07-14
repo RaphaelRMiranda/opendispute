@@ -29,13 +29,19 @@ import {
   AlertDialogFooter,
   AlertDialogOverlay,
   Button,
+  IconButton,
   Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Skeleton,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { User } from "../Register/types";
+import Dots from "../Listing/icons/Dots";
 
 const Users = () => {
   const router = useRouter();
@@ -118,8 +124,8 @@ const Users = () => {
   };
 
   useEffect(() => {
-    if (token && token.length > 0) handleUsers();
-  }, [limit, page, debounceValue, since, sort, token, until, setUser]);
+    if (token && token.length > 5) handleUsers();
+  }, [limit, page, debounceValue, since, sort, until, token, setUser]);
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -204,8 +210,18 @@ const Users = () => {
         title="Users listing"
         description="List of all users, you can filter by date or name"
         filter={
-          <Box wid="100%" justifyContent="flex-end" marginBottom={25}>
-            <Box position="relative" wid="55%" marginRight={15}>
+          <Box
+            wid="100%"
+            justifyContent="flex-end"
+            flexWrap={["wrap", "wrap", "nowrap"]}
+            marginBottom={25}
+          >
+            <Box
+              position="relative"
+              wid={["100%", "100%", "40%"]}
+              marginRight={[0, 0, 15]}
+              marginBottom={[10, 10, 0]}
+            >
               <InputText
                 label="Search user"
                 wid="100%"
@@ -225,28 +241,31 @@ const Users = () => {
                 />
               </Box>
             </Box>
-            <InputDate
-              label="Initial date"
-              wid="30%"
-              marginRight={15}
-              paddingInput={11}
-              onChange={(e) => setSince(e.target.value)}
-            />
-            <InputDate
-              label="Final date"
-              wid="30%"
-              marginRight={15}
-              paddingInput={11}
-              onChange={(e) => setUntil(e.target.value)}
-            />
-            <SelectText
-              label="Order by"
-              wid="30%"
-              options={OrderFilter}
-              onChange={(e) => setSort(e.target.value)}
-            />
+            <Box wid={["100%", "100%", "60%"]} justifyContent="space-between">
+              <InputDate
+                label="Initial date"
+                wid="32%"
+                marginRight={15}
+                paddingInput={11}
+                onChange={(e) => setSince(e.target.value)}
+              />
+              <InputDate
+                label="Final date"
+                wid="32%"
+                marginRight={15}
+                paddingInput={11}
+                onChange={(e) => setUntil(e.target.value)}
+              />
+              <SelectText
+                label="Order by"
+                wid="32%"
+                options={OrderFilter}
+                onChange={(e) => setSort(e.target.value)}
+              />
+            </Box>
           </Box>
         }
+        filterSize={70}
       >
         {isLoading && (
           <>
@@ -286,8 +305,9 @@ const Users = () => {
             return (
               <Card key={u.email}>
                 <Box
-                  wid="70%"
+                  wid={["100%", "100%", "100%", "95%"]}
                   justifyContent="space-between"
+                  flexWrap="wrap"
                   alignItems="flex-start"
                 >
                   <Box
@@ -295,7 +315,7 @@ const Users = () => {
                     hei={42}
                     backgroundColor={theme.colors.base.primary}
                     borderRadius={50}
-                    marginRight={10}
+                    marginRight={[0, 0, 0, 10]}
                   >
                     {u?.picture && (
                       <Image
@@ -308,7 +328,7 @@ const Users = () => {
                     )}
                   </Box>
 
-                  <Item>
+                  <Item w={["100%", "100%", "10%"]}>
                     <Text
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
@@ -323,7 +343,7 @@ const Users = () => {
                       {u.firstName} {u.middleName?.charAt(0)}. {u.lastName}
                     </Text>
                   </Item>
-                  <Item>
+                  <Item w={["100%", "100%", "10%"]}>
                     <Text
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
@@ -339,7 +359,7 @@ const Users = () => {
                     </Text>
                   </Item>
                   {user && user?.role && havePermission(user.role) && (
-                    <Item>
+                    <Item w={["100%", "100%", "10%"]}>
                       <Text
                         fontSize={theme.fonts.sizes.sm}
                         color={theme.colors.base.secondary}
@@ -362,7 +382,7 @@ const Users = () => {
                       </Text>
                     </Item>
                   )}
-                  <Item>
+                  <Item w={["100%", "100%", "10%"]}>
                     <Text
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
@@ -377,7 +397,7 @@ const Users = () => {
                       {`${u.createdBy.firstName} ${u.createdBy.lastName}`}
                     </Text>
                   </Item>
-                  <Item>
+                  <Item w={["100%", "100%", "10%"]}>
                     <Text
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
@@ -398,7 +418,7 @@ const Users = () => {
                       })}
                     </Text>
                   </Item>
-                  <Item>
+                  <Item w={["100%", "100%", "10%"]}>
                     <Text
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
@@ -414,37 +434,70 @@ const Users = () => {
                     </Text>
                   </Item>
                 </Box>
-                <Box wid="25%" justifyContent="flex-end">
+                <Box wid="5%" justifyContent="flex-end">
                   {user?.email !== u.email && (
-                    <Box wid="40%" justifyContent="flex-end">
-                      <Box
-                        marginRight={25}
-                        hover="cursor:pointer;"
-                        onClick={() => {
-                          setObject(u as User);
-                          router.push(`/register`);
-                        }}
+                    <Menu aria-label="Menu" placement="bottom-end">
+                      <MenuButton
+                        pos={{ base: "absolute", lg: "relative" }}
+                        top={{ base: `28px`, lg: `0px` }}
+                        right={{ base: `15px`, lg: `0px` }}
+                        as={IconButton}
+                        aria-label="Edit"
+                        icon={<Dots size={theme.icons.sizes.xs} />}
+                        backgroundColor="transparent"
+                        ml={3}
+                        _hover={{ backgroundColor: theme.colors.base.primary }}
+                      />
+                      <MenuList
+                        bg={theme.colors.base.white}
+                        borderRadius={8}
+                        boxShadow={`0 4px 12px 0 rgba(0 0 0 / 17%)`}
+                        p={3}
+                        border="none"
                       >
-                        <Edit size={theme.icons.sizes.xs} />
-                      </Box>
-
-                      <Box
-                        hover="cursor:pointer;"
-                        onClick={() => {
-                          onOpen();
-                          setDelete(u?._id);
-                        }}
-                      >
-                        <Text
-                          fontSize={theme.fonts.sizes.md}
-                          color={theme.colors.base.red[200]}
-                          weight={500}
-                          pointerEvents="none"
+                        <MenuItem
+                          icon={
+                            <Edit
+                              size={theme.icons.sizes.xs}
+                              color={theme.colors.base.secondary}
+                            />
+                          }
+                          iconSpacing={3}
+                          bg="transparent"
+                          onClick={() => {
+                            setObject(u as User);
+                            router.push(`/register`);
+                          }}
                         >
-                          Delete
-                        </Text>
-                      </Box>
-                    </Box>
+                          <Text
+                            fontSize={theme.fonts.sizes.md}
+                            color={theme.colors.base.secondary}
+                          >
+                            Edit User
+                          </Text>
+                        </MenuItem>
+                        <Box
+                          wid="100%"
+                          hei="1px"
+                          backgroundColor={theme.colors.base.gray[100]}
+                          margin={`10px 0`}
+                        />
+                        <MenuItem
+                          bg="transparent"
+                          onClick={() => {
+                            onOpen();
+                            setDelete(u?._id);
+                          }}
+                        >
+                          <Text
+                            fontSize={theme.fonts.sizes.md}
+                            color={theme.colors.base.red[200]}
+                          >
+                            Delete this User
+                          </Text>
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
                   )}
                 </Box>
               </Card>

@@ -43,7 +43,7 @@ export type TUserEdit = {
   email?: string;
   role?: string;
   picture?: string;
-}
+};
 
 export interface UserAuthInterface {
   user: UserInterface;

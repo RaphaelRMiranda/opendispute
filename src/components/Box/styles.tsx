@@ -42,11 +42,7 @@ export const StyledBox = styled.div<TStyledBox>`
             : theme.breakpoints[i]
         }) {
             ${name}: ${
-          typeof wid[i] === "number"
-            ? `${wid[i]}px`
-            : wid[i]
-            ? wid[i]
-            : "auto"
+          typeof wid[i] === "number" ? `${wid[i]}px` : wid[i] ? wid[i] : "auto"
         };
         }`);
       }
@@ -118,11 +114,7 @@ export const StyledBox = styled.div<TStyledBox>`
       return `& { ${query.join("")} }`;
     } else {
       return `min-width: ${
-        typeof minWid === "number"
-          ? `${minWid}px`
-          : minWid
-          ? minWid
-          : "unset"
+        typeof minWid === "number" ? `${minWid}px` : minWid ? minWid : "unset"
       };`;
     }
   }}
@@ -144,11 +136,7 @@ export const StyledBox = styled.div<TStyledBox>`
             : theme.breakpoints[i]
         }) {
             ${name}: ${
-          typeof hei[i] === "number"
-            ? `${hei[i]}px`
-            : hei[i]
-            ? hei[i]
-            : "auto"
+          typeof hei[i] === "number" ? `${hei[i]}px` : hei[i] ? hei[i] : "auto"
         };
         }`);
       }
@@ -220,11 +208,7 @@ export const StyledBox = styled.div<TStyledBox>`
       return `& { ${query.join("")} }`;
     } else {
       return `max-width: ${
-        typeof maxWid === "number"
-          ? `${maxWid}px`
-          : maxWid
-          ? maxWid
-          : "unset"
+        typeof maxWid === "number" ? `${maxWid}px` : maxWid ? maxWid : "unset"
       };`;
     }
   }}
@@ -273,11 +257,7 @@ export const StyledBox = styled.div<TStyledBox>`
       return `& { ${query.join("")} }`;
     } else {
       return `min-height: ${
-        typeof minHei === "number"
-          ? `${minHei}px`
-          : minHei
-          ? minHei
-          : "unset"
+        typeof minHei === "number" ? `${minHei}px` : minHei ? minHei : "unset"
       };`;
     }
   }}
@@ -326,11 +306,7 @@ export const StyledBox = styled.div<TStyledBox>`
       return `& { ${query.join("")} }`;
     } else {
       return `max-height: ${
-        typeof maxHei === "number"
-          ? `${maxHei}px`
-          : maxHei
-          ? maxHei
-          : "unset"
+        typeof maxHei === "number" ? `${maxHei}px` : maxHei ? maxHei : "unset"
       };`;
     }
   }}
@@ -836,7 +812,53 @@ export const StyledBox = styled.div<TStyledBox>`
     }
   }}
   flex-direction: ${({ flexDirection }) => flexDirection || "row"};
-  flex-wrap: ${({ flexWrap }) => flexWrap || "nowrap"};
+  ${({ flexWrap }) => {
+    if (typeof flexWrap === "object") {
+      const query = new Array<string>();
+      const name = "flex-wrap";
+
+      for (let i = 0; i < flexWrap.length; i++) {
+        query.push(`@media (min-width: ${
+          theme.breakpoints[i - 1]
+            ? typeof theme.breakpoints[i - 1] === "number"
+              ? `${theme.breakpoints[i - 1]}px`
+              : theme.breakpoints[i - 1]
+            : `${0}px`
+        }) and (max-width: ${
+          typeof theme.breakpoints[i] === "number"
+            ? `${theme.breakpoints[i]}px`
+            : theme.breakpoints[i]
+        }) {
+            ${name}: ${
+          typeof flexWrap[i] === "number"
+            ? `${flexWrap[i]}px`
+            : flexWrap[i]
+            ? flexWrap[i]
+            : "auto"
+        };
+        }`);
+      }
+
+      query.push(`@media (min-width: ${
+        theme.breakpoints[flexWrap.length - 1]
+          ? typeof theme.breakpoints[flexWrap.length - 1] === "number"
+            ? `${theme.breakpoints[flexWrap.length - 1]}px`
+            : theme.breakpoints[flexWrap.length - 1]
+          : `${0}px`
+      }) {
+            ${name}: ${
+        typeof flexWrap[flexWrap.length - 1] === "number"
+          ? `${flexWrap[flexWrap.length - 1]}px`
+          : flexWrap[flexWrap.length - 1]
+          ? flexWrap[flexWrap.length - 1]
+          : "auto"
+      }};`);
+
+      return `& { ${query.join("")} }`;
+    } else {
+      return `flex-wrap: ${flexWrap ? flexWrap : "nowrap"};`;
+    }
+  }}
   ${({ justifyContent }) => {
     if (typeof justifyContent === "object") {
       const query = new Array<string>();
@@ -1062,12 +1084,60 @@ export const StyledBox = styled.div<TStyledBox>`
       : border && typeof border === "string"
       ? border
       : "none"};
-  border-radius: ${({ borderRadius }) =>
-    typeof borderRadius === "number"
-      ? `${borderRadius}px`
-      : borderRadius
-      ? borderRadius
-      : "0"};
+
+      ${({ borderRadius }) => {
+        if (typeof borderRadius === "object") {
+          const query = new Array<string>();
+          const name = "border-radius";
+
+          for (let i = 0; i < borderRadius.length; i++) {
+            query.push(`@media (min-width: ${
+              theme.breakpoints[i - 1]
+                ? typeof theme.breakpoints[i - 1] === "number"
+                  ? `${theme.breakpoints[i - 1]}px`
+                  : theme.breakpoints[i - 1]
+                : `${0}px`
+            }) and (max-width: ${
+              typeof theme.breakpoints[i] === "number"
+                ? `${theme.breakpoints[i]}px`
+                : theme.breakpoints[i]
+            }) {
+                ${name}: ${
+              typeof borderRadius[i] === "number"
+                ? `${borderRadius[i]}px`
+                : borderRadius[i]
+                ? borderRadius[i]
+                : "auto"
+            };
+            }`);
+          }
+
+          query.push(`@media (min-width: ${
+            theme.breakpoints[borderRadius.length - 1]
+              ? typeof theme.breakpoints[borderRadius.length - 1] === "number"
+                ? `${theme.breakpoints[borderRadius.length - 1]}px`
+                : theme.breakpoints[borderRadius.length - 1]
+              : `${0}px`
+          }) {
+                ${name}: ${
+            typeof borderRadius[borderRadius.length - 1] === "number"
+              ? `${borderRadius[borderRadius.length - 1]}px`
+              : borderRadius[borderRadius.length - 1]
+              ? borderRadius[borderRadius.length - 1]
+              : "auto"
+          }};`);
+
+          return `& { ${query.join("")} }`;
+        } else {
+          return `border-radius: ${
+            borderRadius
+              ? typeof borderRadius === "number"
+                ? `${borderRadius}px`
+                : borderRadius
+              : "0px"
+          };`;
+        }
+      }}
   box-shadow: ${({ boxShadow }) => boxShadow || "none"};
   ${({ overflow }) => overflow && `overflow: ${overflow};`}
   ${({ overflowY }) => overflowY && `overflow-y: ${overflowY};`}

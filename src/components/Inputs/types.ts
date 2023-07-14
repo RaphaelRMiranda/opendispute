@@ -13,6 +13,7 @@ export type TInput = {
   defaultValue?: string | number;
   paddingInput?: string | number | Array<string | number>;
   maxLength?: number;
+  fontSize?: string;
 };
 
 export type TRadio = {
