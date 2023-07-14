@@ -124,8 +124,8 @@ const Users = () => {
   };
 
   useEffect(() => {
-    if (token && token.length > 0) handleUsers();
-  }, [limit, page, debounceValue, since, sort, token, until, setUser]);
+    if (token && token.length > 5) handleUsers();
+  }, [limit, page, debounceValue, since, sort, until, token, setUser]);
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);

@@ -43,7 +43,7 @@ const Settings = () => {
           isError(true);
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setSettings, token]);
+  }, []);
 
   return (
     <Layout>

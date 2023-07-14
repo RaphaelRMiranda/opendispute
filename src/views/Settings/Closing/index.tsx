@@ -2,14 +2,16 @@ import Page from "@/components/Page";
 import SelectText from "@/components/Selects/Text";
 import { getSettings, useSettings } from "@/context/Settings";
 import { useEffect, useState } from "react";
-import getKeysByMode from "../utils/getKeysByMode";
+
 import { DefaultValue } from "@/context/Settings/types";
 import { Box, Skeleton, Text, useToast } from "@chakra-ui/react";
-import Tables from "../components/Tables";
+
 import { useUser } from "@/context/User";
 import { theme } from "@/styles/theme";
+import getKeysByMode from "../utils/getKeysByMode";
+import Tables from "../Tables";
 
-const Action = () => {
+const Closing = () => {
   const { token } = useUser();
   const { settings, setSettings } = useSettings();
 
@@ -31,27 +33,27 @@ const Action = () => {
     },
   });
 
-  useEffect(() => {
-    if (token)
-      getSettings({ token })
-        .then((response) => {
-          setSettings(response.data);
-          isLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          isLoading(false);
-          errToast();
-          isError(true);
-        });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setSettings, token]);
+  // useEffect(() => {
+  //   if (token)
+  //     getSettings({ token })
+  //       .then((response) => {
+  //         setSettings(response.data);
+  //         isLoading(false);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //         isLoading(false);
+  //         errToast();
+  //         isError(true);
+  //       });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [setSettings, token]);
 
   useEffect(() => {
-    if (settings && settings.actions) {
+    if (settings && settings.closingStatement) {
       isLoading(false);
       setFilterOptions(
-        getKeysByMode(settings, "actions").map((item) => {
+        getKeysByMode(settings, "closingStatement").map((item) => {
           return {
             label: item,
             value: item,
@@ -71,9 +73,9 @@ const Action = () => {
 
   return (
     <Page
-      title="Actions"
-      description="Change action options by adding, removing or editing current
-      ones based on dispute TYPES"
+      title="Closing Statement"
+      description="Change closing statement options by adding, removing or editing
+      current ones based on the factual round"
       filter={
         <Box w="100%">
           <Skeleton
@@ -126,7 +128,7 @@ const Action = () => {
         </>
       )}
       {!onLoading && !onError && (
-        <Tables data={settings.actions} filter={filter} />
+        <Tables data={settings.closingStatement} filter={filter} />
       )}
       {onError && (
         <Box w="100%">
@@ -144,4 +146,4 @@ const Action = () => {
   );
 };
 
-export default Action;
+export default Closing;

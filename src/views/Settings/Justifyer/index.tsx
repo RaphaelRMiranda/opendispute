@@ -2,12 +2,14 @@ import Page from "@/components/Page";
 import SelectText from "@/components/Selects/Text";
 import { getSettings, useSettings } from "@/context/Settings";
 import { useEffect, useState } from "react";
-import getKeysByMode from "../utils/getKeysByMode";
+
 import { DefaultValue } from "@/context/Settings/types";
 import { Box, Skeleton, Text, useToast } from "@chakra-ui/react";
-import Tables from "../components/Tables";
+
 import { useUser } from "@/context/User";
 import { theme } from "@/styles/theme";
+import getKeysByMode from "../utils/getKeysByMode";
+import Tables from "../Tables";
 
 const Justifyer = () => {
   const { token } = useUser();
@@ -31,21 +33,21 @@ const Justifyer = () => {
     },
   });
 
-  useEffect(() => {
-    if (token)
-      getSettings({ token })
-        .then((response) => {
-          setSettings(response.data);
-          isLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          isLoading(false);
-          errToast();
-          isError(true);
-        });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setSettings, token]);
+  // useEffect(() => {
+  //   if (token)
+  //     getSettings({ token })
+  //       .then((response) => {
+  //         setSettings(response.data);
+  //         isLoading(false);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //         isLoading(false);
+  //         errToast();
+  //         isError(true);
+  //       });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [setSettings, token]);
 
   useEffect(() => {
     if (settings && settings.justifyers) {
