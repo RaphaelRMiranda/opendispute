@@ -14,8 +14,10 @@ import SelectText from "@/components/Selects/Text";
 import ActionByType from "../../utils/ActionByType";
 import JustifyerByType from "../../utils/JustifyerByType";
 import { DisputeInterface, TDisputePI } from "../../types";
+import { useSettings } from "@/context/Settings";
 
 const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
+  const { settings } = useSettings();
   const { duplicateDispute, removeDispute, object, setObject, errors } =
     useDocument();
 
@@ -182,9 +184,9 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
           <ArrowTurnUpRight size={theme.icons.sizes.sm} margin={`0 0 0 10px`} />
           {!reverse ? (
             <SelectText
-              wid="100%"
+              wid="100%" 
               label="Action to be taken"
-              options={ActionByType("Personal Info")}
+              options={ActionByType(settings.actions, "Personal Info") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObjectPI((prev) => ({
@@ -201,7 +203,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Personal Info")}
+              options={JustifyerByType(settings.justifyers, "Charge-offs") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObjectPI((prev) => ({
@@ -246,7 +248,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Personal Info")}
+              options={JustifyerByType(settings.justifyers, "Charge-offs") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObjectPI((prev) => ({
@@ -265,7 +267,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Personal Info")}
+              options={ActionByType(settings.actions, "Personal Info") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObjectPI((prev) => ({

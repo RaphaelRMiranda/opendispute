@@ -15,8 +15,10 @@ import ActionByType from "../../utils/ActionByType";
 import JustifyerByType from "../../utils/JustifyerByType";
 import DateMaskOptional from "../../utils/DateMaskOptional";
 import DolarMask from "../../utils/DolarMask";
+import { useSettings } from "@/context/Settings";
 
 const InquiriesTemplate = ({ index, disputeId }: TDisputeTemplate) => {
+  const { settings } = useSettings();
   const { duplicateDispute, removeDispute, object, setObject, errors } =
     useDocument();
 
@@ -235,7 +237,7 @@ const InquiriesTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Inquiries")}
+              options={ActionByType(settings.actions, "Inquiries") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -252,7 +254,7 @@ const InquiriesTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Inquiries")}
+              options={JustifyerByType(settings.justifyers, "Inquiries") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -297,7 +299,7 @@ const InquiriesTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Inquiries")}
+              options={JustifyerByType(settings.justifyers, "Inquiries") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -316,7 +318,7 @@ const InquiriesTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Inquiries")}
+              options={ActionByType(settings.actions, "Inquiries") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({

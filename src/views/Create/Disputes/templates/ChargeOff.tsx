@@ -5,7 +5,7 @@ import { theme } from "@/styles/theme";
 import ArrowTurnUpRight from "../icons/ArrowTurnUpRight";
 import { Button } from "@/components/Buttons";
 import ArrowTurnDownRight from "../icons/ArrowTurnDownRight";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Copy from "../icons/Copy";
 import { TDisputeTemplate } from "./types";
 import { useDocument } from "@/context/Document";
@@ -15,8 +15,10 @@ import ActionByType from "../../utils/ActionByType";
 import JustifyerByType from "../../utils/JustifyerByType";
 import DolarMask from "../../utils/DolarMask";
 import DateMaskOptional from "../../utils/DateMaskOptional";
+import { useSettings } from "@/context/Settings";
 
 const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
+  const { settings } = useSettings();
   const { duplicateDispute, removeDispute, object, setObject, errors } =
     useDocument();
 
@@ -235,7 +237,7 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Charge-offs")}
+              options={ActionByType(settings.actions, "Charge-offs") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -252,7 +254,9 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Charge-offs")}
+              options={
+                JustifyerByType(settings.justifyers, "Charge-offs") || []
+              }
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -297,7 +301,9 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Charge-offs")}
+              options={
+                JustifyerByType(settings.justifyers, "Charge-offs") || []
+              }
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -316,7 +322,7 @@ const ChargeOffTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Charge-offs")}
+              options={ActionByType(settings.actions, "Charge-offs") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
