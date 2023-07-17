@@ -33,9 +33,11 @@ import GreetingSequenceByRound from "./utils/GreetingSequenceByRound";
 import SocialNumberMask from "./utils/SocialNumberMask";
 import DolarMask from "./utils/DolarMask";
 import DateMask from "./utils/DateMask";
+import { getSettings, useSettings } from "@/context/Settings";
 
 const Create = () => {
   const { token } = useUser();
+  const { settings, setSettings } = useSettings();
   const { object, setObject, errors, setErrors } = useDocument();
 
   const router = useRouter();
@@ -126,7 +128,7 @@ const Create = () => {
       setObject((prev) => ({
         ...prev,
         _id: "",
-        dispute: [],
+        // dispute: [],
       }));
     }
   }, [isEditing, isFactual, setObject, social]);
@@ -255,6 +257,21 @@ const Create = () => {
     const value = e.target.value;
     setDateOfBirth(DateMask(value));
   };
+
+  const handleGetSettings = () => {
+    getSettings({ token })
+      .then((response) => {
+        setSettings(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    if (token && token.length > 5) handleGetSettings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   return (
     <Layout>
@@ -697,7 +714,10 @@ const Create = () => {
                 <SelectText
                   wid={["100%", "100%", "100%", "49%"]}
                   label="Greeting Sequence"
-                  options={GreetingSequenceByRound(object?.disputeRound || 1)}
+                  options={GreetingSequenceByRound(
+                    settings.greetingSequence || {},
+                    object?.disputeRound || 1
+                  )}
                   marginTop={[15, 15, 15, 0]}
                   onChange={(e) =>
                     setObject((prev) => ({
@@ -740,7 +760,10 @@ const Create = () => {
                 <SelectText
                   wid="100%"
                   label="Closing Statement"
-                  options={CloseStatementByRound(object?.disputeRound || 1)}
+                  options={CloseStatementByRound(
+                    settings.closingStatement || {},
+                    object?.disputeRound || 1
+                  )}
                   onChange={(e) =>
                     setObject((prev) => ({
                       ...prev,

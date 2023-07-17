@@ -35,21 +35,20 @@ export const getSettings = async ({ token }: TToken) => {
 
 export const deleteSettings = async ({
   mode,
+  index,
   type,
   round,
   token,
 }: RemoveSettings & TToken) => {
-  return await Api.post(
-    "/dispute/setting/create",
-    {
+  return await Api.delete("/dispute/setting/delete", {
+    params: {
       mode,
-      type,
+      index,
       round,
+      type,
     },
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
+    headers: { Authorization: `Bearer ${token}` },
+  });
 };
 
 export const SettingsProvider = ({ children }: TContext) => {

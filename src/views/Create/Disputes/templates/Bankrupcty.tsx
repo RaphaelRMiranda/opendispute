@@ -15,8 +15,10 @@ import ActionByType from "../../utils/ActionByType";
 import JustifyerByType from "../../utils/JustifyerByType";
 import DateMaskOptional from "../../utils/DateMaskOptional";
 import DolarMask from "../../utils/DolarMask";
+import { useSettings } from "@/context/Settings";
 
 const BankrupctyTemplate = ({ index, disputeId }: TDisputeTemplate) => {
+  const { settings } = useSettings();
   const { duplicateDispute, removeDispute, object, setObject, errors } =
     useDocument();
 
@@ -169,7 +171,7 @@ const BankrupctyTemplate = ({ index, disputeId }: TDisputeTemplate) => {
           label="Data Furnisher"
           placeholder="Bank of America"
           marginRight={10}
-          onChange={(e) => {
+          onChange={(e) => { 
             setObject((prev) => ({
               ...prev,
               dispute: prev.dispute.map((item, i) =>
@@ -235,7 +237,7 @@ const BankrupctyTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Bankrupcty")}
+              options={ActionByType(settings.actions, "Charge-offs") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -252,7 +254,7 @@ const BankrupctyTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Bankrupcty")}
+              options={JustifyerByType(settings.justifyers, "Bankrupcty") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -297,7 +299,7 @@ const BankrupctyTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Bankrupcty")}
+              options={JustifyerByType(settings.justifyers, "Bankrupcty") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -316,7 +318,7 @@ const BankrupctyTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Bankrupcty")}
+              options={ActionByType(settings.actions, "Charge-offs") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({

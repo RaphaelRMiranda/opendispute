@@ -5,7 +5,11 @@ export type DefaultValue = {
   value: string;
 };
 
-type DefaultPerTypeValue = {
+export type DefaultIndex = {
+  index: number;
+};
+
+export type DefaultPerTypeValue = {
   type: string;
 };
 
@@ -38,8 +42,9 @@ export enum SettingsMode {
 
 export type RemoveSettings = {
   mode: SettingsMode;
-  type: string;
-  round: string;
+  index: number;
+  round?: string;
+  type?: string;
 };
 
 export interface SettingsProps {

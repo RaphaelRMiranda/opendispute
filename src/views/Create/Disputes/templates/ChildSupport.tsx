@@ -15,8 +15,10 @@ import ActionByType from "../../utils/ActionByType";
 import JustifyerByType from "../../utils/JustifyerByType";
 import DateMaskOptional from "../../utils/DateMaskOptional";
 import DolarMask from "../../utils/DolarMask";
+import { useSettings } from "@/context/Settings";
 
 const ChildSupportTemplate = ({ index, disputeId }: TDisputeTemplate) => {
+  const { settings } = useSettings();
   const { duplicateDispute, removeDispute, object, setObject, errors } =
     useDocument();
 
@@ -234,7 +236,7 @@ const ChildSupportTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Child Support")}
+              options={ActionByType(settings.actions, "Charge-offs") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -251,7 +253,7 @@ const ChildSupportTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Child Support")}
+              options={JustifyerByType(settings.justifyers, "Child Support") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -296,7 +298,7 @@ const ChildSupportTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Child Support")}
+              options={JustifyerByType(settings.justifyers, "Child Support") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -315,7 +317,7 @@ const ChildSupportTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Child Support")}
+              options={ActionByType(settings.actions, "Charge-offs") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({

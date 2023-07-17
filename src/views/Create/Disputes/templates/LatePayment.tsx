@@ -15,8 +15,10 @@ import ActionByType from "../../utils/ActionByType";
 import JustifyerByType from "../../utils/JustifyerByType";
 import DateMaskOptional from "../../utils/DateMaskOptional";
 import DolarMask from "../../utils/DolarMask";
+import { useSettings } from "@/context/Settings";
 
 const LatePaymentTemplate = ({ index, disputeId }: TDisputeTemplate) => {
+  const { settings } = useSettings();
   const { duplicateDispute, removeDispute, object, setObject, errors } =
     useDocument();
 
@@ -234,7 +236,7 @@ const LatePaymentTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Late Payment")}
+              options={ActionByType(settings.actions, "Late Payment") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -251,7 +253,7 @@ const LatePaymentTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Late Payment")}
+              options={JustifyerByType(settings.justifyers, "Late Payment") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -296,7 +298,7 @@ const LatePaymentTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Late Payment")}
+              options={JustifyerByType(settings.justifyers, "Late Payment") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -315,7 +317,7 @@ const LatePaymentTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Late Payment")}
+              options={ActionByType(settings.actions, "Late Payment") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({

@@ -45,6 +45,7 @@ import Edit from "@/components/Card/icons/Edit";
 import * as Buttons from "@/components/Buttons";
 import InputText from "@/components/Inputs/Text";
 import { Types } from "@/context/TypesContext/types";
+import Layout from "@/components/Layout";
 
 const Types = () => {
   const { token } = useUser();
@@ -76,7 +77,7 @@ const Types = () => {
     description: onEdit._id
       ? "Dispute type was updated successfully"
       : onDelete._id
-      ? "The new type was deleted successfully"
+      ? "The type was deleted successfully"
       : "The new type was created successfully",
     status: "success",
     isClosable: true,
@@ -128,9 +129,9 @@ const Types = () => {
   };
 
   useEffect(() => {
-    if (token) handleGetTypes();
+    if (token && token.length > 5) handleGetTypes();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [token]);
 
   const handleCreateType = () => {
     setTypeError(false);
@@ -176,6 +177,7 @@ const Types = () => {
   };
 
   const handleDeleteType = () => {
+    isDeleting(true);
     setTypeError(false);
     setEditedType("");
     isEdit({} as Types);
@@ -186,6 +188,7 @@ const Types = () => {
         onClose();
         isDelete({} as Types);
         handleGetTypes();
+        isDeleting(false);
       })
       .catch((err) => {
         console.log(err);
@@ -193,6 +196,7 @@ const Types = () => {
         errTypeToast();
         onClose();
         setTypeError(true);
+        isDeleting(false);
       });
   };
 
@@ -200,7 +204,7 @@ const Types = () => {
   const cancelRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <>
+    <Layout>
       {onDelete._id && (
         <AlertDialog
           isOpen={isOpen}
@@ -241,7 +245,6 @@ const Types = () => {
           </AlertDialogOverlay>
         </AlertDialog>
       )}
-
       {!onDelete._id && (
         <Modal
           initialFocusRef={inputRef}
@@ -270,11 +273,6 @@ const Types = () => {
                     onChange={(e) => setEditedType(e.target.value)}
                     defaultValue={onEdit.type}
                     error={typeError ? "Error when trying to update type" : ""}
-                    border={
-                      typeError
-                        ? `1px solid ${theme.colors.base.red[200]}`
-                        : "none"
-                    }
                     reference={inputRef}
                   />
                 ) : (
@@ -285,11 +283,6 @@ const Types = () => {
                     onChange={(e) => setNewType(e.target.value)}
                     opacity={onLoadingType ? 0.5 : 1}
                     error={typeError ? "Error when trying to create type" : ""}
-                    border={
-                      typeError
-                        ? `1px solid ${theme.colors.base.red[200]}`
-                        : "none"
-                    }
                     reference={inputRef}
                   />
                 )}
@@ -499,7 +492,7 @@ const Types = () => {
           </Box>
         )}
       </Page>
-    </>
+    </Layout>
   );
 };
 

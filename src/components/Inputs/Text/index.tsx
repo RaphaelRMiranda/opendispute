@@ -15,7 +15,7 @@ const InputText = ({
   readonly,
   defaultValue,
   paddingInput,
-  maxLength,
+  maxLength, 
   fontSize,
   ...rest
 }: TBox & TInput) => {

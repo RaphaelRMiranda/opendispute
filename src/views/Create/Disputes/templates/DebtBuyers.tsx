@@ -15,8 +15,10 @@ import ActionByType from "../../utils/ActionByType";
 import JustifyerByType from "../../utils/JustifyerByType";
 import DateMaskOptional from "../../utils/DateMaskOptional";
 import DolarMask from "../../utils/DolarMask";
+import { useSettings } from "@/context/Settings";
 
 const DebtBuyersTemplate = ({ index, disputeId }: TDisputeTemplate) => {
+  const { settings } = useSettings();
   const { duplicateDispute, removeDispute, object, setObject, errors } =
     useDocument();
 
@@ -225,7 +227,7 @@ const DebtBuyersTemplate = ({ index, disputeId }: TDisputeTemplate) => {
         marginTop={10}
       >
         <Box
-          wid="100%"
+          wid="100%" 
           justifyContent="flex-start"
           alignItems="flex-end"
           marginBottom={5}
@@ -235,7 +237,7 @@ const DebtBuyersTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Debt Buyers")}
+              options={ActionByType(settings.actions, "Charge-offs") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -252,7 +254,7 @@ const DebtBuyersTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Debt Buyers")}
+              options={JustifyerByType(settings.justifyers, "Debt Buyers") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -297,7 +299,7 @@ const DebtBuyersTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType("Debt Buyers")}
+              options={JustifyerByType(settings.justifyers, "Debt Buyers") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -316,7 +318,7 @@ const DebtBuyersTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Action to be taken"
-              options={ActionByType("Debt Buyers")}
+              options={ActionByType(settings.actions, "Charge-offs") || []}
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({

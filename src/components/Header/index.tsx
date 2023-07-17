@@ -17,8 +17,8 @@ import AddUser from "../Menu/icons/AddUser";
 import UserIcon from "../Menu/icons/UserIcon";
 import Settings from "../Menu/icons/Settings";
 import Exit from "../Menu/icons/Exit";
+import { useRouter } from "next/router";
 import { User } from "@/views/Register/types";
-import { useRouter } from "next/navigation";
 
 const Header = () => {
   const { user, setObject, setUser, setToken } = useUser();
@@ -144,7 +144,7 @@ const Header = () => {
             backgroundColor={theme.colors.base.gray[100]}
             margin={`10px 0`}
           />
-          {/* <MenuItem
+          <MenuItem
             icon={
               <Exit
                 size={theme.fonts.sizes.md}
@@ -162,7 +162,7 @@ const Header = () => {
             >
               Logout
             </Text>
-          </MenuItem> */}
+          </MenuItem>
         </MenuList>
       </Menu>
     </Box>
