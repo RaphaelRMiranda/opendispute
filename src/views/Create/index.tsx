@@ -34,6 +34,7 @@ import SocialNumberMask from "./utils/SocialNumberMask";
 import DolarMask from "./utils/DolarMask";
 import DateMask from "./utils/DateMask";
 import { getSettings, useSettings } from "@/context/Settings";
+import Loading from "@/components/Buttons/icons/Loading";
 
 const Create = () => {
   const { token } = useUser();
@@ -78,7 +79,20 @@ const Create = () => {
     },
   });
 
+  const errSettingsToast = useToast({
+    position: "top",
+    duration: 5000,
+    title: "Error when trying to get settings",
+    description: "Please contact support if the problem persists",
+    status: "error",
+    isClosable: true,
+    containerStyle: {
+      fontSize: theme.fonts.sizes.sm,
+    },
+  });
+
   const [loading, isLoading] = useState<boolean>(false);
+  const [onLoadingSettings, setOnLoadingSettings] = useState<boolean>(true);
 
   const [socialNumber, setSocialNumber] = useState<string>("");
   const [dateOfBirth, setDateOfBirth] = useState<string>("");
@@ -102,6 +116,8 @@ const Create = () => {
   const [isFactual] = useState<boolean>(
     object?._id && router.pathname.indexOf(`/factual`) >= 0 ? true : false
   );
+
+  const [onErrorSettings, setOnErrorSettings] = useState<boolean>(false);
 
   useEffect(() => {
     if (isEditing || isFactual) {
@@ -262,9 +278,13 @@ const Create = () => {
     getSettings({ token })
       .then((response) => {
         setSettings(response.data);
+        setOnLoadingSettings(false);
       })
       .catch((err) => {
         console.log(err);
+        errSettingsToast();
+        setOnLoadingSettings(false);
+        setOnErrorSettings(true);
       });
   };
 
@@ -795,7 +815,41 @@ const Create = () => {
                   defaultValue={object?.closingStatementExtended || ""}
                 />
               </CustomBox>
-              <Disputes disputes={object?.dispute} loading={loading} />
+              {!onLoadingSettings && !onErrorSettings && (
+                <Disputes disputes={object?.dispute} loading={loading} />
+              )}
+
+              {onErrorSettings && (
+                <Box
+                  w="100%"
+                  display="flex"
+                  justifyContent="center"
+                  mt={`15px`}
+                >
+                  <Text
+                    fontSize={theme.fonts.sizes.sm}
+                    color={theme.colors.base.red[200]}
+                    weight={600}
+                    marginRight={10}
+                  >
+                    Something went wrong, settings not found
+                  </Text>
+                </Box>
+              )}
+
+              {onLoadingSettings && (
+                <Box
+                  w="100%"
+                  display="flex"
+                  justifyContent="center"
+                  mt={`15px`}
+                >
+                  <Loading
+                    size={theme.icons.sizes.md}
+                    color={theme.colors.base.secondary}
+                  />
+                </Box>
+              )}
             </Form>
           </CustomBox>
         </Box>
