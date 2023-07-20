@@ -144,6 +144,7 @@ const Create = () => {
       setObject((prev) => ({
         ...prev,
         _id: "",
+        date: new Date().toLocaleDateString("en-US"),
         // dispute: [],
       }));
     }
@@ -215,7 +216,7 @@ const Create = () => {
           ...data,
           dispute: balance,
         };
-
+        
         handleCreateDocument({ ...filteredData, token })
           .then((response) => {
             isLoading(false);
