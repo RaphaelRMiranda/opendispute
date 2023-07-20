@@ -190,8 +190,6 @@ const ObjectValidation = (obj: DisputeInterface) => {
         disputeErrors.type = { message: "Type is required" };
       }
 
-      console.log(dispute?.type)
-
       if (dispute?.type === "Personal Info") {
         if (!dispute?.inaccurateInformation) {
           disputeErrors.inaccurateInformation = {

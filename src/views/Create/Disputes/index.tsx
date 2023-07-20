@@ -57,7 +57,11 @@ const Disputes = ({ disputes, loading }: TDisputeProps) => {
           return (
             <Card key={dispute.id || dispute?._id}>
               {dispute.template ||
-                generateNewTemplate(index, dispute?._id, dispute.type)}
+                generateNewTemplate(
+                  index,
+                  dispute.id || dispute?._id,
+                  dispute.type
+                )}
             </Card>
           );
         })
