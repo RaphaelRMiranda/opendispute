@@ -45,6 +45,7 @@ export type TDispute = {
   shows?: TShows;
   comment?: string;
   reverse?: boolean;
+  isDeleted?: boolean;
   [key: string]: any;
 };
 

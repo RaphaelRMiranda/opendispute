@@ -17,6 +17,7 @@ const InputText = ({
   paddingInput,
   maxLength, 
   fontSize,
+  type,
   ...rest
 }: TBox & TInput) => {
   return (
@@ -38,6 +39,7 @@ const InputText = ({
         </Text>
       )}
       <Input
+        type={type}
         placeholder={placeholder}
         onChange={onChange}
         {...reg}

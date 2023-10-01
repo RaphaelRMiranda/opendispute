@@ -26,6 +26,14 @@ export type TDisputeDownload = {
   _id: string;
 };
 
+export type TDisputeDownloadOverview = {
+  experianScore: string;
+  equifaxScore: string;
+  transunionScore: string;
+  socialNumber: string;
+  showDifference: boolean;
+};
+
 export type TDisputeList = {
   page: number;
   limit: number;

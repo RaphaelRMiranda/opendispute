@@ -323,12 +323,22 @@ const Closing = () => {
           onClose={onClose}
         >
           <AlertDialogOverlay>
-            <AlertDialogContent padding={5}>
-              <Text fontSize={theme.fonts.sizes.md} fontWeight={500}>
+            <AlertDialogContent
+              padding={5}
+              backgroundColor={theme.colors.base.white}
+            >
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.md}
+                fontWeight={500}
+              >
                 Delete closing statement
               </Text>
 
-              <Text fontSize={theme.fonts.sizes.sm}>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.sm}
+              >
                 Are you sure? You cant undo this action afterwards.
               </Text>
 
@@ -337,6 +347,7 @@ const Closing = () => {
                   ref={cancelRef}
                   onClick={onClose}
                   ml={3}
+                  color={theme.colors.base.secondary}
                   fontSize={theme.fonts.sizes.sm}
                   isDisabled={onDeleting}
                 >
@@ -346,6 +357,8 @@ const Closing = () => {
                   colorScheme="red"
                   onClick={handleDelete}
                   ml={3}
+                  color={theme.colors.base.primary}
+                  backgroundColor={theme.colors.base.red[200]}
                   fontSize={theme.fonts.sizes.sm}
                   isLoading={onDeleting}
                 >
@@ -364,8 +377,8 @@ const Closing = () => {
             onClose={onClose}
           >
             <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>
+            <ModalContent backgroundColor={theme.colors.base.primary}>
+              <ModalHeader color={theme.colors.base.secondary}>
                 {onEdit.title
                   ? "Edit closing statement"
                   : "Create new closing statement"}
@@ -405,12 +418,15 @@ const Closing = () => {
                       bg={theme.colors.base.gray[300]}
                       border="none"
                       color={theme.colors.base.secondary}
+                      _placeholder={{
+                        color: theme.colors.base.gray[400],
+                      }}
                     />
                     {closingError && (
                       <Text
                         fontSize={theme.fonts.sizes.sm}
                         color={theme.colors.base.red[200]}
-                        marginLeft={5}
+                        marginLeft={`5px`}
                       >
                         Error when trying to update closing statement
                       </Text>
@@ -436,7 +452,7 @@ const Closing = () => {
                     <Text
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
-                      marginLeft={5}
+                      marginLeft={`5px`}
                     >
                       Text
                     </Text>
@@ -449,6 +465,9 @@ const Closing = () => {
                       bg={theme.colors.base.gray[300]}
                       border="none"
                       color={theme.colors.base.secondary}
+                      _placeholder={{
+                        color: theme.colors.base.gray[400],
+                      }}
                     />
                     {closingError && (
                       <Text
@@ -464,7 +483,13 @@ const Closing = () => {
               </ModalBody>
 
               <ModalFooter>
-                <Button mr={3} onClick={onClose}>
+                <Button
+                  mr={3}
+                  isDisabled={onLoadingClosing}
+                  onClick={onClose}
+                  color={theme.colors.base.secondary}
+                  fontSize={theme.fonts.sizes.sm}
+                >
                   Close
                 </Button>
                 <Button
@@ -475,6 +500,9 @@ const Closing = () => {
                       ? () => handleUpdate()
                       : () => handleCreateClosing()
                   }
+                  color={theme.colors.base.primary}
+                  backgroundColor={theme.colors.base.blue}
+                  fontSize={theme.fonts.sizes.sm}
                 >
                   {onEdit.title ? "Save changes" : "Create closing statement"}
                 </Button>
@@ -491,26 +519,42 @@ const Closing = () => {
           size="xl"
         >
           <AlertDialogOverlay>
-            <AlertDialogContent padding={5}>
-              <Text fontSize={theme.fonts.sizes.md} fontWeight={500}>
+            <AlertDialogContent
+              padding={5}
+              backgroundColor={theme.colors.base.white}
+            >
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.md}
+                fontWeight={500}
+              >
                 Create factual dispute
               </Text>
 
-              <Text fontSize={theme.fonts.sizes.sm}>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.sm}
+              >
                 The new factual dispute will be created with DEFAULT values
               </Text>
-              <Text fontSize={theme.fonts.sizes.sm}>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.sm}
+              >
                 Factual that will be created:
               </Text>
-              <Text fontSize={theme.fonts.sizes.md} fontWeight="bold">{`FD${
-                filterOptions.length + 1
-              }`}</Text>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.md}
+                fontWeight="bold"
+              >{`FD${filterOptions.length + 1}`}</Text>
 
               <AlertDialogFooter padding={0} mt={10}>
                 <Button
                   ref={cancelRef}
                   onClick={onClose}
                   ml={3}
+                  color={theme.colors.base.secondary}
                   fontSize={theme.fonts.sizes.sm}
                   isDisabled={onLoadingClosing}
                 >
@@ -520,6 +564,8 @@ const Closing = () => {
                   colorScheme="messenger"
                   onClick={handleCreateFactual}
                   ml={3}
+                  color={theme.colors.base.primary}
+                  backgroundColor={theme.colors.base.blue}
                   fontSize={theme.fonts.sizes.sm}
                   isLoading={onLoadingClosing}
                 >

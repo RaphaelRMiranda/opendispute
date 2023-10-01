@@ -14,6 +14,7 @@ export type TInput = {
   paddingInput?: string | number | Array<string | number>;
   maxLength?: number;
   fontSize?: string;
+  type?: string;
 };
 
 export type TRadio = {

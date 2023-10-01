@@ -212,12 +212,22 @@ const Types = () => {
           onClose={onClose}
         >
           <AlertDialogOverlay>
-            <AlertDialogContent padding={5}>
-              <Text fontSize={theme.fonts.sizes.md} fontWeight={500}>
+            <AlertDialogContent
+              padding={5}
+              backgroundColor={theme.colors.base.white}
+            >
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.md}
+                fontWeight={500}
+              >
                 Delete type
               </Text>
 
-              <Text fontSize={theme.fonts.sizes.sm}>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.sm}
+              >
                 Are you sure? You cant undo this action afterwards.
               </Text>
 
@@ -226,6 +236,7 @@ const Types = () => {
                   ref={cancelRef}
                   onClick={onClose}
                   ml={3}
+                  color={theme.colors.base.secondary}
                   fontSize={theme.fonts.sizes.sm}
                   isDisabled={onDeleting}
                 >
@@ -235,6 +246,8 @@ const Types = () => {
                   colorScheme="red"
                   onClick={handleDeleteType}
                   ml={3}
+                  color={theme.colors.base.primary}
+                  backgroundColor={theme.colors.base.red[200]}
                   fontSize={theme.fonts.sizes.sm}
                   isLoading={onDeleting}
                 >
@@ -253,8 +266,8 @@ const Types = () => {
           onClose={onClose}
         >
           <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>
+          <ModalContent backgroundColor={theme.colors.base.primary}>
+            <ModalHeader color={theme.colors.base.secondary}>
               {onEdit._id ? "Edit type" : "Create new type"}
             </ModalHeader>
             <ModalCloseButton />
@@ -290,7 +303,13 @@ const Types = () => {
             </ModalBody>
 
             <ModalFooter>
-              <Button mr={3} onClick={onClose}>
+              <Button
+                mr={3}
+                isDisabled={onLoadingType}
+                onClick={onClose}
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.sm}
+              >
                 Close
               </Button>
               <Button
@@ -299,6 +318,9 @@ const Types = () => {
                 onClick={
                   onEdit._id ? () => handleEditType() : () => handleCreateType()
                 }
+                color={theme.colors.base.primary}
+                backgroundColor={theme.colors.base.blue}
+                fontSize={theme.fonts.sizes.sm}
               >
                 {onEdit._id ? "Save changes" : "Create type"}
               </Button>
@@ -377,7 +399,7 @@ const Types = () => {
               <Table variant="simple">
                 <Thead>
                   <Tr>
-                    <Th>
+                    <Th borderColor={theme.colors.base.gray[400]}>
                       <Text
                         fontSize={theme.fonts.sizes.md}
                         color={theme.colors.base.secondary}
@@ -386,14 +408,14 @@ const Types = () => {
                         Type
                       </Text>
                     </Th>
-                    <Th></Th>
+                    <Th borderColor={theme.colors.base.gray[400]}></Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {types.map((item, index) => {
                     return (
                       <Tr key={index}>
-                        <Td>
+                        <Td borderColor={theme.colors.base.gray[100]}>
                           <Text
                             fontSize={theme.fonts.sizes.sm}
                             color={theme.colors.base.gray[400]}
@@ -401,7 +423,7 @@ const Types = () => {
                             {item.type}
                           </Text>
                         </Td>
-                        <Td w="5%">
+                        <Td w="5%" borderColor={theme.colors.base.gray[100]}>
                           <Menu aria-label="Menu" placement="bottom-end">
                             <MenuButton
                               pos={{ base: "absolute", lg: "relative" }}

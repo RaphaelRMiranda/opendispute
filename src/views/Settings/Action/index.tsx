@@ -330,12 +330,22 @@ const Action = () => {
           onClose={onClose}
         >
           <AlertDialogOverlay>
-            <AlertDialogContent padding={5}>
-              <Text fontSize={theme.fonts.sizes.md} fontWeight={500}>
+            <AlertDialogContent
+              padding={5}
+              backgroundColor={theme.colors.base.white}
+            >
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.md}
+                fontWeight={500}
+              >
                 Delete action
               </Text>
 
-              <Text fontSize={theme.fonts.sizes.sm}>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.sm}
+              >
                 Are you sure? You cant undo this action afterwards.
               </Text>
 
@@ -344,6 +354,7 @@ const Action = () => {
                   ref={cancelRef}
                   onClick={onClose}
                   ml={3}
+                  color={theme.colors.base.secondary}
                   fontSize={theme.fonts.sizes.sm}
                   isDisabled={onDeleting}
                 >
@@ -353,6 +364,8 @@ const Action = () => {
                   colorScheme="red"
                   onClick={handleDelete}
                   ml={3}
+                  color={theme.colors.base.primary}
+                  backgroundColor={theme.colors.base.red[200]}
                   fontSize={theme.fonts.sizes.sm}
                   isLoading={onDeleting}
                 >
@@ -371,8 +384,8 @@ const Action = () => {
             onClose={onClose}
           >
             <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>
+            <ModalContent backgroundColor={theme.colors.base.primary}>
+              <ModalHeader color={theme.colors.base.secondary}>
                 {onEdit.title ? "Edit action" : "Create new action"}
               </ModalHeader>
               <ModalCloseButton />
@@ -397,7 +410,7 @@ const Action = () => {
                     <Text
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
-                      marginLeft={"5px"}
+                      marginLeft={`5px`}
                     >
                       Text
                     </Text>
@@ -410,12 +423,15 @@ const Action = () => {
                       bg={theme.colors.base.gray[300]}
                       border="none"
                       color={theme.colors.base.secondary}
+                      _placeholder={{
+                        color: theme.colors.base.gray[400],
+                      }}
                     />
                     {actionError && (
                       <Text
                         fontSize={theme.fonts.sizes.sm}
                         color={theme.colors.base.red[200]}
-                        marginLeft={5}
+                        marginLeft={`5px`}
                       >
                         Error when trying to update action
                       </Text>
@@ -441,7 +457,7 @@ const Action = () => {
                     <Text
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
-                      marginLeft={5}
+                      marginLeft={`5px`}
                     >
                       Text
                     </Text>
@@ -454,6 +470,9 @@ const Action = () => {
                       bg={theme.colors.base.gray[300]}
                       border="none"
                       color={theme.colors.base.secondary}
+                      _placeholder={{
+                        color: theme.colors.base.gray[400],
+                      }}
                     />
                     {actionError && (
                       <Text
@@ -469,7 +488,13 @@ const Action = () => {
               </ModalBody>
 
               <ModalFooter>
-                <Button mr={3} onClick={onClose}>
+                <Button
+                  mr={3}
+                  isDisabled={onLoadingAction}
+                  onClick={onClose}
+                  color={theme.colors.base.secondary}
+                  fontSize={theme.fonts.sizes.sm}
+                >
                   Close
                 </Button>
                 <Button
@@ -480,6 +505,9 @@ const Action = () => {
                       ? () => handleUpdate()
                       : () => handleCreateAction()
                   }
+                  color={theme.colors.base.primary}
+                  backgroundColor={theme.colors.base.blue}
+                  fontSize={theme.fonts.sizes.sm}
                 >
                   {onEdit.title ? "Save changes" : "Create action"}
                 </Button>
@@ -496,20 +524,35 @@ const Action = () => {
           size="xl"
         >
           <AlertDialogOverlay>
-            <AlertDialogContent padding={5}>
-              <Text fontSize={theme.fonts.sizes.md} fontWeight={500}>
+            <AlertDialogContent
+              padding={5}
+              backgroundColor={theme.colors.base.white}
+            >
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.md}
+                fontWeight={500}
+              >
                 Create factual dispute
               </Text>
 
-              <Text fontSize={theme.fonts.sizes.sm}>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.sm}
+              >
                 The new factual dispute will be created with DEFAULT values
               </Text>
-              <Text fontSize={theme.fonts.sizes.sm}>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.sm}
+              >
                 Factual that will be created:
               </Text>
-              <Text fontSize={theme.fonts.sizes.md} fontWeight="bold">{`FD${
-                filterOptions.length + 1
-              }`}</Text>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.md}
+                fontWeight="bold"
+              >{`FD${filterOptions.length + 1}`}</Text>
 
               <AlertDialogFooter padding={0} mt={10}>
                 <Button

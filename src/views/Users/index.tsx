@@ -173,12 +173,22 @@ const Users = () => {
         onClose={onClose}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent padding={5}>
-            <Text fontSize={theme.fonts.sizes.md} weight={500}>
+          <AlertDialogContent
+            padding={5}
+            backgroundColor={theme.colors.base.white}
+          >
+            <Text
+              color={theme.colors.base.secondary}
+              fontSize={theme.fonts.sizes.md}
+              weight={500}
+            >
               Delete User
             </Text>
 
-            <Text fontSize={theme.fonts.sizes.sm}>
+            <Text
+              color={theme.colors.base.secondary}
+              fontSize={theme.fonts.sizes.sm}
+            >
               Are you sure? You cant undo this action afterwards.
             </Text>
 
@@ -187,6 +197,7 @@ const Users = () => {
                 ref={cancelRef}
                 onClick={onClose}
                 ml={3}
+                color={theme.colors.base.secondary}
                 fontSize={theme.fonts.sizes.sm}
                 isDisabled={isDeleting}
               >
@@ -196,6 +207,8 @@ const Users = () => {
                 colorScheme="red"
                 onClick={() => handleDelete(toDelete)}
                 ml={3}
+                color={theme.colors.base.primary}
+                backgroundColor={theme.colors.base.red[200]}
                 fontSize={theme.fonts.sizes.sm}
                 isLoading={isDeleting}
               >
