@@ -41,6 +41,26 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
 
   const [reverse, setReverse] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (!objectPI?.dispute[index]?.action)
+      setObjectPI((prev) => ({
+        ...prev,
+        dispute: prev.dispute.map((item, i) =>
+          i === index
+            ? {
+                ...item,
+                action: ActionByType(settings.actions, "Personal Info")[0]
+                  .value,
+                justifyer: JustifyerByType(
+                  settings.justifyers,
+                  "Charge-offs"
+                )[0].value,
+              }
+            : item
+        ),
+      }));
+  }, [index, objectPI, setObjectPI, settings.actions, settings.justifyers]);
+
   return (
     <Box
       wid="100%"
@@ -184,7 +204,7 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
           <ArrowTurnUpRight size={theme.icons.sizes.sm} margin={`0 0 0 10px`} />
           {!reverse ? (
             <SelectText
-              wid="100%" 
+              wid="100%"
               label="Action to be taken"
               options={ActionByType(settings.actions, "Personal Info") || []}
               marginLeft={10}
@@ -203,7 +223,9 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType(settings.justifyers, "Charge-offs") || []}
+              options={
+                JustifyerByType(settings.justifyers, "Charge-offs") || []
+              }
               marginLeft={10}
               onChange={(e) =>
                 setObjectPI((prev) => ({
@@ -248,7 +270,9 @@ const PersonalInfoTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType(settings.justifyers, "Charge-offs") || []}
+              options={
+                JustifyerByType(settings.justifyers, "Charge-offs") || []
+              }
               marginLeft={10}
               onChange={(e) =>
                 setObjectPI((prev) => ({

@@ -110,12 +110,22 @@ const User = () => {
         onClose={onClose}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent padding={5}>
-            <Text fontSize={theme.fonts.sizes.md} weight={500}>
+          <AlertDialogContent
+            padding={5}
+            backgroundColor={theme.colors.base.white}
+          >
+            <Text
+              color={theme.colors.base.secondary}
+              fontSize={theme.fonts.sizes.md}
+              weight={500}
+            >
               Change Profile Picture
             </Text>
 
-            <Text fontSize={theme.fonts.sizes.sm}>
+            <Text
+              color={theme.colors.base.secondary}
+              fontSize={theme.fonts.sizes.sm}
+            >
               Are you sure you want to change your profile picture?
             </Text>
 
@@ -131,6 +141,7 @@ const User = () => {
                   cleanInput();
                 }}
                 ml={3}
+                color={theme.colors.base.secondary}
                 fontSize={theme.fonts.sizes.sm}
                 isDisabled={isUploading}
               >
@@ -142,6 +153,8 @@ const User = () => {
                 ml={3}
                 fontSize={theme.fonts.sizes.sm}
                 isLoading={isUploading}
+                color={theme.colors.base.primary}
+                backgroundColor={theme.colors.base.blue}
               >
                 Change
               </Button>

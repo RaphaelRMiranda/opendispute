@@ -68,6 +68,7 @@ const Header = () => {
           boxShadow={`0 4px 12px 0 rgba(0 0 0 / 17%)`}
           p={5}
           border="none"
+          zIndex={5}
         >
           <MenuItem
             icon={<List size={theme.fonts.sizes.md} />}

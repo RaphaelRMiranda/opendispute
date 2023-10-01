@@ -325,12 +325,22 @@ const Greeting = () => {
           onClose={onClose}
         >
           <AlertDialogOverlay>
-            <AlertDialogContent padding={5}>
-              <Text fontSize={theme.fonts.sizes.md} fontWeight={500}>
+            <AlertDialogContent
+              padding={5}
+              backgroundColor={theme.colors.base.white}
+            >
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.md}
+                fontWeight={500}
+              >
                 Delete greeting sequence
               </Text>
 
-              <Text fontSize={theme.fonts.sizes.sm}>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.sm}
+              >
                 Are you sure? You cant undo this action afterwards.
               </Text>
 
@@ -339,6 +349,7 @@ const Greeting = () => {
                   ref={cancelRef}
                   onClick={onClose}
                   ml={3}
+                  color={theme.colors.base.secondary}
                   fontSize={theme.fonts.sizes.sm}
                   isDisabled={onDeleting}
                 >
@@ -348,6 +359,8 @@ const Greeting = () => {
                   colorScheme="red"
                   onClick={handleDelete}
                   ml={3}
+                  color={theme.colors.base.primary}
+                  backgroundColor={theme.colors.base.red[200]}
                   fontSize={theme.fonts.sizes.sm}
                   isLoading={onDeleting}
                 >
@@ -366,8 +379,8 @@ const Greeting = () => {
             onClose={onClose}
           >
             <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>
+            <ModalContent backgroundColor={theme.colors.base.primary}>
+              <ModalHeader color={theme.colors.base.secondary}>
                 {onEdit.title
                   ? "Edit greeting sequence"
                   : "Create new greeting sequence"}
@@ -394,7 +407,7 @@ const Greeting = () => {
                     <Text
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
-                      marginLeft={"5px"}
+                      marginLeft={`5px`}
                     >
                       Text
                     </Text>
@@ -407,12 +420,15 @@ const Greeting = () => {
                       bg={theme.colors.base.gray[300]}
                       border="none"
                       color={theme.colors.base.secondary}
+                      _placeholder={{
+                        color: theme.colors.base.gray[400],
+                      }}
                     />
                     {greetingError && (
                       <Text
                         fontSize={theme.fonts.sizes.sm}
                         color={theme.colors.base.red[200]}
-                        marginLeft={5}
+                        marginLeft={`5px`}
                       >
                         Error when trying to update greeting sequence
                       </Text>
@@ -438,7 +454,7 @@ const Greeting = () => {
                     <Text
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.secondary}
-                      marginLeft={5}
+                      marginLeft={`5px`}
                     >
                       Text
                     </Text>
@@ -451,6 +467,9 @@ const Greeting = () => {
                       bg={theme.colors.base.gray[300]}
                       border="none"
                       color={theme.colors.base.secondary}
+                      _placeholder={{
+                        color: theme.colors.base.gray[400],
+                      }}
                     />
                     {greetingError && (
                       <Text
@@ -466,7 +485,13 @@ const Greeting = () => {
               </ModalBody>
 
               <ModalFooter>
-                <Button mr={3} onClick={onClose}>
+                <Button
+                  mr={3}
+                  isDisabled={onLoadingGreeting}
+                  onClick={onClose}
+                  color={theme.colors.base.secondary}
+                  fontSize={theme.fonts.sizes.sm}
+                >
                   Close
                 </Button>
                 <Button
@@ -477,6 +502,9 @@ const Greeting = () => {
                       ? () => handleUpdate()
                       : () => handleCreateGreeting()
                   }
+                  color={theme.colors.base.primary}
+                  backgroundColor={theme.colors.base.blue}
+                  fontSize={theme.fonts.sizes.sm}
                 >
                   {onEdit.title ? "Save changes" : "Create greeting sequence"}
                 </Button>
@@ -493,26 +521,42 @@ const Greeting = () => {
           size="xl"
         >
           <AlertDialogOverlay>
-            <AlertDialogContent padding={5}>
-              <Text fontSize={theme.fonts.sizes.md} fontWeight={500}>
+            <AlertDialogContent
+              padding={5}
+              backgroundColor={theme.colors.base.white}
+            >
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.md}
+                fontWeight={500}
+              >
                 Create factual dispute
               </Text>
 
-              <Text fontSize={theme.fonts.sizes.sm}>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.sm}
+              >
                 The new factual dispute will be created with DEFAULT values
               </Text>
-              <Text fontSize={theme.fonts.sizes.sm}>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.sm}
+              >
                 Factual that will be created:
               </Text>
-              <Text fontSize={theme.fonts.sizes.md} fontWeight="bold">{`FD${
-                filterOptions.length + 1
-              }`}</Text>
+              <Text
+                color={theme.colors.base.secondary}
+                fontSize={theme.fonts.sizes.md}
+                fontWeight="bold"
+              >{`FD${filterOptions.length + 1}`}</Text>
 
               <AlertDialogFooter padding={0} mt={10}>
                 <Button
                   ref={cancelRef}
                   onClick={onClose}
                   ml={3}
+                  color={theme.colors.base.secondary}
                   fontSize={theme.fonts.sizes.sm}
                   isDisabled={onLoadingGreeting}
                 >
@@ -522,6 +566,8 @@ const Greeting = () => {
                   colorScheme="messenger"
                   onClick={handleCreateFactual}
                   ml={3}
+                  color={theme.colors.base.primary}
+                  backgroundColor={theme.colors.base.blue}
                   fontSize={theme.fonts.sizes.sm}
                   isLoading={onLoadingGreeting}
                 >

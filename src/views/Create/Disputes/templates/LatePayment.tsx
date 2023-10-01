@@ -5,7 +5,7 @@ import { theme } from "@/styles/theme";
 import ArrowTurnUpRight from "../icons/ArrowTurnUpRight";
 import { Button } from "@/components/Buttons";
 import ArrowTurnDownRight from "../icons/ArrowTurnDownRight";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Copy from "../icons/Copy";
 import { TDisputeTemplate } from "./types";
 import { useDocument } from "@/context/Document";
@@ -34,6 +34,25 @@ const LatePaymentTemplate = ({ index, disputeId }: TDisputeTemplate) => {
     object?.dispute[index]?.transunion || false
   );
   const [reverse, setReverse] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!object?.dispute[index]?.action)
+      setObject((prev) => ({
+        ...prev,
+        dispute: prev.dispute.map((item, i) =>
+          i === index
+            ? {
+                ...item,
+                action: ActionByType(settings.actions, "Late Payment")[0].value,
+                justifyer: JustifyerByType(
+                  settings.justifyers,
+                  "Late Payment"
+                )[0].value,
+              }
+            : item
+        ),
+      }));
+  }, [index, object, setObject, settings.actions, settings.justifyers]);
 
   const [EXShows, setEXShows] = useState<string>("");
   const [EQShows, setEQShows] = useState<string>("");
@@ -253,7 +272,9 @@ const LatePaymentTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType(settings.justifyers, "Late Payment") || []}
+              options={
+                JustifyerByType(settings.justifyers, "Late Payment") || []
+              }
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({
@@ -298,7 +319,9 @@ const LatePaymentTemplate = ({ index, disputeId }: TDisputeTemplate) => {
             <SelectText
               wid="100%"
               label="Justifyer for action"
-              options={JustifyerByType(settings.justifyers, "Late Payment") || []}
+              options={
+                JustifyerByType(settings.justifyers, "Late Payment") || []
+              }
               marginLeft={10}
               onChange={(e) =>
                 setObject((prev) => ({

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Box from "@/components/Box";
+import CustomBox from "@/components/Box";
 import Card from "@/components/Card";
 import Item from "@/components/Card/Item";
 import Download from "@/components/Card/icons/Download";
@@ -15,6 +15,7 @@ import {
   deleteDispute,
   getDisputes,
   handleDownloadDocument,
+  handleDownloadOverview,
   useDocument,
 } from "@/context/Document";
 import SelectText from "@/components/Selects/Text";
@@ -42,15 +43,30 @@ import {
   useDisclosure,
   useToast,
   Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  Box,
+  Checkbox,
+  ModalFooter,
 } from "@chakra-ui/react";
 import Loading from "@/components/Buttons/icons/Loading";
-import { TFactualDispute } from "./types";
+import {
+  OverviewCustomer,
+  OverviewData,
+  OverviewDataError,
+  TFactualDispute,
+} from "./types";
 import FindSelectedRound, {
   EditSelectedRound,
 } from "./utils/FindSelectedRound";
 import { useRouter } from "next/router";
 import Add from "@/components/Header/icons/Add";
 import Dots from "./icons/Dots";
+import DownloadOverview from "@/components/Card/icons/DownloadOverview";
 
 const Listing = () => {
   const router = useRouter();
@@ -65,6 +81,30 @@ const Listing = () => {
     position: "top",
     duration: 5000,
     title: "Error when trying to delete dispute",
+    description: "Please contact support if the problem persists",
+    status: "error",
+    isClosable: true,
+    containerStyle: {
+      fontSize: theme.fonts.sizes.sm,
+    },
+  });
+
+  const errOverviewToast = useToast({
+    position: "top",
+    duration: 5000,
+    title: "Error when trying to create overview",
+    description: "Please contact support if the problem persists",
+    status: "error",
+    isClosable: true,
+    containerStyle: {
+      fontSize: theme.fonts.sizes.sm,
+    },
+  });
+
+  const errOverviewSocialNumberToast = useToast({
+    position: "top",
+    duration: 5000,
+    title: "Error, social number is required",
     description: "Please contact support if the problem persists",
     status: "error",
     isClosable: true,
@@ -88,6 +128,24 @@ const Listing = () => {
   const [isLoading, setLoading] = useState<boolean>(true);
   const [isDeleting, setDeleting] = useState<boolean>(false);
   const [isDownloading, setDownloading] = useState<boolean>(false);
+  const [isDownloadingOverview, setDownloadingOverview] =
+    useState<boolean>(false);
+
+  const [isOpenOverview, onOpenOverview] = useState<boolean>(false);
+
+  const onCloseOverview = () => onOpenOverview(false);
+
+  const [customer, setCustomer] = useState<OverviewCustomer>(
+    {} as OverviewCustomer
+  );
+  const [isChecked, onChecked] = useState<boolean>(false);
+
+  const [overviewData, setOverviewData] = useState<OverviewData>(
+    {} as OverviewData
+  );
+  const [overviewErrors, setOverviewErrors] = useState<OverviewDataError>(
+    {} as OverviewDataError
+  );
 
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(5);
@@ -167,6 +225,75 @@ const Listing = () => {
       });
   };
 
+  const handleOpenOverview = (dispute: DisputeInterface) => {
+    setCustomer(dispute?.customer);
+    isOpenOverview ? onCloseOverview() : onOpenOverview(true);
+  };
+
+  const handleOverview = (socialNumber?: string) => {
+    if (!socialNumber) return errOverviewSocialNumberToast();
+
+    const { equifaxScore, experianScore, transunionScore } = overviewData;
+
+    setOverviewErrors({} as OverviewDataError);
+
+    if (!equifaxScore)
+      return setOverviewErrors((prev) => ({
+        ...prev,
+        equifaxScore: { message: "Equifax Score is required" },
+      }));
+
+    if (!experianScore)
+      return setOverviewErrors((prev) => ({
+        ...prev,
+        experianScore: { message: "Experian Score is required" },
+      }));
+
+    if (!transunionScore)
+      return setOverviewErrors((prev) => ({
+        ...prev,
+        transunionScore: { message: "TransUnion Score is required" },
+      }));
+
+    setDownloadingOverview(true);
+
+    const data: OverviewData = {
+      equifaxScore,
+      experianScore,
+      transunionScore,
+      socialNumber: Buffer.from(socialNumber).toString("base64"),
+      showDifference: isChecked,
+    };
+
+    handleDownloadOverview({
+      ...data,
+      token,
+    })
+      .then((response) => {
+        setDownloading(false);
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute(
+          "download",
+          `${customer?.firstName} ${customer?.lastName} - Overview.zip`
+        );
+        document.body.appendChild(link);
+        link.click();
+
+        setDownloadingOverview(false);
+        onCloseOverview();
+      })
+      .catch((error) => {
+        setDownloading(false);
+        console.log(error);
+
+        setDownloadingOverview(false);
+        errOverviewToast();
+        onCloseOverview();
+      });
+  };
+
   const handleDelete = (_id: string) => {
     setDeleting(true);
     deleteDispute({ _id, token })
@@ -188,20 +315,195 @@ const Listing = () => {
       });
   };
 
+  const inputEqRef = useRef<HTMLInputElement>(null);
+  const inputExRef = useRef<HTMLInputElement>(null);
+  const inputTuRef = useRef<HTMLInputElement>(null);
+
   return (
     <Layout>
+      <Modal
+        initialFocusRef={inputEqRef}
+        size="2xl"
+        isOpen={isOpenOverview}
+        onClose={onCloseOverview}
+      >
+        <ModalOverlay />
+        <ModalContent backgroundColor={theme.colors.base.primary}>
+          <ModalHeader color={theme.colors.base.secondary}>
+            Overview informations
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box
+              w="100%"
+              flexDir="column"
+              justifyContent="flex-start"
+              alignItems="flex-start"
+            >
+              <Text
+                fontSize={theme.fonts.sizes.sm}
+                color={theme.colors.base.secondary}
+              >
+                Name
+              </Text>
+              <Text
+                fontSize={theme.fonts.sizes.sm}
+                color={theme.colors.base.secondary}
+                fontWeight="semibold"
+                mb={2}
+              >
+                {customer?.firstName} {customer?.lastName}
+              </Text>
+              <Text
+                fontSize={theme.fonts.sizes.sm}
+                color={theme.colors.base.secondary}
+              >
+                SSN/ITIN
+              </Text>
+              <Text
+                fontSize={theme.fonts.sizes.sm}
+                color={theme.colors.base.secondary}
+                fontWeight="semibold"
+                mb={5}
+              >
+                {customer?.ssn || customer?.itin}
+              </Text>
+              <Text
+                fontSize={theme.fonts.sizes.xs}
+                color={theme.colors.base.gray[400]}
+                mt={2}
+              >
+                Fill in below according to the difference, if a score has an
+                increase of 30 and your total was 300 you must fill in: 300+30
+              </Text>
+              <Text
+                fontSize={theme.fonts.sizes.xs}
+                color={theme.colors.base.gray[400]}
+                mb={3}
+              >
+                Follow this logic for negative filling, if it {"hasn't"} been
+                changed, just pass the normal value.
+              </Text>
+
+              <InputText
+                wid="100%"
+                label="Equifax Score"
+                placeholder="What is the Equifax Score? Ex:. 300+10"
+                fontSize={theme.fonts.sizes.sm}
+                onChange={(e) =>
+                  setOverviewData((prev) => ({
+                    ...prev,
+                    equifaxScore: String(e.target.value),
+                  }))
+                }
+                defaultValue={""}
+                reference={inputEqRef}
+                marginBottom={10}
+                error={overviewErrors.equifaxScore?.message}
+              />
+              <InputText
+                wid="100%"
+                label="Experian Score"
+                placeholder="What is the Expiran Score? Ex:. 200-10"
+                fontSize={theme.fonts.sizes.sm}
+                onChange={(e) =>
+                  setOverviewData((prev) => ({
+                    ...prev,
+                    experianScore: String(e.target.value),
+                  }))
+                }
+                defaultValue={""}
+                reference={inputExRef}
+                marginBottom={10}
+                error={overviewErrors.experianScore?.message}
+              />
+              <InputText
+                wid="100%"
+                label="TransUnion Score"
+                placeholder="What is the TransUnion Score? Ex:. 500"
+                fontSize={theme.fonts.sizes.sm}
+                onChange={(e) =>
+                  setOverviewData((prev) => ({
+                    ...prev,
+                    transunionScore: String(e.target.value),
+                  }))
+                }
+                defaultValue={""}
+                reference={inputTuRef}
+                marginBottom={15}
+                error={overviewErrors.transunionScore?.message}
+              />
+              <Checkbox
+                size="lg"
+                color={theme.colors.base.secondary}
+                fontWeight="bold"
+                onChange={(e) => onChecked(e.target.checked)}
+                __css={{
+                  "& > span:nth-of-type(1)": isChecked
+                    ? {}
+                    : {
+                        borderColor: theme.colors.base.gray[400],
+                      },
+                }}
+              >
+                Show difference
+              </Checkbox>
+              <Text
+                fontSize={theme.fonts.sizes.xs}
+                color={theme.colors.base.gray[400]}
+              >
+                This Show Difference option displays in the report the
+                difference between the values ​​of each old score until now,
+                whether negative or positive.
+              </Text>
+            </Box>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              mr={3}
+              isDisabled={isDownloadingOverview}
+              onClick={onCloseOverview}
+              color={theme.colors.base.secondary}
+              fontSize={theme.fonts.sizes.sm}
+            >
+              Close
+            </Button>
+            <Button
+              colorScheme="messenger"
+              isLoading={isDownloadingOverview}
+              onClick={() => handleOverview(customer?.ssn || customer?.itin)}
+              color={theme.colors.base.primary}
+              backgroundColor={theme.colors.base.blue}
+              fontSize={theme.fonts.sizes.sm}
+            >
+              Download Overview
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={onClose}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent padding={5}>
-            <CustomText fontSize={theme.fonts.sizes.md} weight={500}>
+          <AlertDialogContent
+            padding={5}
+            backgroundColor={theme.colors.base.white}
+          >
+            <CustomText
+              color={theme.colors.base.secondary}
+              fontSize={theme.fonts.sizes.md}
+              weight={500}
+            >
               Delete Dispute
             </CustomText>
 
-            <CustomText fontSize={theme.fonts.sizes.sm}>
+            <CustomText
+              color={theme.colors.base.secondary}
+              fontSize={theme.fonts.sizes.sm}
+            >
               Are you sure? You cant undo this action afterwards.
             </CustomText>
 
@@ -210,6 +512,7 @@ const Listing = () => {
                 ref={cancelRef}
                 onClick={onClose}
                 ml={3}
+                color={theme.colors.base.secondary}
                 fontSize={theme.fonts.sizes.sm}
                 isDisabled={isDeleting}
               >
@@ -219,6 +522,8 @@ const Listing = () => {
                 colorScheme="red"
                 onClick={() => handleDelete(toDelete)}
                 ml={3}
+                color={theme.colors.base.primary}
+                backgroundColor={theme.colors.base.red[200]}
                 fontSize={theme.fonts.sizes.sm}
                 isLoading={isDeleting}
               >
@@ -233,13 +538,13 @@ const Listing = () => {
         title="Dispute listing"
         description="List of all disputes, you can filter by date or name"
         filter={
-          <Box
+          <CustomBox
             wid="100%"
             justifyContent="flex-end"
             flexWrap={["wrap", "wrap", "nowrap"]}
             marginBottom={25}
           >
-            <Box
+            <CustomBox
               position="relative"
               wid={["100%", "100%", "40%"]}
               marginRight={[0, 0, 15]}
@@ -248,10 +553,10 @@ const Listing = () => {
               <InputText
                 label="Search customer"
                 wid="100%"
-                placeholder="Search for ssn/itin or name"
+                placeholder="Search for ssn/itin"
                 onChange={handleChangeSearch}
               />
-              <Box
+              <CustomBox
                 position="absolute"
                 top="70%"
                 right={12}
@@ -262,9 +567,12 @@ const Listing = () => {
                   size={theme.icons.sizes.xs}
                   color={theme.colors.base.gray[400]}
                 />
-              </Box>
-            </Box>
-            <Box wid={["100%", "100%", "60%"]} justifyContent="space-between">
+              </CustomBox>
+            </CustomBox>
+            <CustomBox
+              wid={["100%", "100%", "60%"]}
+              justifyContent="space-between"
+            >
               <InputDate
                 label="Initial date"
                 wid="32%"
@@ -285,8 +593,8 @@ const Listing = () => {
                 options={OrderFilter}
                 onChange={(e) => setSort(e.target.value)}
               />
-            </Box>
-          </Box>
+            </CustomBox>
+          </CustomBox>
         }
         filterSize={70}
       >
@@ -337,13 +645,13 @@ const Listing = () => {
                   ]._id
                 }
               >
-                <Box
+                <CustomBox
                   wid={["100%", "100%", "100%", "75%"]}
                   justifyContent="space-between"
                   flexWrap="wrap"
                   alignItems="flex-start"
                 >
-                  <Box
+                  <CustomBox
                     display={["flex", "flex", "flex", "none"]}
                     wid={["90%", "90%", "95%"]}
                     justifyContent="flex-end"
@@ -372,7 +680,7 @@ const Listing = () => {
                         factualDisputeRound
                       )}
                     />
-                  </Box>
+                  </CustomBox>
                   <Item>
                     <CustomText
                       fontSize={theme.fonts.sizes.sm}
@@ -526,9 +834,9 @@ const Listing = () => {
                       })}
                     </CustomText>
                   </Item>
-                </Box>
-                <Box wid="20%" justifyContent="flex-end">
-                  <Box
+                </CustomBox>
+                <CustomBox wid="20%" justifyContent="flex-end">
+                  <CustomBox
                     display={["none", "none", "none", "flex"]}
                     wid="100%"
                     justifyContent="center"
@@ -556,7 +864,7 @@ const Listing = () => {
                         factualDisputeRound
                       )}
                     />
-                  </Box>
+                  </CustomBox>
 
                   <Menu aria-label="Menu" placement="bottom-end">
                     <MenuButton
@@ -588,12 +896,7 @@ const Listing = () => {
                         bg="transparent"
                         onClick={() => {
                           setObject(
-                            dispute.disputes[
-                              FindSelectedRound(
-                                dispute._id.socialNumber,
-                                factualDisputeRound
-                              )
-                            ]
+                            dispute.disputes[dispute.disputes.length - 1]
                           );
                           router.push(`/factual`);
                         }}
@@ -646,6 +949,45 @@ const Listing = () => {
                       </MenuItem>
                       <MenuItem
                         icon={
+                          isDownloadingOverview ? (
+                            <Loading
+                              size={theme.icons.sizes.xs}
+                              color={theme.colors.base.secondary}
+                            />
+                          ) : (
+                            <DownloadOverview
+                              size={theme.icons.sizes.xs}
+                              color={theme.colors.base.secondary}
+                            />
+                          )
+                        }
+                        iconSpacing={3}
+                        bg="transparent"
+                        onClick={
+                          isDownloadingOverview
+                            ? () => {}
+                            : () =>
+                                handleOpenOverview(
+                                  dispute.disputes[
+                                    FindSelectedRound(
+                                      dispute._id.socialNumber,
+                                      factualDisputeRound
+                                    )
+                                  ]
+                                )
+                        }
+                      >
+                        <Text
+                          fontSize={theme.fonts.sizes.md}
+                          color={theme.colors.base.secondary}
+                        >
+                          {isDownloading
+                            ? "Downloading..."
+                            : "Download Overview"}
+                        </Text>
+                      </MenuItem>
+                      <MenuItem
+                        icon={
                           <Edit
                             size={theme.icons.sizes.xs}
                             color={theme.colors.base.secondary}
@@ -672,7 +1014,7 @@ const Listing = () => {
                           Edit Dispute
                         </Text>
                       </MenuItem>
-                      <Box
+                      <CustomBox
                         wid="100%"
                         hei="1px"
                         backgroundColor={theme.colors.base.gray[100]}
@@ -705,7 +1047,7 @@ const Listing = () => {
                       </MenuItem>
                     </MenuList>
                   </Menu>
-                </Box>
+                </CustomBox>
               </Card>
             );
           })}

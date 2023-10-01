@@ -3,6 +3,7 @@ import { TContext } from "../types";
 import {
   DocumentProps,
   TDisputeDownload,
+  TDisputeDownloadOverview,
   TDisputeList,
   TDisputeObject,
 } from "./types";
@@ -57,6 +58,30 @@ export const handleDownloadDocument = async ({
     responseType: "blob",
     headers: { Authorization: `Bearer ${token}` },
   });
+};
+
+export const handleDownloadOverview = async ({
+  equifaxScore,
+  experianScore,
+  transunionScore,
+  socialNumber,
+  showDifference,
+  token,
+}: TDisputeDownloadOverview & TToken) => {
+  return await Api.post(
+    `/dispute/overview`,
+    {
+      equifaxScore,
+      experianScore,
+      transunionScore,
+      socialNumber,
+      showDifference,
+    },
+    {
+      responseType: "blob",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 };
 
 export const getDisputes = async ({
@@ -128,9 +153,17 @@ export const DocumentProvider = ({ children }: TContext) => {
   const removeDispute = (id: string) => {
     setObject((prev) => ({
       ...prev,
-      dispute: prev.dispute.filter((item) =>
-        item?._id ? item._id !== id : item.id !== id
-      ),
+      dispute: prev.dispute
+        .filter((item) => item.id !== id)
+        .map((item) => {
+          if (item?._id === id) {
+            return {
+              ...item,
+              isDeleted: true,
+            };
+          }
+          return item;
+        }),
     }));
   };
 

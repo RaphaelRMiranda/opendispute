@@ -55,14 +55,16 @@ const Disputes = ({ disputes, loading }: TDisputeProps) => {
         disputes.length > 0 &&
         disputes.map((dispute, index) => {
           return (
-            <Card key={dispute.id || dispute?._id}>
-              {dispute.template ||
-                generateNewTemplate(
-                  index,
-                  dispute.id || dispute?._id,
-                  dispute.type
-                )}
-            </Card>
+            !dispute.isDeleted && (
+              <Card key={dispute.id || dispute?._id}>
+                {dispute.template ||
+                  generateNewTemplate(
+                    index,
+                    dispute.id || dispute?._id,
+                    dispute.type
+                  )}
+              </Card>
+            )
           );
         })
       )}

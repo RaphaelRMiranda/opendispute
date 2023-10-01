@@ -148,6 +148,8 @@ const Create = () => {
         // dispute: [],
       }));
     }
+
+    setErrors({} as TObjectErrors);
   }, [isEditing, isFactual, setObject, social]);
 
   useEffect(() => {
@@ -191,11 +193,13 @@ const Create = () => {
             sucEditToast();
             router.push("/listing");
             setObject({} as DisputeInterface);
+            setErrors({} as TObjectErrors);
           })
           .catch((error) => {
             isLoading(false);
             console.log(error);
             errEditToast();
+            setErrors({} as TObjectErrors);
           });
       } else {
         const data = RemoveEmptyFields(object) as DisputeInterface;
@@ -222,11 +226,13 @@ const Create = () => {
             isLoading(false);
             router.push(`/success/${response.data.dispute._id}`);
             setObject({} as DisputeInterface);
+            setErrors({} as TObjectErrors);
           })
           .catch((error) => {
             isLoading(false);
             console.log(error);
             errToast();
+            setErrors({} as TObjectErrors);
           });
       }
     } else {

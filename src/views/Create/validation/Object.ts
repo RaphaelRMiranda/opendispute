@@ -29,26 +29,6 @@ const ObjectValidation = (obj: DisputeInterface) => {
     }
   }
 
-  // if (!obj?.customer?.middleName) {
-  //   errors.customer = {
-  //     ...errors.customer,
-  //     middleName: { message: "Middle name is required" },
-  //   };
-  // } else {
-  //   if (obj.customer.middleName.length < 2) {
-  //     errors.customer = {
-  //       ...errors.customer,
-  //       middleName: {
-  //         message: "Middle name must be at least 2 characters",
-  //       },
-  //     };
-  //   } else {
-  //     if (errors.customer) {
-  //       delete errors.customer.middleName;
-  //     }
-  //   }
-  // }
-
   if (!obj?.customer?.lastName) {
     errors.customer = {
       ...errors.customer,

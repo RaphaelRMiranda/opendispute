@@ -48,7 +48,7 @@ const Tables = ({
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th>
+              <Th borderColor={theme.colors.base.gray[400]}>
                 <Text
                   fontSize={theme.fonts.sizes.md}
                   color={theme.colors.base.secondary}
@@ -57,7 +57,7 @@ const Tables = ({
                   Title
                 </Text>
               </Th>
-              <Th>
+              <Th borderColor={theme.colors.base.gray[400]}>
                 <Text
                   fontSize={theme.fonts.sizes.md}
                   color={theme.colors.base.secondary}
@@ -66,14 +66,14 @@ const Tables = ({
                   Text
                 </Text>
               </Th>
-              <Th></Th>
+              <Th borderColor={theme.colors.base.gray[400]}></Th>
             </Tr>
           </Thead>
           <Tbody>
             {data[filter].map((item, index) => {
               return (
                 <Tr key={index}>
-                  <Td>
+                  <Td borderColor={theme.colors.base.gray[100]}>
                     <Text
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.gray[400]}
@@ -81,15 +81,18 @@ const Tables = ({
                       {item.label}
                     </Text>
                   </Td>
-                  <Td wordBreak="break-all">
+                  <Td
+                    wordBreak="break-all"
+                    borderColor={theme.colors.base.gray[100]}
+                  >
                     <Text
                       fontSize={theme.fonts.sizes.sm}
                       color={theme.colors.base.gray[400]}
-                    >
+                    > 
                       {item.value}
                     </Text>
                   </Td>
-                  <Td w="5%">
+                  <Td w="5%" borderColor={theme.colors.base.gray[100]}>
                     <Menu aria-label="Menu" placement="bottom-end">
                       <MenuButton
                         pos={{ base: "absolute", lg: "relative" }}
