@@ -642,7 +642,7 @@ const Listing = () => {
                       dispute._id.socialNumber,
                       factualDisputeRound
                     )
-                  ]._id
+                  ]?._id
                 }
               >
                 <CustomBox
@@ -699,7 +699,7 @@ const Listing = () => {
                             dispute._id.socialNumber,
                             factualDisputeRound
                           )
-                        ].customer.firstName
+                        ]?.customer?.firstName
                       }{" "}
                       {
                         dispute.disputes[
@@ -707,7 +707,7 @@ const Listing = () => {
                             dispute._id.socialNumber,
                             factualDisputeRound
                           )
-                        ].customer.lastName
+                        ]?.customer?.lastName
                       }
                     </CustomText>
                   </Item>
@@ -729,7 +729,7 @@ const Listing = () => {
                             dispute._id.socialNumber,
                             factualDisputeRound
                           )
-                        ].disputeRound
+                        ]?.disputeRound
                       }
                     </CustomText>
                   </Item>
@@ -751,7 +751,7 @@ const Listing = () => {
                             dispute._id.socialNumber,
                             factualDisputeRound
                           )
-                        ].disputeRound}
+                        ]?.disputeRound}
                     </CustomText>
                   </Item>
                   <Item>
@@ -795,14 +795,14 @@ const Listing = () => {
                             dispute._id.socialNumber,
                             factualDisputeRound
                           )
-                        ].createdBy.firstName
+                        ]?.createdBy?.firstName
                       }{" "}
                       {dispute.disputes[
                         FindSelectedRound(
                           dispute._id.socialNumber,
                           factualDisputeRound
                         )
-                      ].createdBy.lastName?.charAt(0)}
+                      ]?.createdBy?.lastName?.charAt(0)}
                       .
                     </CustomText>
                   </Item>
@@ -824,7 +824,7 @@ const Listing = () => {
                             dispute._id.socialNumber,
                             factualDisputeRound
                           )
-                        ].createdAt
+                        ]?.createdAt
                       ).toLocaleString("en-US", {
                         year: "numeric",
                         month: "long",
@@ -851,13 +851,13 @@ const Listing = () => {
                         FactualDisputes,
                         dispute.disputes
                       )}
-                      onChange={(e) =>
+                      onChange={(e) => {
                         EditSelectedRound(
                           dispute._id.socialNumber,
                           Number(e.target.value),
                           setFactualDisputeRound
-                        )
-                      }
+                        );
+                      }}
                       disabled={isDownloading}
                       defaultValue={FindSelectedRound(
                         dispute._id.socialNumber,
@@ -1033,7 +1033,7 @@ const Listing = () => {
                                       dispute._id.socialNumber,
                                       factualDisputeRound
                                     )
-                                  ]._id
+                                  ]?._id
                                 );
                               }
                         }

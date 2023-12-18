@@ -4,9 +4,9 @@ import { DisputeInterface } from "@/views/Create/types";
 const DisputeRoundAt = (rounds: TOption[], disputes: DisputeInterface[]) => {
   const disputeRounds = disputes.map((dispute) => dispute.disputeRound);
 
-  return rounds.filter(
-    (round) => disputeRounds.indexOf(Number(round.value) + 1) >= 0
-  );
+  return rounds
+    .filter((_, index) => disputeRounds.includes(index + 1))
+    .map((round, index) => ({ ...round, value: index }));
 };
 
 export default DisputeRoundAt;

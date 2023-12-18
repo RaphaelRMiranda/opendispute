@@ -14,13 +14,15 @@ export const EditSelectedRound = (
       return newFactual;
     }
     newFactual[index].round = round;
+
     return newFactual;
   });
 };
 
 const FindSelectedRound = (socialNumber: string, rounds: TFactualDispute[]) => {
-  const selectedRound = rounds.find((item) => item.id === socialNumber);
-  return selectedRound?.round || 0;
+  const selectedRound = rounds.findIndex((item) => item.id === socialNumber);
+  if (selectedRound >= 0) return rounds[selectedRound].round;
+  return 0;
 };
 
 export default FindSelectedRound;
